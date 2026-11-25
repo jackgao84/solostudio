@@ -81,7 +81,19 @@ export const practiceScreen: Screen = (root, { params }) => {
   const controls = h('div', { class: 'controls' })
   const playBtn = button(P.play, () => void togglePlay(), { variant: 'primary' })
   const fromStart = button(P.fromStart, () => void range?.playFromTop().then((ok) => setPlaying(ok)))
-  controls.append(playBtn, fromStart, h('p', { class: 'speed' }, fill(P.speed, { speed: Math.round(step.speed * 100) })))
+  const speedEl = h('p', { class: 'speed' }, fill(P.speed, { speed: Math.round(step.speed * 100) }))
+  let speed = step.speed
+  /** Her track goes from 50% to 100% in 5% steps; YouTube offers 50%, 75% and 100%. */
+  const changeSpeed = (dir: -1 | 1) => {
+    if (!range || !player) return
+    const steps = player.kind === 'youtube' ? [0.5, 0.75, 1] : Array.from({ length: 11 }, (_, i) => Math.round((0.5 + i * 0.05) * 100) / 100)
+    const at = steps.reduce((best, r, i) => (Math.abs(r - speed) < Math.abs(steps[best] - speed) ? i : best), 0)
+    speed = steps[Math.min(steps.length - 1, Math.max(0, at + dir))]
+    range.speed = speed
+    speed = player.setRate(speed)
+    speedEl.textContent = fill(P.speed, { speed: Math.round(speed * 100) })
+  }
+  controls.append(playBtn, fromStart, button(P.slower, () => changeSpeed(-1), { variant: 'quiet' }), speedEl, button(P.faster, () => changeSpeed(1), { variant: 'quiet' }))
 
   if (lyrics) {
     side.append(lyrics.el)

@@ -42,6 +42,8 @@ export const recordScreen: Screen = (root, { params }) => {
   el.append(view)
 
   let stream: MediaStream | null = null
+  /** The camera's tracks, held for as long as the camera is on, and stopped when she leaves. */
+  let tracks: MediaStreamTrack[] = []
   let recorder: MediaRecorder | null = null
   let src: TrackSource | null = null
   let range: RangePlayer | null = null
@@ -51,7 +53,8 @@ export const recordScreen: Screen = (root, { params }) => {
   let gone = false
 
   const stopCamera = () => {
-    stream?.getTracks().forEach((t) => t.stop())
+    for (const t of tracks) t.stop()
+    tracks = []
     stream = null
   }
 
@@ -61,7 +64,10 @@ export const recordScreen: Screen = (root, { params }) => {
 
   async function startCamera(): Promise<void> {
     try {
-      stream ??= await navigator.mediaDevices.getUserMedia({ video: { facingMode: 'user', width: { ideal: 1280 }, height: { ideal: 720 } }, audio: true })
+      if (!stream) {
+        stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: 'user', width: { ideal: 1280 }, height: { ideal: 720 } }, audio: true })
+        tracks = stream.getTracks()
+      }
     } catch (err) {
       console.warn('[solostudio] camera failed', err)
       view.append(h('p', { class: 'note' }, R.cameraOff))

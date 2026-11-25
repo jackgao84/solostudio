@@ -71,6 +71,8 @@ export const KID_COPY = {
     didIt: 'I did it',
     again: 'Again',
     speed: '{speed}% speed',
+    slower: 'Slower',
+    faster: 'Faster',
     peek: 'Peek',
     breaths: 'Mark breaths',
     breathHint: 'Tap between two words to mark where you breathe.',

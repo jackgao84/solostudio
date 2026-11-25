@@ -7,8 +7,14 @@ import { tapToMediaTime, type Span } from './timing'
 
 /** Lines light up this many real seconds before they start. */
 export const LINE_LEAD = 0.2
-/** Two line starts must be at least this far apart (media seconds). */
-export const MIN_LINE_GAP = 0.3
+/**
+ * Two line starts must be at least this far apart (media seconds). Kept small: the media clock can
+ * stall for a moment, and fast lines are close together. Accidental double taps are caught by the
+ * tap-along button itself (TAP_DEBOUNCE_MS of real time).
+ */
+export const MIN_LINE_GAP = 0.15
+/** The tap-along button ignores a second tap this soon after the first (real time). */
+export const TAP_DEBOUNCE_MS = 200
 /** Words are spread over this share of a line; the rest is the breath before the next line. */
 export const WORDS_SHARE = 0.85
 

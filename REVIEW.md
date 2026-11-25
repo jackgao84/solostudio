@@ -2,7 +2,7 @@
 
 Every piece of kid-facing text in the app, grouped by where it appears. Words in {curly brackets} are filled in on the iPad (her name, a section name, a number). The rap lines themselves are typed on the iPad by a grown-up and are never part of the app.
 
-- 298 lines in 15 groups
+- 300 lines in 15 groups
 
 **This file is generated from `src/content`. Don’t edit it by hand.** To change the words, edit the files in `src/content`, then run `npm run review` to rebuild this file. `npm test` fails while it is out of date.
 
@@ -189,7 +189,7 @@ Each ladder and each rung, with the one-line how-to shown on the practice screen
 - Link it up <sub>`step.together-linked.name`</sub>
 - Start in the part before and flow straight into this one. <sub>`step.together-linked.how`</sub>
 
-## 8. Practising (37)
+## 8. Practising (39)
 
 The practice screen: buttons, notes, speeds and what she sees when a video won’t play.
 
@@ -199,6 +199,8 @@ The practice screen: buttons, notes, speeds and what she sees when a video won�
 - I did it <sub>`kid.practice.didIt`</sub>
 - Again <sub>`kid.practice.again`</sub>
 - {speed}% speed <sub>`kid.practice.speed`</sub>
+- Slower <sub>`kid.practice.slower`</sub>
+- Faster <sub>`kid.practice.faster`</sub>
 - Peek <sub>`kid.practice.peek`</sub>
 - Mark breaths <sub>`kid.practice.breaths`</sub>
 - Tap between two words to mark where you breathe. <sub>`kid.practice.breathHint`</sub>

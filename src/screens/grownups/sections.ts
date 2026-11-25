@@ -5,7 +5,7 @@
  */
 import { go, save, sectionById, sectionsInOrder, update } from '../../app/ctx'
 import type { Screen } from '../../app/router'
-import { recordLineTap, wordsOf } from '../../model/sync'
+import { TAP_DEBOUNCE_MS, recordLineTap, wordsOf } from '../../model/sync'
 import { NUDGE_STEPS, formatTime, markEnd, markStart, nudge, playRange, spanOf, tapToMediaTime } from '../../model/timing'
 import { RangePlayer, type Player } from '../../media/player'
 import type { Line, Marks, Section } from '../../storage/schema'
@@ -242,8 +242,11 @@ export const sectionEditor: Screen = (root, { params }) => {
     const msg = h('p', { class: 'note' })
     const showNext = () => (nextText.textContent = `Next: line ${idx + 1} of ${lines.length}: ${lines[idx].lyric}`)
     showNext()
+    let lastTap = 0
     const next = button('Next line', () => {
       if (!tapPlayer || idx >= lines.length) return
+      if (performance.now() - lastTap < TAP_DEBOUNCE_MS) return
+      lastTap = performance.now()
       const out = recordLineTap(times, idx, tapPlayer.time(), tapPlayer.rate())
       if (!out) return void (msg.textContent = 'Too soon after the line before: tap as the line starts.')
       msg.textContent = ''
@@ -265,8 +268,14 @@ export const sectionEditor: Screen = (root, { params }) => {
       edit((s) => s.lines.forEach((l, k) => (l.time = times[k] ?? null)))
       showNext()
     })
+    const starting = h('p', { class: 'note' }, 'Starting her track…')
+    tapBox.replaceChildren(tapArea, starting)
+    if (!(await tapRange.playFromTop())) return void (starting.textContent = 'Her track could not play.')
+    // Offer "Next line" only once the music is really moving, so taps match what she hears.
+    const from = tapPlayer.time()
+    for (let i = 0; i < 60 && tapPlayer && tapPlayer.time() <= from + 0.02; i++) await new Promise((r) => setTimeout(r, 50))
+    if (!tapPlayer) return
     tapBox.replaceChildren(tapArea, nextText, next, msg, h('div', { class: 'row' }, undo, button('Stop', () => (stopTap(), tapBox.replaceChildren()))))
-    await tapRange.playFromTop()
   }
 
   const remove = confirmButton('Remove this section', 'Yes, remove it', () => {

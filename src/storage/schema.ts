@@ -178,6 +178,9 @@ export interface SaveData {
   settings: Settings
 }
 
+/** The original video (a default reference) stands in for her track until it is loaded. */
+export const DEFAULT_STAND_IN = 'JSFG-IE8n_c'
+
 export const DEFAULT_FACE_LAB_URL = 'https://jackgao84.github.io/face-lab/'
 export const DEFAULT_UP_ANYWAY_URL = 'https://jackgao84.github.io/upanyway/'
 
@@ -211,7 +214,8 @@ export function defaultSave(_now: Date = new Date()): SaveData {
     show: null,
     pastShows: [],
     plan: null,
-    track: { mediaId: null, fileName: '', duration: null, standInYoutubeId: '' },
+    // Until her track is loaded, the original video stands in (a grown-up can change or clear it).
+    track: { mediaId: null, fileName: '', duration: null, standInYoutubeId: DEFAULT_STAND_IN },
     refs: DEFAULT_REFS.map((r) => ({ ...r })),
     sections: [],
     tempo: { bpm: null, offset: null },
