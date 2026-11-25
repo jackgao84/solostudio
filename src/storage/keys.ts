@@ -14,8 +14,9 @@ export const KEYS = {
 
 /** IndexedDB database holding media (her track, local reference videos, her clips). */
 export const MEDIA_DB = `${PREFIX}media`
-/** Object stores inside MEDIA_DB. */
+/** Object stores inside MEDIA_DB: the bytes, and the small records listed without loading bytes. */
 export const MEDIA_STORE = 'media'
+export const META_STORE = 'meta'
 
 /** Service worker caches are named `${CACHE_PREFIX}<build hash>` (see src/sw/sw-template.js). */
 export const CACHE_PREFIX = `${PREFIX}precache:`

@@ -62,7 +62,7 @@ describe('lines light up at every speed', () => {
     for (const tapRate of SPEEDS) {
       const starts = lineStarts(tapAlong(tapRate), { start: 11, end: 26 })!
       for (const rate of SPEEDS) {
-        starts.forEach((s, i) => {
+        starts.forEach((_s, i) => {
           // In media seconds the lead shrinks with the speed: LINE_LEAD real seconds = LINE_LEAD × rate.
           const lightsAt = TRUE_STARTS[i] - LINE_LEAD * rate
           expect(activeLine(starts, lightsAt - 0.02 * rate, rate), `before line ${i} (tap ${tapRate}, play ${rate})`).toBe(i - 1)

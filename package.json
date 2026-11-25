@@ -14,7 +14,7 @@
     "test:watch": "vitest",
     "e2e": "playwright test",
     "icons": "node scripts/make-icons.mjs",
-    "review": "UPDATE_REVIEW=1 vitest run tests/unit/review.test.ts",
+    "review": "UPDATE_REVIEW=1 vitest run tests/unit/review-md.test.ts",
     "privacy": "node scripts/privacy-scan.mjs"
   },
   "devDependencies": {

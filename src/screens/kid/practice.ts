@@ -1,0 +1,228 @@
+/**
+ * Practising one rung of one section. The player (her track, a stand-in video, a YouTube reference
+ * or a local video) sits on one side; the lyrics and the 8-count sit beside it, never on it. Lines
+ * light up karaoke style at any speed. She ticks the rung herself ("I did it") or goes again.
+ */
+import { go, save, sectionById, today, update } from '../../app/ctx'
+import type { Screen } from '../../app/router'
+import { KID_COPY } from '../../content/kid'
+import { STEP_COPY } from '../../content/ladders'
+import { sectionFadeLevels } from '../../model/fade'
+import { LADDERS, pickReference, stepById } from '../../model/ladders'
+import { progressOf, reviewLadder, setFade, tickStep } from '../../model/progress'
+import { isDue } from '../../model/spacing'
+import { lineStarts, wordsOf } from '../../model/sync'
+import { PRE_ROLL, mapTime, playRange, previousSection, spanOf } from '../../model/timing'
+import { RangePlayer, type Player } from '../../media/player'
+import { button, toggle } from '../../ui/components'
+import { CountsView } from '../../ui/counts'
+import { fill, h } from '../../ui/dom'
+import { LyricsView } from '../../ui/lyrics'
+import { referencePlayer, trackSource } from '../../ui/video'
+import { blockTimer, kidScreen, topbar } from './common'
+
+const P = KID_COPY.practice
+
+export const practiceScreen: Screen = (root, { params }) => {
+  const section = sectionById(params.section)
+  const found = stepById(params.step)
+  if (!section || !found) {
+    go('/sections')
+    return
+  }
+  const step = found
+  const sid = section.id
+  const prog = () => progressOf(save().progress, sid)
+  const timer = blockTimer()
+  const copy = STEP_COPY[step.id]
+  const el = kidScreen(root, 'practice', topbar(timer?.el ?? null))
+  el.append(h('header', { class: 'practice__head' }, h('h1', null, section.name), h('p', { class: 'practice__step' }, copy.name), h('p', { class: 'note' }, copy.how)))
+
+  const notes = h('div', { class: 'practice__notes' })
+  el.append(notes)
+  const note = (text: string, cls = 'note') => notes.append(h('p', { class: cls }, text))
+  if (step.energy === 'half') note(P.energyHalf, 'energy')
+  if (step.energy === 'full' && step.ladder === 'together') note(P.energyFull, 'energy')
+  if (step.link) {
+    const prev = previousSection(save().sections, sid)
+    note(prev ? fill(P.linkNote, { previous: prev.name, section: section.name }) : fill(P.linkNoteFirst, { section: section.name }), 'note link-note')
+  }
+  if (step.source === 'tutorial') note(P.watchNote)
+  if (step.source === 'mirrored') note(P.followNote)
+  const ladderState = prog()[step.ladder]
+  if (ladderState.finishedAt && isDue(ladderState.review, today())) note(P.reviewNote)
+
+  // ---- Stage: player | lyrics and counts ----------------------------------------------------
+  const playerArea = h('div', { class: 'player-area' })
+  const side = h('div', { class: 'side' })
+  const stage = h('div', { class: 'stage' }, playerArea)
+  el.append(stage)
+
+  const trackSpan = spanOf(section.track)
+  const tempo = save().tempo
+  const wantsWords = step.ladder !== 'dance'
+  let lyrics: LyricsView | null = null
+  if (wantsWords && section.lines.length) {
+    const starts = lineStarts(section.lines.map((l) => l.time), trackSpan)
+    lyrics = new LyricsView(section.lines, starts, trackSpan?.end ?? null, (li, wi) => {
+      update((d) => {
+        const line = d.sections.find((s) => s.id === sid)?.lines[li]
+        if (!line) return
+        line.breaths = line.breaths.includes(wi) ? line.breaths.filter((x) => x !== wi) : [...line.breaths, wi].sort((a, b) => a - b)
+      })
+      lyrics?.setLines(sectionById(sid)?.lines ?? [])
+    })
+    const mode = step.words === 'fade' ? 'fade' : step.words === 'hidden' ? 'hidden' : 'show'
+    lyrics.setMode(mode, prog().rap.fade)
+  } else if (wantsWords) {
+    side.append(h('p', { class: 'note' }, P.noLines))
+  }
+
+  const controls = h('div', { class: 'controls' })
+  const playBtn = button(P.play, () => void togglePlay(), { variant: 'primary' })
+  const fromStart = button(P.fromStart, () => void range?.playFromTop().then((ok) => setPlaying(ok)))
+  controls.append(playBtn, fromStart, h('p', { class: 'speed' }, fill(P.speed, { speed: Math.round(step.speed * 100) })))
+
+  if (lyrics) {
+    side.append(lyrics.el)
+    const extras = h('div', { class: 'row' })
+    if (step.words === 'optional') extras.append(toggle(P.showWords, true, (on) => (lyrics!.el.hidden = !on)))
+    if (step.words === 'hidden') {
+      let peekTimer = 0
+      extras.append(
+        button(P.peek, () => {
+          lyrics!.setPeek(true)
+          window.clearTimeout(peekTimer)
+          peekTimer = window.setTimeout(() => lyrics?.setPeek(false), 3000)
+        }),
+      )
+      note(P.memoryNote)
+    }
+    if (step.ladder === 'rap') extras.append(toggle(P.breaths, false, (on) => lyrics!.setEditing(on)))
+    if (step.words === 'fade') note(P.fadeNote)
+    if (extras.childElementCount) side.append(extras)
+  }
+
+  // ---- The player -----------------------------------------------------------------------------
+  let player: Player | null = null
+  let range: RangePlayer | null = null
+  let toTrack: (t: number) => number | null = () => null
+  let scale = 1
+  let counts: CountsView | null = null
+  let gone = false
+
+  const setPlaying = (on: boolean) => {
+    playBtn.textContent = on ? P.pause : P.play
+  }
+  const tick = (t: number) => {
+    const tt = toTrack(t)
+    if (tt == null) return
+    const rate = (player?.rate() ?? step.speed) * scale
+    lyrics?.update(tt, rate)
+    counts?.update(tt)
+  }
+  async function togglePlay(): Promise<void> {
+    if (!range) return
+    setPlaying(await range.toggle())
+  }
+  const disable = (text: string) => {
+    playBtn.disabled = true
+    fromStart.disabled = true
+    note(text)
+  }
+
+  async function setup(): Promise<void> {
+    let from = 0
+    let to = Infinity
+    if (step.source === 'track') {
+      const src = await trackSource(playerArea, save())
+      if (gone) return src?.player.destroy()
+      if (!src) return disable(P.needsTrack)
+      player = src.player
+      if (src.standIn) note(P.standIn)
+      if (!trackSpan) return disable(P.needsTrackMarks)
+      if (step.link) {
+        const prev = previousSection(save().sections, sid)
+        const prevStart = prev ? (spanOf(prev.track)?.start ?? trackSpan.start) : 0
+        from = Math.max(0, Math.round((prevStart - PRE_ROLL) * 100) / 100)
+        if (!prev) from = 0
+        to = trackSpan.end
+      } else ({ from, to } = playRange(trackSpan))
+      toTrack = (t) => t
+    } else {
+      const ref = pickReference(save().refs, section!, step.source)
+      if (!ref) return disable(P.needsMarks)
+      player = referencePlayer(playerArea, ref)
+      const refSpan = spanOf(section!.refs[ref.id])!
+      ;({ from, to } = playRange(refSpan))
+      if (ref.synced && trackSpan) {
+        toTrack = (t) => mapTime(refSpan, trackSpan, t)
+        scale = (trackSpan.end - trackSpan.start) / (refSpan.end - refSpan.start)
+      }
+    }
+    if (step.counts && tempo.bpm && tempo.offset != null && toTrack(from) != null) {
+      counts = new CountsView(tempo.bpm, tempo.offset)
+      side.append(counts.el)
+    }
+    if (side.childElementCount) {
+      stage.classList.add('has-side')
+      stage.append(side)
+    }
+    range = new RangePlayer(player, from, to, step.speed)
+    range.onTick = tick
+    range.onStop = () => setPlaying(false)
+    tick(from)
+  }
+
+  if (wantsWords && lyrics && !side.isConnected) {
+    stage.classList.add('has-side')
+    stage.append(side)
+  }
+  el.append(controls)
+
+  // ---- I did it / Again -------------------------------------------------------------------------
+  el.append(
+    h(
+      'div',
+      { class: 'answer' },
+      button(P.again, () => {
+        if (range) void range.playFromTop().then((ok) => setPlaying(ok))
+      }, { class: 'btn--big' }),
+      button(P.didIt, () => didIt(), { variant: 'primary', class: 'btn--big' }),
+    ),
+  )
+
+  function didIt(): void {
+    const s = sectionById(sid)!
+    if (step!.words === 'fade' && lyrics) {
+      const max = sectionFadeLevels(s.lines.map((l) => wordsOf(l.lyric).length))
+      const level = prog().rap.fade
+      if (level < max) {
+        update((d) => {
+          d.progress[sid] = setFade(prog(), level + 1)
+        })
+        lyrics.setMode('fade', level + 1)
+        if (level + 1 >= max) note(P.fadeAllGone)
+        return
+      }
+    }
+    const t = today()
+    const before = prog()
+    let p = tickStep(before, step!.ladder, step!.id, t)
+    if (before[step!.ladder].finishedAt && isDue(p[step!.ladder].review, t)) p = reviewLadder(p, step!.ladder, t)
+    update((d) => {
+      d.progress[sid] = p
+    })
+    const steps = LADDERS[step!.ladder]
+    const next = steps[steps.findIndex((x) => x.id === step!.id) + 1]
+    go(next ? `/practice/${sid}/${next.id}` : `/section/${sid}`)
+  }
+
+  void setup()
+  return () => {
+    gone = true
+    timer?.stop()
+    range?.destroy()
+    player?.destroy()
+  }
+}

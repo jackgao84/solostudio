@@ -1,0 +1,404 @@
+/*
+ * Solo Studio: an original practice-room look. A mirror wall of tall panels, a soft LED strip along
+ * the ceiling and a glow on the floor, all painted in the page background (never over content).
+ * Her screens use big type (readable from two metres with the iPad on a stand) and touch targets of
+ * 56 px. Rules for YouTube players: no transforms, filters or opacity on them or anything around
+ * them, and nothing layered on top.
+ */
+:root {
+  --bg: #130f26;
+  --wall: #1c1738;
+  --panel: rgba(255, 255, 255, 0.06);
+  --panel-strong: rgba(255, 255, 255, 0.1);
+  --text: #f8f4ff;
+  --muted: #d3cbef;
+  --pink: #ff5fae;
+  --violet: #a77bff;
+  --cyan: #45e3ff;
+  --lime: #c6ff6b;
+  --gold: #ffd36e;
+  --danger: #ff8a8a;
+  --radius: 18px;
+  --kid-font: 24px;
+  --grown-font: 18px;
+  color-scheme: dark;
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+[hidden] {
+  display: none !important;
+}
+
+html,
+body {
+  margin: 0;
+  min-height: 100%;
+  background: var(--bg);
+  color: var(--text);
+  font-family: ui-rounded, 'SF Pro Rounded', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  -webkit-tap-highlight-color: transparent;
+}
+
+body {
+  overflow-x: hidden;
+}
+
+/* The room: mirror panels, a sheen, the LED strip and the floor glow, fixed behind all the content. */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background:
+    linear-gradient(90deg, var(--pink), var(--violet), var(--cyan), var(--violet), var(--pink)) top / 100% 6px no-repeat,
+    radial-gradient(60% 18% at 50% 0%, rgba(167, 123, 255, 0.35), transparent 70%),
+    radial-gradient(40% 14% at 15% 0%, rgba(255, 95, 174, 0.25), transparent 70%),
+    radial-gradient(40% 14% at 85% 0%, rgba(69, 227, 255, 0.22), transparent 70%),
+    linear-gradient(to top, rgba(69, 227, 255, 0.12), transparent 18%),
+    linear-gradient(115deg, transparent 32%, rgba(255, 255, 255, 0.045) 44%, transparent 56%),
+    repeating-linear-gradient(90deg, rgba(255, 255, 255, 0.05) 0 2px, transparent 2px 180px),
+    linear-gradient(var(--wall), var(--bg));
+}
+
+#app {
+  min-height: 100vh;
+}
+
+button,
+input,
+select,
+textarea {
+  font: inherit;
+  color: inherit;
+}
+
+a {
+  color: var(--cyan);
+}
+
+.sr-only {
+  position: absolute !important;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.screen {
+  width: 100%;
+  max-width: 1120px;
+  margin: 0 auto;
+  padding: max(18px, env(safe-area-inset-top)) max(20px, env(safe-area-inset-right)) max(40px, env(safe-area-inset-bottom)) max(20px, env(safe-area-inset-left));
+  overflow-wrap: anywhere;
+}
+
+.screen--kid {
+  font-size: var(--kid-font);
+  line-height: 1.35;
+}
+
+.screen--grownup {
+  font-size: var(--grown-font);
+  line-height: 1.45;
+}
+
+h1,
+h2,
+h3 {
+  line-height: 1.15;
+  margin: 0.3em 0 0.4em;
+}
+
+.screen--kid h1 {
+  font-size: 44px;
+}
+
+.screen--kid h2 {
+  font-size: 32px;
+}
+
+.screen--kid h3 {
+  font-size: 28px;
+}
+
+.screen--grownup h1 {
+  font-size: 30px;
+}
+
+.screen--grownup h2 {
+  font-size: 22px;
+}
+
+p {
+  margin: 0.4em 0;
+}
+
+.note {
+  color: var(--muted);
+}
+
+.stack {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  align-items: center;
+}
+
+.card {
+  background: var(--panel);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: var(--radius);
+  padding: 16px 18px;
+}
+
+/* ---- Buttons ---------------------------------------------------------------------------- */
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  min-height: 56px;
+  min-width: 56px;
+  padding: 10px 22px;
+  border-radius: 999px;
+  border: 2px solid rgba(167, 123, 255, 0.75);
+  background: rgba(255, 255, 255, 0.07);
+  box-shadow: 0 0 16px rgba(167, 123, 255, 0.3);
+  color: var(--text);
+  font-size: 1em;
+  font-weight: 650;
+  text-decoration: none;
+  cursor: pointer;
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-touch-callout: none;
+  touch-action: manipulation;
+}
+
+.btn:active {
+  background: rgba(255, 255, 255, 0.16);
+}
+
+.btn:disabled,
+.btn[aria-disabled='true'] {
+  opacity: 0.45;
+  box-shadow: none;
+}
+
+.btn--primary {
+  border-color: transparent;
+  background: linear-gradient(120deg, var(--pink), var(--violet));
+  box-shadow: 0 0 22px rgba(255, 95, 174, 0.45);
+  color: #fff;
+}
+
+.btn--big {
+  min-height: 76px;
+  padding: 14px 34px;
+  font-size: 1.2em;
+}
+
+.btn--quiet {
+  border-color: rgba(255, 255, 255, 0.25);
+  box-shadow: none;
+}
+
+.btn.is-armed {
+  border-color: var(--danger);
+  box-shadow: 0 0 16px rgba(255, 138, 138, 0.45);
+}
+
+.screen--grownup .btn {
+  min-height: 48px;
+  min-width: 48px;
+  padding: 8px 18px;
+}
+
+/* Press and hold: the fill grows while it's held. */
+.hold {
+  position: relative;
+  overflow: hidden;
+  touch-action: none;
+}
+
+.hold__fill {
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 0;
+  background: rgba(69, 227, 255, 0.35);
+}
+
+.hold.is-holding .hold__fill {
+  width: 100%;
+  transition: width var(--hold-ms, 2000ms) linear;
+}
+
+.hold__label {
+  position: relative;
+}
+
+.gate-hold {
+  border-color: rgba(255, 255, 255, 0.3);
+  box-shadow: none;
+  font-weight: 600;
+}
+
+/* Switches and chips. */
+.switch {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  min-height: 56px;
+  padding: 6px 16px 6px 8px;
+  border-radius: 999px;
+  border: 2px solid rgba(255, 255, 255, 0.2);
+  background: rgba(255, 255, 255, 0.05);
+  color: var(--text);
+  cursor: pointer;
+}
+
+.screen--grownup .switch {
+  min-height: 48px;
+}
+
+.switch__track {
+  position: relative;
+  width: 64px;
+  height: 36px;
+  flex: none;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.18);
+}
+
+.switch__knob {
+  position: absolute;
+  top: 4px;
+  left: 4px;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: #fff;
+}
+
+.switch[aria-checked='true'] .switch__track {
+  background: linear-gradient(120deg, var(--pink), var(--violet));
+}
+
+.switch[aria-checked='true'] .switch__knob {
+  left: 32px;
+}
+
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.chip {
+  min-height: 56px;
+  padding: 8px 20px;
+  border-radius: 999px;
+  border: 2px solid rgba(255, 255, 255, 0.25);
+  background: rgba(255, 255, 255, 0.06);
+  color: var(--text);
+  font-size: 1em;
+  cursor: pointer;
+}
+
+.chip[aria-checked='true'] {
+  border-color: var(--cyan);
+  background: rgba(69, 227, 255, 0.2);
+  box-shadow: 0 0 14px rgba(69, 227, 255, 0.4);
+}
+
+/* Form fields: 16 px or more, so Safari never zooms in. */
+input:not([type='file']),
+select,
+textarea {
+  min-height: 48px;
+  padding: 10px 14px;
+  border-radius: 12px;
+  border: 2px solid rgba(255, 255, 255, 0.22);
+  background: rgba(0, 0, 0, 0.3);
+  font-size: max(16px, 1em);
+  max-width: 100%;
+}
+
+.screen--kid input:not([type='file']),
+.screen--kid select,
+.screen--kid textarea {
+  min-height: 56px;
+}
+
+textarea {
+  width: 100%;
+  resize: vertical;
+}
+
+label.field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.file-pick {
+  position: relative;
+}
+
+/* ---- Top bar ------------------------------------------------------------------------------ */
+
+.topbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 8px;
+}
+
+.topbar__spacer {
+  flex: 1;
+}
+
+.saved-note,
+.import-summary,
+.import-error,
+.move-note,
+.notice {
+  border-radius: 14px;
+  padding: 12px 16px;
+  background: rgba(69, 227, 255, 0.14);
+  border: 1px solid rgba(69, 227, 255, 0.5);
+}
+
+.import-error {
+  background: rgba(255, 138, 138, 0.12);
+  border-color: rgba(255, 138, 138, 0.6);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation: none !important;
+    transition: none !important;
+  }
+}
