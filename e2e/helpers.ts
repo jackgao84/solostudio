@@ -164,7 +164,9 @@ const INIT_STANDINS = () => {
     }
     return stream
   }
-  if (navigator.mediaDevices) (navigator.mediaDevices as unknown as Record<string, unknown>).getUserMedia = fakeGum
+  // On the prototype: Playwright's WebKit drops overrides set on the navigator.mediaDevices object
+  // itself a couple of seconds after load.
+  if (typeof MediaDevices !== 'undefined') MediaDevices.prototype.getUserMedia = fakeGum as MediaDevices['getUserMedia']
   else Object.defineProperty(navigator, 'mediaDevices', { configurable: true, value: { getUserMedia: fakeGum, enumerateDevices: async () => [] } })
 
   // Screen wake lock.
@@ -200,13 +202,13 @@ const INIT_STANDINS = () => {
   // navigator.storage.persist().
   const persist = { calls: 0 }
   w.__persist = persist
-  if (navigator.storage) {
-    const s = navigator.storage as unknown as Record<string, unknown>
-    s.persist = async () => {
+  // On the prototype, for the same reason as the camera.
+  if (typeof StorageManager !== 'undefined') {
+    StorageManager.prototype.persist = async () => {
       persist.calls++
       return true
     }
-    s.persisted = async () => persist.calls > 0
+    StorageManager.prototype.persisted = async () => persist.calls > 0
   }
 }
 

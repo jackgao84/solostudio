@@ -67,7 +67,7 @@ test('works offline after the first visit, and leaves the other apps alone', asy
         })
         localStorage.setItem(key, json)
       },
-      { key: KEYS.save, json: JSON.stringify(setUpSave()) },
+      { key: KEYS.save, json: JSON.stringify(setUpSave({ standIn: '' })) },
     )
 
     // 2. The first visit: the worker installs and takes control.

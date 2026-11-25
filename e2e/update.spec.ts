@@ -67,7 +67,7 @@ const marked = (page: Page) => page.evaluate(() => (window as unknown as { __mar
 test('"New version" appears on Today, never reloads mid-practice, and keeps everything', async ({ page, context }, testInfo) => {
   const server = await startServer(portFor(testInfo.project.name))
   try {
-    await seedSave(page, setUpSave())
+    await seedSave(page, setUpSave({ standIn: '' }))
     await page.goto('./#/today')
     await expect(page.locator('.block').first()).toBeVisible()
     await page.waitForFunction(() => !!navigator.serviceWorker.controller, undefined, { timeout: 30_000 })
