@@ -55,7 +55,8 @@ export const practiceScreen: Screen = (root, { params }) => {
   // ---- Stage: player | lyrics and counts ----------------------------------------------------
   const playerArea = h('div', { class: 'player-area' })
   const side = h('div', { class: 'side' })
-  const stage = h('div', { class: 'stage' }, playerArea)
+  const playerCol = h('div', { class: 'player-col' }, playerArea)
+  const stage = h('div', { class: 'stage' }, playerCol)
   el.append(stage)
 
   const trackSpan = spanOf(section.track)
@@ -190,10 +191,10 @@ export const practiceScreen: Screen = (root, { params }) => {
     stage.classList.add('has-side')
     stage.append(side)
   }
-  el.append(controls)
+  playerCol.append(controls)
 
   // ---- I did it / Again -------------------------------------------------------------------------
-  el.append(
+  playerCol.append(
     h(
       'div',
       { class: 'answer' },

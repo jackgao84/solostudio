@@ -7,36 +7,30 @@
 
 ## Status
 
-- **Paused for the owner (2026-11-25):** the lyric-placeholder unit check (`tests/unit/lyrics.test.ts`)
-  is wrong: it flags its own source. (1) Its Korean-script regex was written with literal Hangul
-  characters instead of `\u` escapes, so "no Korean script in any file" finds the check itself.
-  (2) Its header comment contains example patterns (`lyric: '…'`, `typeLyric(locator, '…'`) that
-  the placeholder scan then matches (all 6 hits are in that comment; no other file has a hit).
-  Proposed fix (needs the owner's OK, per the brief): write the regex with `\u` escapes and reword
-  the comment. Nothing about what is checked would change.
-- Also disclosed: `tests/unit/sync.test.ts` had an unused loop variable `s` that failed the
-  typecheck (noUnusedParameters); it was renamed to `_s`. No assertion changed.
-- Everything else: unit checks 148/150 passing (the 2 failures are the lyric check above).
-  Typecheck clean. The WebKit suite has not been run yet. Nothing pushed; no GitHub repo yet.
+- **Built and checked locally (2026-11-26).** Typecheck clean; unit checks 150/150 in 17 files;
+  Playwright WebKit 48/48 (24 tests × iPad portrait and landscape), twice in a row with no retries;
+  REVIEW.md current; privacy scan clean (122 files, every commit message, author and committer).
+- **Check changes, all approved by the owner and committed on their own:**
+  - `tests/unit/sync.test.ts`: an unused loop variable `s` renamed `_s` (typecheck only).
+  - `tests/unit/lyrics.test.ts` (576283b): it flagged its own source. Its Korean-script pattern is
+    now written with `\u` escapes and two comments no longer contain the patterns it scans for.
+  - `e2e/helpers.ts`, `e2e/offline.spec.ts`, `e2e/update.spec.ts` (24767b2): the camera and
+    persist() stand-ins are installed on `MediaDevices.prototype` / `StorageManager.prototype`
+    (Playwright's WebKit drops overrides on the navigator objects ~2 s after load); the offline and
+    update specs seed no YouTube stand-in (routing can't reach a worker-controlled page).
+  No assertion was changed anywhere.
+- Next: create the public repo, push, turn on Pages, confirm the live site and service worker.
 
 ## Stages
 
-1. [x] Read Up Anyway conventions (via gh) and probe WebKit (audio speed + preservesPitch, wake lock,
-   MediaRecorder from a canvas stream, iframe routing; Blobs can't be stored in Playwright WebKit's
-   private IndexedDB, so media falls back to ArrayBuffers there).
-2. [x] Scaffold: Vite + TypeScript, plain DOM/CSS, service worker plugin and template, base
-   `/solostudio/`, Playwright WebKit at iPad portrait 820×1180 and landscape 1180×820.
-3. [x] Checks first (commit 095d4bc): 17 unit test files and 10 WebKit specs (see below).
-4. [~] Core logic against the unit checks: done (dates, timing, sync, counts, fade, quiz, spacing,
-   ladders, progress, plan, shows, clips, storage, backup, media, YouTube helpers, copy, lessons).
-5. [~] Screens: all written (kid: welcome, today, block, practice, sections, section, quick tests,
-   showtime, record, clips, lessons; grown-ups: home, plan, track, videos, sections, section
-   editor with marks and tap-along, tempo, backup, links). WebKit suite not yet run.
-6. [ ] Docs: README, SETUP.md (one-time setup, ~30 min), REVIEW.md (generated: `npm run review`),
-   DEPLOY notes, LICENSE.
-7. [ ] Privacy scan (`npm run privacy`, terms from `.private/terms.txt`) of the tree and every commit
-   message; create public repo jackgao84/solostudio with the noreply identity; push.
-8. [ ] Pages (GitHub Actions), confirm live site and service worker; report check summaries.
+1. [x] Read Up Anyway conventions (via gh) and probe WebKit.
+2. [x] Scaffold: Vite + TypeScript, plain DOM/CSS, service worker, `/solostudio/`, Playwright WebKit.
+3. [x] Checks first (commit 095d4bc): 17 unit test files and 10 WebKit specs.
+4. [x] Core logic against the unit checks.
+5. [x] Screens against the WebKit checks.
+6. [x] Docs: README, SETUP.md, REVIEW.md (generated), PROGRESS.md, LICENSE, deploy workflow.
+7. [ ] Privacy scan (done locally, clean), create public repo jackgao84/solostudio, push.
+8. [ ] Pages (GitHub Actions), confirm live site and service worker.
 
 ## Commands
 
@@ -97,3 +91,14 @@ Service workers are blocked except in the offline and update specs (routing need
 5. Fade: odd-placed words first (never two side by side until half are hidden), first word last.
 6. Clips are saved as soon as recording stops; the newest 3 per group are kept.
 7. Showtime with a YouTube stand-in shows that player (it can't play hidden); with her track, no video.
+8. App fixes found by the WebKit suite: selects drawn at full height (WebKit ignores a default
+   select's height); tap-along offers "Next line" only once her track is really moving, with a
+   200 ms real-time double-tap guard and a 0.15 s media-time gap (WebKit's media clock stalls
+   briefly); the camera's tracks are held until she leaves; media blob URLs are released a moment
+   after the element lets go (revoking early logs a WebKit load error).
+9. Practice layout: in landscape the player, its controls and "I did it" sit on the left, lyrics
+   and counts on the right, all on one screen; in portrait the player is capped at 34vh.
+10. Her track plays at 50–100% in 5% steps (Slower / Faster on the practice screen); YouTube offers
+    50%, 75% and 100%. The original video stands in for her track on a fresh install.
+11. The page background lives on `html` so the room (mirror panels, LED strip) painted by
+    `body::before` shows through.

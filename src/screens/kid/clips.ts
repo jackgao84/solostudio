@@ -6,6 +6,7 @@ import { media, type MediaMeta } from '../../storage/media'
 import { button, confirmButton } from '../../ui/components'
 import { h } from '../../ui/dom'
 import { kidScreen, topbar } from './common'
+import { revokeLater } from '../../media/blob-url'
 
 const C = KID_COPY.clips
 
@@ -20,7 +21,7 @@ export const clipsScreen: Screen = (root) => {
   const watch = async (m: MediaMeta) => {
     const rec = await (await media()).get(m.id)
     if (!rec || gone) return
-    if (url) URL.revokeObjectURL(url)
+    revokeLater(url)
     url = URL.createObjectURL(rec.blob)
     const v = h('video', { class: `clip-player${save().settings.mirrorClips ? ' is-mirrored' : ''}`, controls: true, playsinline: true, autoplay: true, src: url })
     viewer.replaceChildren(v, button(C.close, () => viewer.replaceChildren()))
@@ -61,6 +62,6 @@ export const clipsScreen: Screen = (root) => {
   void draw()
   return () => {
     gone = true
-    if (url) URL.revokeObjectURL(url)
+    revokeLater(url)
   }
 }

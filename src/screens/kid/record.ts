@@ -15,6 +15,7 @@ import type { Reference, RefRole } from '../../storage/schema'
 import { button } from '../../ui/components'
 import { fill, h } from '../../ui/dom'
 import { reflectView } from '../../ui/reflect'
+import { revokeLater } from '../../media/blob-url'
 import { referencePlayer, trackSource, type TrackSource } from '../../ui/video'
 import { kidScreen, topbar } from './common'
 
@@ -144,7 +145,7 @@ export const recordScreen: Screen = (root, { params }) => {
   function reviewView(blob: Blob, notice: string | null): void {
     range?.destroy()
     range = null
-    if (clipUrl) URL.revokeObjectURL(clipUrl)
+    revokeLater(clipUrl)
     clipUrl = URL.createObjectURL(blob)
     const clip = h('video', { class: `clip-player${save().settings.mirrorClips ? ' is-mirrored' : ''}`, playsinline: true, controls: true, src: clipUrl }) as HTMLVideoElement
     const refPane = h('div', { class: 'ref-pane' })
@@ -201,6 +202,6 @@ export const recordScreen: Screen = (root, { params }) => {
     refRange?.destroy()
     refPlayer?.destroy()
     src?.player.destroy()
-    if (clipUrl) URL.revokeObjectURL(clipUrl)
+    revokeLater(clipUrl)
   }
 }

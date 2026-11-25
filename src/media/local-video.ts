@@ -1,6 +1,7 @@
 /** A local reference video (a teacher's demo) from IndexedDB, optionally shown mirrored. */
 import type { Player } from './player'
 import { media } from '../storage/media'
+import { release } from './blob-url'
 
 export function localVideoPlayer(container: HTMLElement, mediaId: string, mirror: boolean): Player {
   const v = document.createElement('video')
@@ -10,11 +11,13 @@ export function localVideoPlayer(container: HTMLElement, mediaId: string, mirror
   v.preload = 'auto'
   container.append(v)
   let url: string | null = null
+  let gone = false
   let ended: (() => void) | null = null
   v.addEventListener('ended', () => ended?.())
   const ready = (async () => {
     const rec = await (await media()).get(mediaId)
     if (!rec) throw new Error('video missing')
+    if (gone) throw new Error('closed')
     url = URL.createObjectURL(rec.blob)
     v.src = url
     await new Promise<void>((resolve) => {
@@ -48,11 +51,10 @@ export function localVideoPlayer(container: HTMLElement, mediaId: string, mirror
       ended = fn
     },
     destroy: () => {
-      v.pause()
-      v.removeAttribute('src')
-      v.load()
+      gone = true
+      release(v, url)
+      url = null
       v.remove()
-      if (url) URL.revokeObjectURL(url)
     },
   }
 }

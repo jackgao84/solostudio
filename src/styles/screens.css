@@ -199,14 +199,67 @@
 
 /* ---- Practice ----------------------------------------------------------------------------- */
 
+.practice__head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 2px 18px;
+}
+
 .practice__head h1 {
-  margin-bottom: 0.1em;
+  font-size: 38px;
+  margin: 0;
+}
+
+.practice__head .note {
+  flex-basis: 100%;
+  margin: 2px 0 0;
 }
 
 .practice__step {
   font-size: 30px;
   color: var(--cyan);
   margin: 0;
+}
+
+/* Portrait: player, controls, lyrics and counts, then I did it. Landscape: the player with its
+   buttons on the left, the lyrics and counts on the right. */
+.player-col {
+  display: contents;
+}
+
+.player-col > .player-area {
+  order: 1;
+}
+
+.player-col > .controls {
+  order: 2;
+  margin: 0;
+}
+
+.stage > .side {
+  order: 3;
+}
+
+.player-col > .answer {
+  order: 4;
+  margin: 0;
+}
+
+@media (orientation: portrait) {
+  .player-col .yt-frame,
+  .player-col .local-video {
+    max-height: 34vh;
+  }
+}
+
+@media (orientation: landscape) and (min-width: 900px) {
+  .player-col {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    min-width: 0;
+  }
 }
 
 .practice__notes {
@@ -435,14 +488,14 @@
 
 .counts__row {
   display: flex;
-  flex-wrap: wrap;
-  gap: 6px;
+  gap: 4px;
 }
 
 .count {
+  flex: 1 1 0;
+  min-width: 0;
   font-size: 44px;
   font-weight: 800;
-  min-width: 1.25em;
   text-align: center;
   border-radius: 12px;
   color: var(--muted);

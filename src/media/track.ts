@@ -4,6 +4,7 @@
  */
 import type { Player } from './player'
 import { media } from '../storage/media'
+import { revokeLater } from './blob-url'
 
 let el: HTMLAudioElement | null = null
 let loadedId: string | null = null
@@ -33,7 +34,7 @@ export async function loadTrack(mediaId: string): Promise<HTMLAudioElement | nul
   if (loadedId === mediaId && a.src) return a
   const rec = await (await media()).get(mediaId)
   if (!rec) return null
-  if (url) URL.revokeObjectURL(url)
+  revokeLater(url)
   url = URL.createObjectURL(rec.blob)
   loadedId = mediaId
   a.src = url
@@ -58,7 +59,7 @@ export function unloadTrack(): void {
     el.removeAttribute('src')
     el.load()
   }
-  if (url) URL.revokeObjectURL(url)
+  revokeLater(url)
   url = null
   loadedId = null
 }
@@ -68,8 +69,13 @@ export function probeDuration(blob: Blob): Promise<number | null> {
   return new Promise((resolve) => {
     const probe = document.createElement(blob.type.startsWith('video') ? 'video' : 'audio')
     const u = URL.createObjectURL(blob)
+    let settled = false
     const done = (d: number | null) => {
-      URL.revokeObjectURL(u)
+      if (settled) return
+      settled = true
+      probe.removeAttribute('src')
+      probe.load()
+      revokeLater(u)
       resolve(d)
     }
     probe.preload = 'metadata'
