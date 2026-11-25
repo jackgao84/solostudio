@@ -2,8 +2,8 @@
  * No lyrics anywhere in the repo. A grown-up types the lines on the iPad and they stay there. This
  * check reads every file in the repo (tracked or new, not ignored) and the commit messages:
  *  - no Korean script anywhere (Korean lines are typed on the iPad, never stored here);
- *  - the app ships no lines: every `lyric:` / `meaning:` string in src/ is empty, and a fresh save
- *    has no sections;
+ *  - the app ships no lines: every lyric and meaning string literal in src/ is empty, and a fresh
+ *    save has no sections;
  *  - every line in tests, e2e checks and fixtures is a placeholder such as "Line 3 of Verse 1";
  *  - the app never fetches anything: no fetch/XHR/beacons/sockets outside the service worker, and the
  *    only web addresses in the app are YouTube's player, the YouTube watch link and the family apps.
@@ -27,11 +27,11 @@ function repoFiles(): string[] {
 }
 
 const read = (f: string) => readFileSync(join(ROOT, f), 'utf8')
-const HANGUL = /[ᄀ-ᇿ㄰-㆏ꥠ-꥿가-힯ힰ-퟿]/
+const HANGUL = /[\u1100-\u11FF\u3130-\u318F\uA960-\uA97F\uAC00-\uD7AF\uD7B0-\uD7FF]/
 
-/** `lyric: '…'` and `meaning: "…"` with a plain string literal value. */
+/** A lyric or meaning property whose value is a plain string literal. */
 const LINE_FIELD = /\b(lyric|meaning)\s*:\s*(['"`])((?:\\.|(?!\2)[^\\])*)\2/g
-/** typeLyric(locator, '…') and typeMeaning(locator, '…') in e2e checks. */
+/** The text argument of the e2e helpers that type a rap line or a meaning line. */
 const TYPED = /\btype(?:Lyric|Meaning)\(\s*[^,]+,\s*(['"`])((?:\\.|(?!\1)[^\\])*)\1/g
 
 describe('no lyrics in the repo', () => {
