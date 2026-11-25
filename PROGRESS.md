@@ -7,9 +7,16 @@
 
 ## Status
 
-- **Built and checked locally (2026-11-26).** Typecheck clean; unit checks 150/150 in 17 files;
-  Playwright WebKit 48/48 (24 tests × iPad portrait and landscape), twice in a row with no retries;
-  REVIEW.md current; privacy scan clean (122 files, every commit message, author and committer).
+- **Done and live (2026-11-26): https://jackgao84.github.io/solostudio/** (public repo
+  jackgao84/solostudio, Pages from GitHub Actions; the workflow runs the unit checks before building).
+  Confirmed in WebKit against the live site: the service worker takes control at `/solostudio/`,
+  one `solostudio:precache:<hash>` cache, only `solostudio:` storage keys, no console errors.
+  YouTube's oEmbed reports all seven default videos as embeddable (200).
+- Final checks: typecheck clean; unit 150/150 in 17 files; Playwright WebKit 48/48 (24 tests × iPad
+  portrait and landscape), twice in a row, no retries; REVIEW.md current; privacy scan clean
+  (every file, every commit message, author and committer; all commits by the noreply identity).
+- Only the iPad can confirm: each default video plays inside the app, the camera records, her track
+  keeps its pitch at 50–75%, and the screen stays awake (iPadOS 16.4+). SETUP.md lists these.
 - **Check changes, all approved by the owner and committed on their own:**
   - `tests/unit/sync.test.ts`: an unused loop variable `s` renamed `_s` (typecheck only).
   - `tests/unit/lyrics.test.ts` (576283b): it flagged its own source. Its Korean-script pattern is
@@ -19,7 +26,6 @@
     (Playwright's WebKit drops overrides on the navigator objects ~2 s after load); the offline and
     update specs seed no YouTube stand-in (routing can't reach a worker-controlled page).
   No assertion was changed anywhere.
-- Next: create the public repo, push, turn on Pages, confirm the live site and service worker.
 
 ## Stages
 
@@ -29,8 +35,8 @@
 4. [x] Core logic against the unit checks.
 5. [x] Screens against the WebKit checks.
 6. [x] Docs: README, SETUP.md, REVIEW.md (generated), PROGRESS.md, LICENSE, deploy workflow.
-7. [ ] Privacy scan (done locally, clean), create public repo jackgao84/solostudio, push.
-8. [ ] Pages (GitHub Actions), confirm live site and service worker.
+7. [x] Privacy scan clean; public repo jackgao84/solostudio created with the noreply identity; pushed.
+8. [x] Pages (GitHub Actions) on; live site and service worker confirmed.
 
 ## Commands
 
