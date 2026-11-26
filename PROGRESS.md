@@ -7,7 +7,7 @@
 
 ## Status
 
-- **Version 1.3 in progress (2026-11-26): practice that needs no setup.** See "Version 1.3" below.
+- **Version 1.3 in progress (2026-11-26): practice that needs no setup.** Parts 1–3 built and committed, 1.3.0 bumped, not pushed; one WebKit failure to look at (see "Version 1.3" step 4).
 - **Version 1.2.1 done and live (2026-11-26), build 6a9e548:** Rap basics (see "Version 1.2.1"
   below). Confirmed in WebKit against the live site at iPad portrait and landscape: "Version 1.2.1 ·
   build 6a9e548"; one precache cache of 224 files (215 clips); 8 lesson cards; on the path Rap basics
@@ -103,7 +103,13 @@ nothing to practise); `e2e/videos.spec.ts`: her loop buttons are "Loop start" / 
    `src/media/youtube-util.ts`, `src/media/youtube.ts` (offline vs not loaded, a 20 s limit for the
    player to get ready, `retry()`), `src/ui/video.ts` (the panel with Try again; offline comes back by
    itself on the `online` event), Test YouTube on the grown-ups' home.
-4. [ ] Narration for new lines; full checks; every new screen in both orientations; 1.3.0; deploy.
+4. [ ] Narration done (3 clips, 214 characters; all clips 218, 11,541 characters). Every new screen
+   looked at in both orientations (fixed: portrait room order and video height so Loop start/end
+   stay on screen with the hint; the narrator bar inside the hint card). Version 1.3.0 (7525869).
+   Typecheck clean; unit 346/346 in 38 files; privacy scan clean. **Stopped here (usage limit):** the
+   first full WebKit run showed a failure in `e2e/countin-everywhere.spec.ts:12` (recording a section
+   with a count-in), not yet investigated. Next: read that failure (test-results/), fix, run the full
+   WebKit suite twice, then push, confirm the deploy, and run the live check. Not pushed.
 
 Decisions (1.3):
 
