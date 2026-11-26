@@ -42,8 +42,8 @@ describe('every line she sees', () => {
 })
 
 describe('lessons', () => {
-  it('are the seven skill lessons, in order', () => {
-    expect(LESSON_IDS).toEqual(['counting', 'learning-a-dance', 'voice-warm-up', 'breathing', 'marking', 'expressions', 'performing'])
+  it('are the eight skill lessons, in order', () => {
+    expect(LESSON_IDS).toEqual(['counting', 'learning-a-dance', 'voice-warm-up', 'rap-basics', 'breathing', 'marking', 'expressions', 'performing'])
     expect(LESSONS.map((l) => l.id)).toEqual(LESSON_IDS)
   })
 

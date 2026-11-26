@@ -1,7 +1,7 @@
 /**
  * Lessons become the home page (version 1.2). Her lesson path mixes:
- *  - the seven skill lessons, each just before the first lesson that needs it (counting and the voice
- *    warm-up before her first rap lesson, learning a dance before her first dance lesson, marking and
+ *  - the eight skill lessons, each just before the first lesson that needs it (counting, the voice
+ *    warm-up and rap basics before her first rap lesson, learning a dance before her first dance lesson, marking and
  *    breathing before her first together lesson, expressions and performing before Showtime);
  *  - section lessons built from her sections: Rap, Dance and Together for each, holding that ladder's
  *    rungs. The default order: each section's Rap then Dance, in song order; then each Together.
@@ -57,6 +57,7 @@ describe('her lesson path', () => {
     expect(lessonPath(save()).map(key)).toEqual([
       'skill:counting',
       'skill:voice-warm-up',
+      'skill:rap-basics',
       'section:s1:rap',
       'skill:learning-a-dance',
       'section:s1:dance',
@@ -94,7 +95,7 @@ describe('her lesson path', () => {
     expect(isDone(d, { kind: 'section', sectionId: 's1', ladder: 'dance' })).toBe(false)
     expect(isDone(d, { kind: 'skill', id: 'counting' })).toBe(true)
     expect(isDone(d, { kind: 'skill', id: 'marking' })).toBe(false)
-    expect(skillsDue(d, 'rap')).toEqual(['voice-warm-up'])
+    expect(skillsDue(d, 'rap')).toEqual(['voice-warm-up', 'rap-basics'])
     expect(skillsDue(d, 'together')).toEqual(['marking', 'breathing'])
   })
 })
