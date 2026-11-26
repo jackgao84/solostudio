@@ -8,6 +8,8 @@
  */
 import { DEFAULT_REFS } from '../src/content/references'
 import { addDays } from '../src/model/dates'
+import { ROUTINE_AFTER_MS, routineBeforeMaxMs } from '../src/model/routine'
+import { defaultShowtime } from '../src/storage/schema'
 import { lyricLine, meaningLine } from '../tests/fixtures/placeholders'
 import {
   TRACK_FILE,
@@ -35,7 +37,7 @@ const SECTION = 'Verse 1'
 const TRACK_SECONDS = 12
 
 test('from first launch to Showtime', async ({ page }) => {
-  test.setTimeout(180_000)
+  test.setTimeout(300_000)
 
   // 1. First launch: a welcome for her, and the grown-ups' gate. A quick tap doesn't open it.
   await page.goto('./')
@@ -246,8 +248,10 @@ test('from first launch to Showtime', async ({ page }) => {
   await expect(page.getByRole('switch', { name: 'Show the words' })).toBeVisible()
   await checkScreen(page, 'kid', 'showtime start')
   await tap(page.getByRole('button', { name: 'Start' }))
-  await expect(page.locator('.showtime-stage')).toBeVisible()
-  await expect.poll(async () => (await trackAudio(page))?.paused).toBe(false)
+  // The routine comes first (backstage breathing, the walk-on, the opening pose): wait through it.
+  const routineBefore = routineBeforeMaxMs(defaultShowtime())
+  await expect(page.locator('.showtime-stage')).toBeVisible({ timeout: routineBefore + 10_000 })
+  await expect.poll(async () => (await trackAudio(page))?.paused, { timeout: routineBefore + 10_000 }).toBe(false)
   const run = (await trackAudio(page))!
   expect(run.rate).toBe(1)
   expect(run.time).toBeLessThan(2)
@@ -260,7 +264,7 @@ test('from first launch to Showtime', async ({ page }) => {
 
   // 14. When the track ends: one thing that went well, then one thing to work on next.
   const reflect = page.locator('.reflect')
-  await expect(reflect).toBeVisible({ timeout: (TRACK_SECONDS + 10) * 1000 })
+  await expect(reflect).toBeVisible({ timeout: (TRACK_SECONDS + 10) * 1000 + ROUTINE_AFTER_MS })
   await checkScreen(page, 'kid', 'showtime reflect')
   await tap(page.getByRole('radiogroup', { name: 'One thing that went well' }).getByRole('radio').first())
   await tap(reflect.getByRole('button', { name: 'Next' }))
