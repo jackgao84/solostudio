@@ -110,7 +110,25 @@ make their audio on the spot (tones and clicks).
    - **Embedding:** YouTube's oEmbed answers 200 for 81BPeeksFqo and 401 ("Unauthorized") for
      d_-jC3519xI: its owner has turned off playing inside other apps. On the iPad the app shows its
      honest "won't play inside the app" panel with Open in YouTube. Put to the owner.
-2. [ ] A guide file in the app.
+2. [x] A guide file in the app. Checks first (34a619f): `tests/unit/guide.test.ts`,
+   `e2e/guide.spec.ts` (her track and the guide made on the spot: a 440 Hz tone with irregular
+   clicks, a 660 Hz "voice", and a full mix 0.25 s late). Code: `src/model/guide.ts` (the voice
+   levels and gains, which level each rap rung starts at, `guideReady`, `analyseGuide`: a whitened
+   cross-correlation (phase transform, Hann windows, 60 Hz to 0.4 × an 8 kHz working rate after a
+   triangular low-pass), then sample-exact at full rate; normalised correlation ≥ 0.3 means
+   her music is in it, so a full mix; and `guideWav`, the four-channel 16-bit WAV),
+   `src/media/guide-build.ts` (decode both on the iPad, work it out, build and store the file),
+   `src/media/guided.ts` (one shared `<audio class="guide-audio">` through Web Audio: a channel
+   splitter, a gain for her track and one for the guide, ramped 15 ms; if Web Audio can't take it,
+   her track plays as before), `src/ui/voice-control.ts` (her control, or the one line for a
+   grown-up), the control in practice, the room (on her track), recording and Showtime (Off and Light
+   before she begins), Grown-ups → Her track → Guide file (load, work out, confirm or correct, hear it
+   at each level, whose voice it is, remove, line it up again after a new track), the wizard's step 4
+   pointing to the karaoke taps, and the debug hook's `voice()` and `hear()`. Save: `guide`, and media
+   kinds `guide` and `mix`. One fix to my own new WebKit check, no assertion changed: its clicks
+   flipped sign every sample and its full mix was 5512.5 samples late (so it had no clicks to line up
+   by); now realistic clicks and a whole-sample lag. That check also led to a sturdier alignment (the
+   band limit and the low-pass above).
 
 Decisions (1.4):
 
@@ -127,6 +145,19 @@ Decisions (1.4):
   swapped, not removed (the ladders use them); added videos and the two karaoke ones can be removed.
 - D36. The control's label never names the singer in the repo (Decision 1): a grown-up types whose
   voice it is on the iPad, and the label reads "{name}'s voice" there.
+- D37. Her track and the guide play from one media element, a four-channel WAV built on the iPad when
+  a grown-up confirms the guide (her track in channels 1–2, the guide in 3–4, lined up by the offset
+  the app worked out). One element means the voice can't drift from her track at any speed and the
+  element keeps the pitch; Web Audio splits the channels and the control only moves two gains (with a
+  15 ms ramp), so switching mid-loop never seeks. Spiked first in WebKit: at 50% and 75% the output's
+  440 Hz stays at 440 Hz. Without a guide her track plays exactly as before (not through Web Audio).
+- D38. Levels: the voice on its own plays over her full track (Light 0.35, about −9 dB; Full 1); a
+  full mix crossfades with her track (Light: track 0.65 + mix 0.35; Full: the mix alone), so the music
+  stays level. A rap rung with a guide starts at Full, Light, Off, Off, Off; everything else at Off;
+  the room keeps her choice while it is open; Recording and Showtime start at Off with Light the only
+  other choice, and the control goes once she begins.
+- D39. A guide is used only when confirmed and built for the track on the iPad now (`guideReady`). A new
+  or removed track deletes the four-channel file and asks a grown-up to line the guide up again.
 
 ## After 1.3.0: the flaky recording check (fixed, live 2026-11-27, build 18cb71e)
 

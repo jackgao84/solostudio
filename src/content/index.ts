@@ -44,6 +44,7 @@ export const KID_GROUPS: readonly { id: string; title: string; about: string }[]
   { id: 'reflect', title: 'Looking back', about: 'After Showtime, a clip or performing for family: one thing that went well, one to work on.' },
   { id: 'record', title: 'Recording', about: 'The camera, recording beside the reference, and the note when an older clip is deleted.' },
   { id: 'clips', title: 'Her clips', about: 'The list of clips kept on the iPad.' },
+  { id: 'voice', title: 'The singer’s voice', about: 'Version 1.4: wherever her track plays, the singer’s voice from the guide file a grown-up loaded, at Off, Light or Full. {singer} is the name a grown-up types on the iPad. With no guide file, one line for a grown-up instead.' },
   { id: 'narrator', title: 'The coach’s voice', about: 'The buttons for the coach reading a lesson aloud.' },
   { id: 'video', title: 'Her own loop', about: 'Looping any bit of a video or her track herself: tap Loop start and Loop end while it plays, then nudge either end.' },
   { id: 'room', title: 'The practice room', about: 'Practice that needs no setup: any video or her track, her own loop with the count-in, and her parts (saved loops she names, ticks at 50, 75 and 100% speed, renames or deletes).' },

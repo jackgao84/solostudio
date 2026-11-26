@@ -38,6 +38,7 @@ export function mediaIdsIn(data: SaveData): string[] {
   const ids: string[] = []
   if (data.track.mediaId) ids.push(data.track.mediaId)
   for (const r of data.refs) if (r.kind === 'local' && r.mediaId) ids.push(r.mediaId)
+  if (data.guide.mediaId) ids.push(data.guide.mediaId)
   return ids
 }
 

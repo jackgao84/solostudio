@@ -2,7 +2,7 @@
 
 Every piece of kid-facing text in the app, grouped by where it appears. Words in {curly brackets} are filled in on the iPad (her name, a section name, a number). The rap lines themselves are typed on the iPad by a grown-up and are never part of the app.
 
-- 522 lines in 27 groups
+- 528 lines in 28 groups
 
 **This file is generated from `src/content`. Don’t edit it by hand.** To change the words, edit the files in `src/content`, then run `npm run review` to rebuild this file. `npm test` fails while it is out of date.
 
@@ -559,7 +559,18 @@ The list of clips kept on the iPad.
 - You keep the newest 3 of each. <sub>`kid.clips.keepNote`</sub>
 - Close <sub>`kid.clips.close`</sub>
 
-## 24. The coach’s voice (4)
+## 24. The singer’s voice (6)
+
+Version 1.4: wherever her track plays, the singer’s voice from the guide file a grown-up loaded, at Off, Light or Full. {singer} is the name a grown-up types on the iPad. With no guide file, one line for a grown-up instead.
+
+- {singer}’s voice <sub>`kid.voice.title`</sub>
+- The singer’s voice <sub>`kid.voice.titleNoName`</sub>
+- Off <sub>`kid.voice.off`</sub>
+- Light <sub>`kid.voice.light`</sub>
+- Full <sub>`kid.voice.full`</sub>
+- A grown-up can add a guide file in Grown-ups → Her track. <sub>`kid.voice.noGuide`</sub>
+
+## 25. The coach’s voice (4)
 
 The buttons for the coach reading a lesson aloud.
 
@@ -568,7 +579,7 @@ The buttons for the coach reading a lesson aloud.
 - Replay <sub>`kid.narrator.replay`</sub>
 - Skip <sub>`kid.narrator.skip`</sub>
 
-## 25. Her own loop (9)
+## 26. Her own loop (9)
 
 Looping any bit of a video or her track herself: tap Loop start and Loop end while it plays, then nudge either end.
 
@@ -582,7 +593,7 @@ Looping any bit of a video or her track herself: tap Loop start and Loop end whi
 - Loop end earlier <sub>`kid.video.endEarlier`</sub>
 - Loop end later <sub>`kid.video.endLater`</sub>
 
-## 26. The practice room (37)
+## 27. The practice room (37)
 
 Practice that needs no setup: any video or her track, her own loop with the count-in, and her parts (saved loops she names, ticks at 50, 75 and 100% speed, renames or deletes).
 
@@ -624,7 +635,7 @@ Practice that needs no setup: any video or her track, her own loop with the coun
 - Find your part in this video. Tap Loop start where it begins, and Loop end where it finishes. <sub>`kid.room.stepHint1`</sub>
 - Then rap along with it, and tap I did it when you’re ready. <sub>`kid.room.stepHint2`</sub>
 
-## 27. Lessons (79)
+## 28. Lessons (79)
 
 The eight skill lessons, in full, each read aloud by the coach word for word, with its “try it” and the line that puts her teachers first.
 

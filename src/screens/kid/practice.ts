@@ -27,6 +27,8 @@ import { CountsView } from '../../ui/counts'
 import { fill, h } from '../../ui/dom'
 import { LyricsView } from '../../ui/lyrics'
 import { referencePlayer, trackSource } from '../../ui/video'
+import { voiceControl, type VoiceControl } from '../../ui/voice-control'
+import { rungVoice } from '../../model/guide'
 import { blockTimer, kidScreen, topbar } from './common'
 
 const P = KID_COPY.practice
@@ -151,7 +153,10 @@ export const practiceScreen: Screen = (root, { params, query }) => {
   let scale = 1
   let counts: CountsView | null = null
   let loopBtns: LoopButtons | null = null
+  let voice: VoiceControl | null = null
   let gone = false
+  // The voice (1.4): with a guide file, a rap rung starts where its rung says (Full, Light, Off); everything else at Off.
+  const voiceStart = step.ladder === 'rap' && mode === 'guide' ? rungVoice(step.id) : 'off'
 
   const setPlaying = (on: boolean) => {
     playBtn.textContent = on ? P.pause : P.play
@@ -173,11 +178,19 @@ export const practiceScreen: Screen = (root, { params, query }) => {
     let from = 0
     let to = Infinity
     if (source === 'track') {
-      const src = await trackSource(playerArea, save())
+      const src = await trackSource(playerArea, save(), undefined, voiceStart)
       if (gone) return src?.player.destroy()
       if (!src) return disable(P.needsTrack)
       player = src.player
       if (src.standIn) note(P.standIn)
+      else {
+        // Wherever her track plays: the voice control, or one line for a grown-up with no guide file.
+        voice = voiceControl(save(), voiceStart)
+        if (voice) {
+          voice.attach(player)
+          controls.after(voice.el)
+        }
+      }
       if (wordsInVideo) {
         // Her track with her own loop: from where this part starts (or the top), no marks needed.
         ;({ from, to } = trackSpan ? playRange(trackSpan) : { from: 0, to: Infinity })

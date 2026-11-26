@@ -370,6 +370,14 @@ export const KID_COPY = {
     stepHint1: 'Find your part in this video. Tap Loop start where it begins, and Loop end where it finishes.',
     stepHint2: 'Then rap along with it, and tap I did it when you’re ready.',
   },
+  voice: {
+    title: '{singer}’s voice',
+    titleNoName: 'The singer’s voice',
+    off: 'Off',
+    light: 'Light',
+    full: 'Full',
+    noGuide: 'A grown-up can add a guide file in Grown-ups → Her track.',
+  },
   narrator: {
     pause: 'Pause',
     play: 'Play',

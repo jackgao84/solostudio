@@ -237,7 +237,20 @@ export const setupWizard: Screen = (root, { query }) => {
           if (marks.every((m) => m.start != null)) markDone('follow', false)
         },
       }),
+      karaokeTaps(),
       h('div', { class: 'row' }, button('Skip this for now', () => openStep('timing'), { variant: 'quiet' })),
+    )
+  }
+
+  /** The same one-pass taps on the karaoke videos (1.4, optional): their rap rungs then start at her section. */
+  function karaokeTaps(): HTMLElement | null {
+    const refs = save().refs.filter((r) => (r.role === 'voiceGuide' || r.role === 'karaoke') && (r.kind === 'youtube' ? !!r.youtubeId : !!r.mediaId))
+    if (!refs.length) return null
+    return h(
+      'div',
+      { class: 'stack' },
+      h('p', { class: 'note' }, 'Optional: tap the same starts on the karaoke videos, so her rap steps on them start right at each section. Without it, those steps open the video in her practice room.'),
+      h('div', { class: 'row' }, ...refs.map((r) => button(`Tap section starts on ${r.label}`, () => go(`/grownups/taps/${r.id}`), { variant: 'quiet' }))),
     )
   }
 

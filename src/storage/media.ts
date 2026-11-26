@@ -8,7 +8,8 @@
  */
 import { MEDIA_DB, MEDIA_STORE, META_STORE } from './keys'
 
-export type MediaKind = 'track' | 'video' | 'clip'
+/** 'guide' (1.4): the guide file as loaded; 'mix': her track and the guide in one four-channel file. */
+export type MediaKind = 'track' | 'video' | 'clip' | 'guide' | 'mix'
 
 export interface MediaMeta {
   id: string

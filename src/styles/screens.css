@@ -2366,3 +2366,47 @@ html[data-theme='mint'] {
     max-height: 27vh;
   }
 }
+
+/* ---- The voice control (version 1.4) ------------------------------------------------------- */
+
+/* "{singer}’s voice" with Off, Light and Full, under the speed controls wherever her track plays. */
+.voice-control {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 14px;
+  margin: 0;
+}
+
+.voice-control__title {
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--cyan);
+}
+
+.voice-control__levels {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.voice-control__levels .chip {
+  min-width: 96px;
+  font-size: 24px;
+}
+
+.voice-control--none {
+  font-size: 22px;
+}
+
+.player-col > .voice-control {
+  order: 2;
+}
+
+.voice-slot:empty {
+  display: none;
+}
+
+.guide-status .row {
+  flex-wrap: wrap;
+}

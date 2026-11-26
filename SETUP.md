@@ -121,6 +121,37 @@ show. Without one, her day is simply the next lessons on her path.
 - **Rap lessons for a section with no lines** play the listen-and-read video (the words are in it)
   and her track, with the same loop buttons.
 
+## The singer's voice as a guide for her rap (version 1.4)
+
+Her rap lessons fade the singer's voice step by step. She can always tap **Back a step**; going back
+never undoes anything she ticked.
+
+- **With no guide file** (nothing to set up): listen with the listen-and-read video, say it with
+  **Voice guide (light)** (the voice turned down low), say it with **Karaoke (no voice)**, then from
+  memory over her track. Both karaoke videos are in her practice room under those names.
+  - If you haven't tapped where her sections start on a karaoke video, that step opens the video in
+    her practice room with her loop buttons, and the coach tells her how to find her part. To have
+    those steps start right at her section instead (optional, about 3 minutes a video): **Videos →
+    Tap section starts** on the video (or from step 4 of the wizard), play it once and tap as each
+    section starts, as with the mirrored follow-along.
+- **A guide file** (optional, 2 minutes): **Grown-ups → Her track → Guide file → Choose the guide from
+  Files**. It is either a **full guide mix** of her cut (her music with the voice in it) or **the voice
+  on its own**, the same length as her track. The app listens to both and says which it thinks it is
+  (a full mix is lined up with her track by itself); tap **Yes, that's right**, or the other answer if
+  it guessed wrong. Then **Hear it at Off / Light / Full** to check it sits in time on her music, and
+  type **Whose voice is it?** (her buttons then read "…'s voice"; the name stays on the iPad). If you
+  load a new track later, tap **Line it up again**.
+  - With a guide file her rap lessons use it instead of the karaoke videos: listen at **Full**, say it
+    at **Light**, say it at **Off**, then from memory.
+  - Wherever her track plays (a lesson, the practice room, recording, Showtime) she has the voice
+    control: **Off**, **Light** and **Full**. It stays in time at every speed and keeps the pitch;
+    switching while it plays only turns the voice up or down. **Record** and **Showtime** start at
+    **Off**; she can pick **Light** before she begins.
+  - Without a guide file, that control is one line telling a grown-up how to add one.
+- **Your own videos**: **Videos → Add a YouTube video**, under any name you like; she sees it in her
+  practice room by that name. Any video can be renamed there, or swapped by pasting a new link; the
+  ones you added and the two karaoke videos can be removed.
+
 ## Her home page
 
 The top shows only **Start today's practice**, the D-day and today's lessons. Below is her whole
@@ -181,6 +212,9 @@ track, local videos and clips.)
   it was (1.1 used 8 seconds); change it in step 7 if you like.
 - **Updating from 1.2**: everything carries over by itself the first time 1.3 opens (the 1.2 save is
   kept as the backup copy); she starts with no parts of her own.
+- **Updating from 1.3**: everything carries over by itself the first time 1.4 opens (the 1.3 save is
+  kept as the backup copy), her parts included; the two karaoke videos are added after your videos,
+  and there is no guide file until you load one.
 
 ## Things to check on the iPad itself
 
@@ -201,6 +235,13 @@ These can't be checked anywhere else:
   always runs at least a second; if one ever comes out empty she sees "Nothing was recorded that time"
   and nothing is kept (it should never happen with the real camera).
 - **Her track at 50% and 75% keeps its pitch** (slower, not lower).
+- **The guide** (1.4): after loading it, **Hear it at Full** and check the voice sits exactly on her
+  music, then Light and Off (the music shouldn't move or click). Then in a rap lesson at 75%: the
+  voice still in time, at its normal pitch. Check it with the ring/silent switch both ways. Loading a
+  long guide takes a few seconds on the iPad; if it says it couldn't be stored, free some space.
+- **Voice guide (light)** plays inside the app. **Karaoke (no voice)** may not: its owner has turned
+  off playing in other apps, so she would see "This video won't play inside the app". Swap it in
+  **Videos** for one that plays.
 - **The screen stays awake** during practice (iPadOS 16.4 or later).
 - **Sound levels**: the coach, the stage-light sound, the crowd and the applause at a comfortable
   level from where she dances (Today → Sounds).

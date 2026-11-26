@@ -33,6 +33,9 @@ import { button, holdButton, toggle } from '../../ui/components'
 import { h } from '../../ui/dom'
 import { reflectView } from '../../ui/reflect'
 import { trackSource, type TrackSource } from '../../ui/video'
+import { voiceControl } from '../../ui/voice-control'
+import { START_CHOICES } from '../../model/guide'
+import type { VoiceLevel } from '../../storage/schema'
 import { kidScreen, topbar } from './common'
 
 const S = KID_COPY.showtime
@@ -145,8 +148,16 @@ export const showtimeScreen: Screen = (root, { query }) => {
   const audienceOn = () => save().sound.audience
   const stopHold = () => h('div', { class: 'row' }, holdButton(S.stopHold, GATE_HOLD_MS, () => startView(), 'stop-hold'))
 
+  /** The voice (1.4): Showtime starts at Off; Light is her choice before she begins. */
+  let showVoice: VoiceLevel = 'off'
+
   function startView(done: string | null = null): void {
     cancel()
+    const vc = src && !src.standIn ? voiceControl(save(), showVoice, START_CHOICES) : null
+    if (vc && src) {
+      vc.attach(src.player)
+      vc.el.addEventListener('click', () => (showVoice = vc.level()))
+    }
     // A video standing in for her track shows only while it plays, so Start is always in reach.
     playerArea.hidden = true
     top.replaceChildren(
@@ -169,6 +180,7 @@ export const showtimeScreen: Screen = (root, { query }) => {
         toggle(S.audience, audienceOn(), (on) => update((d) => (d.sound.audience = on))),
         toggle(S.film, film, (on) => (film = on)),
       ),
+      ...(vc ? [vc.el] : []),
       h('div', { class: 'row' }, button(S.start, () => void full(), { variant: 'primary', class: 'btn--huge', disabled: loaded && !src })),
       h('div', { class: 'row' }, button(S.practiseWalkOn, () => void walkOn()), button(S.practiseBow, () => void bow())),
     )
@@ -367,7 +379,7 @@ export const showtimeScreen: Screen = (root, { query }) => {
 
   startView()
   void (async () => {
-    src = await trackSource(playerArea, save())
+    src = await trackSource(playerArea, save(), undefined, showVoice)
     if (gone) return src?.player.destroy()
     loaded = true
     if (!top.querySelector('.routine-stage, .showtime-stage')) startView()

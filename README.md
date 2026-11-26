@@ -49,6 +49,14 @@ headset mic while dancing, at a showcase and again at a talent show.
   ticked at 50, 75 and 100% speed, hers to rename or delete. Before a grown-up adds sections, her
   parts on the mirrored follow-along are her dance lessons and today's practice opens them; with
   none yet, the dance block opens the room with a spoken hint on making a loop.
+- **The singer's voice as a guide** (1.4): her rap lessons fade the voice step by step, and she can
+  always go back a step. With no setup they use two karaoke videos (Voice guide, then Karaoke, both
+  in the practice room by name); with a **guide file** a grown-up loads from Files (a full guide mix
+  of her cut, or the voice on its own) they play her track with the voice at Full, Light, then Off.
+  The guide is lined up with her track and kept beside it in one four-channel file on the iPad, so
+  the voice stays exactly in time at every speed and keeps its pitch; her **voice control** (Off,
+  Light, Full) is wherever her track plays, and Recording and Showtime start at Off. A grown-up can
+  add any YouTube video under a name, rename, swap or remove it.
 - **Honest video messages** (1.3): "Videos need the internet" only when the iPad is offline; online,
   a player that didn't load says so, with Try again and Open in YouTube. **Test YouTube** in the
   grown-ups' area says whether the iPad is offline, YouTube is blocked, or it works.
@@ -59,8 +67,8 @@ headset mic while dancing, at a showcase and again at a talent show.
   and narration, and the detailed screens (show and plan, her track, videos, sections, tempo, the
   Showtime routine, backup).
 
-No lyrics, photos or logos are in this repo: a grown-up types the lines on the iPad and they stay
-there. YouTube videos play only through YouTube's own player (youtube-nocookie.com). Her track,
+No lyrics, song audio, photos or logos are in this repo: a grown-up types the lines and loads the
+audio on the iPad, and they stay there (the checks make their own tones and clicks). YouTube videos play only through YouTube's own player (youtube-nocookie.com). Her track,
 videos and clips stay on the iPad; nothing is uploaded and there are no accounts or analytics.
 
 ## Put it on an iPad

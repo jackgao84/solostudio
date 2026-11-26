@@ -9,10 +9,12 @@ import { KID_COPY } from '../content/kid'
 import { localVideoPlayer } from '../media/local-video'
 import type { Player } from '../media/player'
 import { trackPlayer } from '../media/track'
+import { guidedPlayer } from '../media/guided'
+import { guideReady } from '../model/guide'
 import { youTubePlayer, type YouTubePlayer } from '../media/youtube'
 import { watchUrl } from '../media/youtube-util'
 import { problemPanel, type VideoProblem } from '../model/video-problems'
-import type { Reference, SaveData } from '../storage/schema'
+import type { Reference, SaveData, VoiceLevel } from '../storage/schema'
 import { h } from './dom'
 
 const P = KID_COPY.practice
@@ -67,10 +69,19 @@ export interface TrackSource {
   standIn: boolean
 }
 
-/** Her track if it's on this iPad, else the stand-in video, else null. */
-export async function trackSource(box: HTMLElement, d: SaveData, onFail?: () => void): Promise<TrackSource | null> {
+/** Her track, with the guide at `voice` when there is one (version 1.4). */
+export function herTrackPlayer(d: SaveData, voice?: VoiceLevel): Player {
+  if (voice && guideReady(d) && d.guide.kind && d.guide.mixId) return guidedPlayer(d.guide.mixId, d.track.mediaId!, d.guide.kind, voice)
+  return trackPlayer(d.track.mediaId!)
+}
+
+/**
+ * Her track if it's on this iPad, else the stand-in video, else null. Where she has the voice
+ * control (version 1.4: practice, the room, recording, Showtime) `voice` is where it starts.
+ */
+export async function trackSource(box: HTMLElement, d: SaveData, onFail?: () => void, voice?: VoiceLevel): Promise<TrackSource | null> {
   if (d.track.mediaId) {
-    const p = trackPlayer(d.track.mediaId)
+    const p = herTrackPlayer(d, voice)
     try {
       await p.ready
       box.append(trackArt())

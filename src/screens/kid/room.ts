@@ -31,7 +31,6 @@ import { KID_COPY } from '../../content/kid'
 import { roomHint, roomStepHint } from '../../content/narration'
 import type { Player } from '../../media/player'
 import { RepLoop, cueTime } from '../../media/reploop'
-import { trackPlayer } from '../../media/track'
 import { cleanPartName, defaultPartName, defaultSource, nextPartSpeed, partFinished, roomSources, sourceById, tickPart, videoName, type RoomSource } from '../../model/room'
 import { PART_SPEEDS, type MyPart } from '../../storage/schema'
 import { button } from '../../ui/components'
@@ -39,7 +38,9 @@ import { CountInView } from '../../ui/countin'
 import { fill, h } from '../../ui/dom'
 import { LoopButtons } from '../../ui/loop'
 import { Narrator } from '../../ui/narrator'
-import { referencePlayer, trackArt } from '../../ui/video'
+import { herTrackPlayer, referencePlayer, trackArt } from '../../ui/video'
+import { voiceControl } from '../../ui/voice-control'
+import type { VoiceLevel } from '../../storage/schema'
 import { blockTimer, kidScreen, rungCopy, topbar } from './common'
 
 const R = KID_COPY.room
@@ -129,12 +130,15 @@ export const roomScreen: Screen = (root, { query }) => {
     },
   )
   const saveRow = h('div', { class: 'room-save' })
+  // The voice control (1.4) while her track is picked; it starts at Off and keeps her choice here.
+  const voiceSlot = h('div', { class: 'voice-slot' })
+  let roomVoice: VoiceLevel = 'off'
 
   el.append(
     h(
       'div',
       { class: 'room' },
-      h('div', { class: 'room__main' }, playerArea, main, controls, loopBtns.el, saveRow),
+      h('div', { class: 'room__main' }, playerArea, main, controls, voiceSlot, loopBtns.el, saveRow),
       h('div', { class: 'room__side' }, hint, pick, partsList),
     ),
   )
@@ -307,9 +311,16 @@ export const roomScreen: Screen = (root, { query }) => {
       playerArea.append(h('p', { class: 'note' }, R.gone))
       return
     }
+    voiceSlot.replaceChildren()
     if (src.kind === 'track') {
-      player = trackPlayer(save().track.mediaId!)
+      player = herTrackPlayer(save(), roomVoice)
       playerArea.append(trackArt())
+      const vc = voiceControl(save(), roomVoice)
+      if (vc) {
+        vc.attach(player)
+        vc.el.addEventListener('click', () => (roomVoice = vc.level()))
+        voiceSlot.append(vc.el)
+      }
     } else player = referencePlayer(playerArea, src.ref!)
     speed = nearestStep(speed)
     const r = new RepLoop(

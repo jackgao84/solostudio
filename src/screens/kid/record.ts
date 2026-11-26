@@ -23,6 +23,9 @@ import { fill, h } from '../../ui/dom'
 import { reflectView } from '../../ui/reflect'
 import { revokeLater } from '../../media/blob-url'
 import { referencePlayer, trackSource, type TrackSource } from '../../ui/video'
+import { voiceControl } from '../../ui/voice-control'
+import { START_CHOICES } from '../../model/guide'
+import type { VoiceLevel } from '../../storage/schema'
 import { kidScreen, topbar } from './common'
 
 const R = KID_COPY.record
@@ -52,6 +55,8 @@ export const recordScreen: Screen = (root, { params }) => {
   let clipUrl: string | null = null
   let gone = false
   let cancelCount: (() => void) | null = null
+  /** The voice (1.4): recording starts at Off; Light is her choice before she begins. */
+  let recVoice: VoiceLevel = 'off'
 
   const stopCamera = () => {
     for (const t of tracks) t.stop()
@@ -83,7 +88,12 @@ export const recordScreen: Screen = (root, { params }) => {
     preview.muted = true
     preview.srcObject = stream
     void preview.play().catch(() => undefined)
-    view.replaceChildren(preview, trackArea, h('div', { class: 'row' }, button(R.record, () => void record(), { variant: 'primary', class: 'btn--big' })))
+    const vc = src && !src.standIn ? voiceControl(save(), recVoice, START_CHOICES) : null
+    if (vc && src) {
+      vc.attach(src.player)
+      vc.el.addEventListener('click', () => (recVoice = vc.level()))
+    }
+    view.replaceChildren(preview, trackArea, ...(vc ? [vc.el] : []), h('div', { class: 'row' }, button(R.record, () => void record(), { variant: 'primary', class: 'btn--big' })))
     if (note) view.append(h('p', { class: 'note recording-empty', role: 'status' }, note))
     if (src?.standIn) view.append(h('p', { class: 'note' }, KID_COPY.practice.standIn))
     if (!src) view.append(h('p', { class: 'note' }, R.needsTrack))
@@ -222,7 +232,7 @@ export const recordScreen: Screen = (root, { params }) => {
 
   startView()
   void (async () => {
-    src = await trackSource(trackArea, save())
+    src = await trackSource(trackArea, save(), undefined, recVoice)
     if (gone) src?.player.destroy()
   })()
 
