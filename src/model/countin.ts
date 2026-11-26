@@ -33,3 +33,26 @@ export function countInSchedule(bpm: number | null, speed: number, leadMs: numbe
   const beats = COUNT_IN_WORDS.map((_, i) => Math.round((leadMs + i * beat) * 10) / 10)
   return { beats, playAt: Math.round((leadMs + COUNT_IN_WORDS.length * beat) * 10) / 10, beat }
 }
+
+export interface GetReadySchedule {
+  /** Said as the countdown starts. */
+  cue: string
+  /** The walk-on countdown: each number and when it shows (ms from the start). */
+  countdown: { n: number; at: number }[]
+  words: readonly string[]
+  /** When to say each count-in word. */
+  beats: number[]
+  /** When the recording and the music start (on the 1). */
+  recordAt: number
+}
+
+/**
+ * Before any filming (version 1.2): "Get to your spot" with a countdown of the walk-on time, then
+ * "5, 6, 7, 8" on the beat, and the recording starts on the 1.
+ */
+export function getReadySchedule(walkOnSeconds: number, bpm: number | null, speed: number): GetReadySchedule {
+  const walk = Math.max(1, Math.round(walkOnSeconds))
+  const countdown = Array.from({ length: walk }, (_, i) => ({ n: walk - i, at: i * 1000 }))
+  const ins = countInSchedule(bpm, speed, walk * 1000)
+  return { cue: KID_COPY.cues.getToSpot, countdown, words: COUNT_IN_WORDS, beats: ins.beats, recordAt: ins.playAt }
+}

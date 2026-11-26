@@ -1,5 +1,7 @@
 /**
  * Recording (optional): the front camera with a mirrored preview records her while her track plays.
+ * Before it starts (version 1.2): "Get to your spot" with a countdown of her walk-on time, then the
+ * count-in; the recording and the music start together on the 1.
  * The clip plays back beside the reference section, and she picks one thing that went well and one
  * to work on. Clips stay on the iPad (IndexedDB) and never upload: the newest 3 per section and the
  * newest 3 run-throughs are kept, and she is told when an older one is deleted.
@@ -7,12 +9,11 @@
 import { go, save, sectionById, update } from '../../app/ctx'
 import type { Screen } from '../../app/router'
 import { KID_COPY } from '../../content/kid'
-import { clipsToDelete, groupOf } from '../../model/clips'
 import { playRange, spanOf } from '../../model/timing'
-import { runCountIn } from '../../media/countin-run'
+import { keepClip, pickMime } from '../../media/clip-store'
+import { runGetReady } from '../../media/countin-run'
 import { RangePlayer, type Player } from '../../media/player'
 import { CountInView } from '../../ui/countin'
-import { media, newMediaId } from '../../storage/media'
 import type { Reference, RefRole } from '../../storage/schema'
 import { button } from '../../ui/components'
 import { fill, h } from '../../ui/dom'
@@ -24,12 +25,6 @@ import { kidScreen, topbar } from './common'
 const R = KID_COPY.record
 const BESIDE: readonly RefRole[] = ['performance', 'mirrored', 'original', 'slow', 'listen', 'tutorialParts', 'tutorialFull']
 
-function pickMime(): string {
-  if (typeof MediaRecorder === 'undefined') return ''
-  for (const t of ['video/mp4', 'video/webm']) if (MediaRecorder.isTypeSupported(t)) return t
-  return ''
-}
-
 export const recordScreen: Screen = (root, { params }) => {
   const target = params.target
   const isRun = target === 'run'
@@ -38,7 +33,6 @@ export const recordScreen: Screen = (root, { params }) => {
     go('/sections')
     return
   }
-  const group = groupOf(isRun ? 'run' : section!.id)
   const el = kidScreen(root, 'record', topbar(), h('h1', null, isRun ? R.runTitle : section!.name), h('p', { class: 'note' }, R.how))
   const view = h('div', { class: 'stack' })
   const trackArea = h('div', { class: 'player-area' })
@@ -115,8 +109,11 @@ export const recordScreen: Screen = (root, { params }) => {
       await keep(new Blob(chunks, { type }))
     }
     range.onStop = () => void finish()
-    // A count-in first, so she can get to her spot; the recording and the music start together on the 1.
+    // Time to get ready: "Get to your spot" with her walk-on countdown, then the count-in; the
+    // recording and the music start together on the 1.
     const countIn = new CountInView()
+    const walkNum = h('span', { class: 'walk-on-count', 'aria-live': 'polite' })
+    const ready = h('div', { class: 'get-ready', role: 'status' }, h('span', { class: 'get-ready__words' }, KID_COPY.cues.getToSpot), walkNum)
     const preview = view.querySelector('video.camera-preview') ?? h('span')
     const stopBtn = button(R.stop, () => {
       if (cancelCount) {
@@ -126,8 +123,15 @@ export const recordScreen: Screen = (root, { params }) => {
       }
       void finish()
     }, { variant: 'primary', class: 'btn--big' })
-    view.replaceChildren(preview, trackArea, countIn.el, h('div', { class: 'row' }, stopBtn))
-    cancelCount = runCountIn(save().tempo.bpm, 1, (w) => countIn.show(w), () => {
+    view.replaceChildren(preview, trackArea, ready, countIn.el, h('div', { class: 'row' }, stopBtn))
+    const readyView = {
+      countdown: (n: number | null) => {
+        if (n == null) ready.remove()
+        else walkNum.textContent = String(n)
+      },
+      count: (w: string | null) => countIn.show(w),
+    }
+    cancelCount = runGetReady(save().showtime.walkOnSeconds, save().tempo.bpm, 1, readyView, () => {
       cancelCount = null
       if (gone || !recorder) return
       countIn.el.replaceWith(h('p', { class: 'rec-dot', role: 'status' }, R.recording))
@@ -137,12 +141,8 @@ export const recordScreen: Screen = (root, { params }) => {
   }
 
   async function keep(blob: Blob): Promise<void> {
-    const db = await media()
-    const id = newMediaId('clip')
-    await db.put({ id, kind: 'clip', name: isRun ? 'run' : section!.id, type: blob.type, size: blob.size, createdAt: Date.now(), group, blob })
-    const old = clipsToDelete(await db.list('clip'), group)
-    for (const c of old) await db.delete(c.id)
-    const notice = old.length ? (isRun ? R.deletedRun : fill(R.deletedOne, { section: section!.name })) : null
+    const deleted = await keepClip(blob, isRun ? 'run' : section!.id)
+    const notice = deleted ? (isRun ? R.deletedRun : fill(R.deletedOne, { section: section!.name })) : null
     if (!gone) reviewView(blob, notice)
   }
 

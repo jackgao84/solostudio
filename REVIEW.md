@@ -2,7 +2,7 @@
 
 Every piece of kid-facing text in the app, grouped by where it appears. Words in {curly brackets} are filled in on the iPad (her name, a section name, a number). The rap lines themselves are typed on the iPad by a grown-up and are never part of the app.
 
-- 452 lines in 25 groups
+- 454 lines in 25 groups
 
 **This file is generated from `src/content`. Don’t edit it by hand.** To change the words, edit the files in `src/content`, then run `npm run review` to rebuild this file. `npm test` fails while it is out of date.
 
@@ -435,7 +435,7 @@ Missing words and counts from memory.
 - Next line <sub>`kid.quiz.nextLine`</sub>
 - You built every line! <sub>`kid.quiz.allBuilt`</sub>
 
-## 20. Showtime (29)
+## 20. Showtime (31)
 
 The whole track from the top, with no stopping.
 
@@ -468,6 +468,8 @@ The whole track from the top, with no stopping.
 - That’s your walk-on. Nice and calm. <sub>`kid.showtime.walkOnDone`</sub>
 - That’s your bow. Big smile! <sub>`kid.showtime.bowDone`</sub>
 - Someone watched me <sub>`kid.showtime.someoneWatched`</sub>
+- Film my Showtime <sub>`kid.showtime.film`</sub>
+- Your Showtime is saved in My clips. <sub>`kid.showtime.filmSaved`</sub>
 
 ## 21. Looking back (25)
 

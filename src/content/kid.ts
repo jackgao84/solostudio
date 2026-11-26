@@ -251,6 +251,8 @@ export const KID_COPY = {
     walkOnDone: 'That’s your walk-on. Nice and calm.',
     bowDone: 'That’s your bow. Big smile!',
     someoneWatched: 'Someone watched me',
+    film: 'Film my Showtime',
+    filmSaved: 'Your Showtime is saved in My clips.',
   },
   reflect: {
     wentWellTitle: 'One thing that went well',

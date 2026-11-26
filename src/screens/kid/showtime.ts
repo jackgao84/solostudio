@@ -8,6 +8,9 @@
  * are never spoken over it either. The walk-on and the bow can be practised on their own.
  * Afterwards: one thing that went well, one to work on, and Up Anyway if someone watched.
  * With ?family=1 it is "perform for your family".
+ * Film my Showtime (version 1.2): the front camera films the show. The walk-on countdown and the
+ * opening pose's count are her time to get ready; filming starts with her track and stops after the
+ * bow. The clip is kept with her run-throughs (newest 3).
  *
  * The player stays in one place in the page the whole time (a YouTube player that is moved reloads),
  * and a video standing in for her track is shown only while it plays.
@@ -25,6 +28,7 @@ import { BREATH_IN_S, BREATH_OUT_S, POSE_CUE_MS, bowRoutine, showtimeRoutine, wa
 import { LINE_LEAD, lineStarts } from '../../model/sync'
 import { spanOf } from '../../model/timing'
 import { RangePlayer } from '../../media/player'
+import { keepClip, pickMime } from '../../media/clip-store'
 import { button, holdButton, toggle } from '../../ui/components'
 import { h } from '../../ui/dom'
 import { reflectView } from '../../ui/reflect'
@@ -63,7 +67,8 @@ export const showtimeScreen: Screen = (root, { query }) => {
   const top = h('div', { class: 'stack showtime-top' })
   const playerArea = h('div', { class: 'player-area', hidden: true })
   const bottom = h('div', { class: 'stack showtime-bottom' })
-  el.append(top, playerArea, bottom)
+  const filmSlot = h('div', { class: 'film-slot' })
+  el.append(top, playerArea, bottom, filmSlot)
   let words = save().settings.showtimeLyrics
   let src: TrackSource | null = null
   let loaded = false
@@ -74,6 +79,43 @@ export const showtimeScreen: Screen = (root, { query }) => {
   let clap: SoundHandle | null = null
   let keepTimer = 0
   const timers = new Set<number>()
+  // Film my Showtime: the camera's stream for this show, and its recorder once her track starts.
+  let film = false
+  let cam: MediaStream | null = null
+  /** The camera's tracks, held from the moment it starts (WebKit hands out fresh wrappers later). */
+  let camTracks: MediaStreamTrack[] = []
+  let recorder: MediaRecorder | null = null
+  let chunks: Blob[] = []
+  const stopCam = () => {
+    for (const t of camTracks) t.stop()
+    camTracks = []
+    cam = null
+  }
+  const stopFilming = (): Promise<Blob | null> =>
+    new Promise((resolve) => {
+      const r = recorder
+      recorder = null
+      filmSlot.replaceChildren()
+      if (!r || r.state === 'inactive') return resolve(null)
+      r.addEventListener('stop', () => resolve(chunks.length ? new Blob(chunks, { type: (r.mimeType || 'video/mp4').split(';')[0] }) : null), { once: true })
+      r.stop()
+    })
+  const startFilming = () => {
+    if (!cam || recorder) return
+    chunks = []
+    const mime = pickMime()
+    try {
+      recorder = mime ? new MediaRecorder(cam, { mimeType: mime }) : new MediaRecorder(cam)
+    } catch (err) {
+      console.warn('[solostudio] filming failed', err)
+      return
+    }
+    recorder.ondataavailable = (e) => {
+      if (e.data && e.data.size) chunks.push(e.data)
+    }
+    recorder.start(500)
+    filmSlot.replaceChildren(h('p', { class: 'rec-dot', role: 'status' }, KID_COPY.record.recording))
+  }
 
   /** Wait, unless this run is stopped meanwhile (then false). */
   const wait = (ms: number, id: number) =>
@@ -91,6 +133,8 @@ export const showtimeScreen: Screen = (root, { query }) => {
     timers.clear()
     window.clearTimeout(keepTimer)
     hush()
+    void stopFilming()
+    stopCam()
     range?.destroy()
     range = null
     crowd?.stop()
@@ -123,6 +167,7 @@ export const showtimeScreen: Screen = (root, { query }) => {
           update((d) => (d.settings.showtimeLyrics = on))
         }),
         toggle(S.audience, audienceOn(), (on) => update((d) => (d.sound.audience = on))),
+        toggle(S.film, film, (on) => (film = on)),
       ),
       h('div', { class: 'row' }, button(S.start, () => void full(), { variant: 'primary', class: 'btn--huge', disabled: loaded && !src })),
       h('div', { class: 'row' }, button(S.practiseWalkOn, () => void walkOn()), button(S.practiseBow, () => void bow())),
@@ -231,6 +276,7 @@ export const showtimeScreen: Screen = (root, { query }) => {
         crowd = null
       }
       if (s.id === 'bow' && audienceOn()) clap = playApplause()
+      if (s.id === 'track') startFilming()
       const ok = s.id === 'track' ? await track(id) : await step(s, id)
       if (s.id === 'track') {
         range?.destroy()
@@ -246,7 +292,30 @@ export const showtimeScreen: Screen = (root, { query }) => {
     if (!src) return
     cancel()
     const id = run
-    if (await steps(showtimeRoutine(save().showtime), id)) after()
+    if (film) {
+      try {
+        cam = await navigator.mediaDevices.getUserMedia({ video: { facingMode: 'user', width: { ideal: 1280 }, height: { ideal: 720 } }, audio: true })
+        camTracks = cam.getTracks()
+      } catch (err) {
+        console.warn('[solostudio] camera failed', err)
+        cam = null
+      }
+      if (id !== run || gone) return stopCam()
+    }
+    if (!(await steps(showtimeRoutine(save().showtime), id))) return
+    const clip = await stopFilming()
+    stopCam()
+    if (gone) return
+    let saved = false
+    if (clip) {
+      try {
+        await keepClip(clip, 'run')
+        saved = true
+      } catch (err) {
+        console.warn('[solostudio] keeping the clip failed', err)
+      }
+    }
+    after(saved)
   }
 
   async function walkOn(): Promise<void> {
@@ -261,7 +330,7 @@ export const showtimeScreen: Screen = (root, { query }) => {
     if (await steps(bowRoutine(), id)) startView(S.bowDone)
   }
 
-  function after(): void {
+  function after(filmed = false): void {
     if (blockId) {
       update((d) => {
         const s = (d.days[today()] ??= { order: [], done: [] })
@@ -279,7 +348,11 @@ export const showtimeScreen: Screen = (root, { query }) => {
       update((d) => (d.celebrated.firstShowtime = true))
       confettiPop()
     }
-    top.replaceChildren(...(confetti ? [confettiBurst()] : []), h('h1', null, S.finished))
+    top.replaceChildren(
+      ...(confetti ? [confettiBurst()] : []),
+      h('h1', null, S.finished),
+      ...(filmed ? [h('div', { class: 'film-saved row', role: 'status' }, h('p', null, S.filmSaved), button(KID_COPY.nav.clips, () => go('/clips')))] : []),
+    )
     bottom.replaceChildren(
       reflectView(
         (r) =>

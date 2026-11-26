@@ -1879,3 +1879,37 @@ html[data-theme='mint'] {
 .lesson-gap p {
   margin: 0 0 8px;
 }
+
+/* ---- Getting ready to film (version 1.2) --------------------------------------------------- */
+
+.get-ready {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 18px;
+  padding: 10px 16px;
+  border-radius: var(--radius);
+  background: var(--panel-strong);
+  font-size: 30px;
+  font-weight: 800;
+}
+
+.walk-on-count {
+  min-width: 1.6em;
+  text-align: center;
+  font-size: 56px;
+  color: var(--gold);
+  font-variant-numeric: tabular-nums;
+}
+
+.film-slot:empty {
+  display: none;
+}
+
+.film-saved {
+  align-items: center;
+}
+
+.film-saved p {
+  margin: 0;
+}
