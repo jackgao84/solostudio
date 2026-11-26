@@ -53,7 +53,8 @@ const scan = (where, text) => {
 
 const files = execSync('git ls-files --cached --others --exclude-standard', { cwd: ROOT, encoding: 'utf8' }).split('\n').filter(Boolean)
 for (const f of files) {
-  if (f === 'package-lock.json' || /\.(png|jpg|ico|woff2?)$/.test(f)) continue
+  // Binary files aren't text: images, fonts and (1.2) the coach's MP3 clips.
+  if (f === 'package-lock.json' || /\.(png|jpg|ico|woff2?|mp3)$/.test(f)) continue
   scan(f, readFileSync(join(ROOT, f), 'utf8'))
 }
 let log = ''

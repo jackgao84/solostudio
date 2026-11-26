@@ -12,7 +12,7 @@
  */
 import { SECTION_LESSON_COPY } from '../src/content/learn'
 import { LADDERS } from '../src/model/ladders'
-import { lessonPath, pathKey } from '../src/model/path'
+import { isDone, lessonPath, pathKey } from '../src/model/path'
 import { tickStep } from '../src/model/progress'
 import { emptyProgress } from '../src/storage/schema'
 import { checkScreen, expect, expectRoute, press, readSave, seedSave, setUpSave, tap, today } from './helpers'
@@ -41,9 +41,11 @@ test('the top of home is Start, the D-day and today’s lessons; the path sits b
   await checkScreen(page, 'kid', 'home')
 
   // The path: every lesson in order, the finished ones folded away, her stage lights on each part.
-  const keys = lessonPath(save).map(pathKey)
-  await expect(page.locator('.path-item')).toHaveCount(keys.length)
-  expect(await page.locator('.path-item').evaluateAll((els) => els.map((e) => e.getAttribute('data-key')))).toEqual(keys)
+  const path = lessonPath(save)
+  await expect(page.locator('.path-item')).toHaveCount(path.length)
+  const keysIn = (sel: string) => page.locator(sel).evaluateAll((els) => els.map((e) => e.getAttribute('data-key')))
+  expect(await keysIn('details.path-done .path-item')).toEqual(path.filter((i) => isDone(save, i)).map(pathKey))
+  expect(await keysIn('.lesson-path > .path-list .path-item')).toEqual(path.filter((i) => !isDone(save, i)).map(pathKey))
   const done = page.locator('details.path-done')
   await expect(done).not.toHaveAttribute('open', /.*/)
   await expect(done.locator('.path-item[data-key="section:sec-1:rap"]')).toHaveCount(1)

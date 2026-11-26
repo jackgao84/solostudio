@@ -81,6 +81,12 @@ describe('the recorded voice', () => {
       let i = 0
       if (buf.subarray(0, 3).toString('latin1') === 'ID3') i = 10 + ((buf[6] << 21) | (buf[7] << 14) | (buf[8] << 7) | buf[9])
       while (i < buf.length - 4 && !(buf[i] === 0xff && (buf[i + 1] & 0xe0) === 0xe0)) i++
+      // The encoder's Info (or Xing) frame comes first; its bitrate field isn't the audio's. Skip it.
+      if (/Xing|Info/.test(buf.subarray(i + 4, i + 40).toString('latin1'))) {
+        const kbps = [0, 8, 16, 24, 32, 40, 48, 56, 64, 80, 96, 112, 128, 144, 160][(buf[i + 2] >> 4) & 15]
+        const rate = [22050, 24000, 16000][(buf[i + 2] >> 2) & 3] ?? 22050
+        i += Math.floor((72 * kbps * 1000) / rate) + ((buf[i + 2] >> 1) & 1)
+      }
       const [b1, b2, b3] = [buf[i + 1], buf[i + 2], buf[i + 3]]
       const version = (b1 >> 3) & 3 // 2 = MPEG-2
       const layer = (b1 >> 1) & 3 // 1 = layer III

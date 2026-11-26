@@ -21,6 +21,7 @@ import { tickStep } from '../../src/model/progress'
 import { sessionItems } from '../../src/model/session'
 import { todayPlan } from '../../src/model/today'
 import { SKILL_LESSON_IDS, defaultSave, emptyProgress, type SaveData, type Section } from '../../src/storage/schema'
+import { lyricLine } from '../fixtures/placeholders'
 
 const T = '2031-03-03'
 
@@ -28,7 +29,7 @@ function section(id: string, name: string, start: number | null, lines = 2): Sec
   return {
     id,
     name,
-    lines: Array.from({ length: lines }, (_, i) => ({ id: `${id}-l${i}`, lyric: `Placeholder line ${i + 1}`, lang: 'en', meaning: '', breaths: [], time: null })),
+    lines: Array.from({ length: lines }, (_, i) => ({ id: `${id}-l${i}`, lyric: lyricLine(i + 1, name), lang: 'en', meaning: '', breaths: [], time: null })),
     track: { start, end: start == null ? null : start + 8 },
     refs: {},
     createdAt: '2031-01-01T00:00:00.000Z',

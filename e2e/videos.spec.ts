@@ -11,6 +11,14 @@ import { ytPlayers, assertYouTubeRules, checkScreen, expect, expectRoute, holdGa
 
 const NO_MARKS = /mark .*video|mark this part on one|needs to mark/i
 
+/** Where the YouTube stand-in for this video was told to seek (read the way session.spec does). */
+function seeksOf(page: import('@playwright/test').Page, id: string): Promise<number[]> {
+  return page.evaluate((id) => {
+    const fake = (window as unknown as { __ytFake?: { players: { videoId: string; destroyed: boolean; seeks: number[] }[] } }).__ytFake
+    return (fake?.players ?? []).filter((p) => !p.destroyed && p.videoId === id).flatMap((p) => p.seeks)
+  }, id)
+}
+
 test('a video saved in setup plays in her lesson with no section marked on it', async ({ page }) => {
   test.setTimeout(90_000)
   const save = setUpSave()
@@ -64,9 +72,9 @@ test('tutorials and listen-and-read play from the start with speed and her own l
   await tap(page.getByRole('button', { name: 'Loop to here' }))
   await expect(page.locator('.loop-status')).toBeVisible()
   await checkScreen(page, 'kid', 'a tutorial with her own loop')
-  const seeks = (await tutorial())!.seeks.length
+  const seeks = (await seeksOf(page, 'FIl3O1uBjQQ')).length
   // It goes round: back to where the loop starts, again and again.
-  await expect.poll(async () => (await tutorial())!.seeks.length, { timeout: 20_000 }).toBeGreaterThan(seeks)
+  await expect.poll(async () => (await seeksOf(page, 'FIl3O1uBjQQ')).length, { timeout: 20_000 }).toBeGreaterThan(seeks)
   await tap(page.getByRole('button', { name: 'Stop the loop' }))
   await expect(page.locator('.loop-status')).toHaveCount(0)
 
@@ -82,5 +90,5 @@ test('where marks exist they simply cue the video to the section', async ({ page
   await page.goto('./#/practice/sec-2/dance-follow-75')
   await tap(page.getByRole('button', { name: 'Play', exact: true }))
   const marked = save.sections[1].refs['ref-mirrored']!.start!
-  await expect.poll(async () => (await ytPlayers(page)).find((p) => p.videoId === 'PBhzOdOIFEY')?.seeks.at(-1) ?? -1, { timeout: 15_000 }).toBeGreaterThan(marked - 3)
+  await expect.poll(async () => (await seeksOf(page, 'PBhzOdOIFEY')).at(-1) ?? -1, { timeout: 15_000 }).toBeGreaterThan(marked - 3)
 })

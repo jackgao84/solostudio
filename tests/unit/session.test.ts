@@ -12,7 +12,7 @@ import { KID_COPY } from '../../src/content/kid'
 import { addDays } from '../../src/model/dates'
 import { planDay, planInputFrom, type Block, type PlanDay } from '../../src/model/plan'
 import { cueFor, sessionItems } from '../../src/model/session'
-import { defaultSave, emptyProgress, type SaveData } from '../../src/storage/schema'
+import { SKILL_LESSON_IDS, defaultSave, emptyProgress, type SaveData } from '../../src/storage/schema'
 
 const TODAY = '2031-03-03'
 
@@ -22,6 +22,8 @@ function save(showInDays: number): SaveData {
   d.show = { name: 'Showcase', date: addDays(TODAY, showInDays) }
   d.plan = { startDate: TODAY, holidayStart: null, holidayEnd: null, schoolMinutes: 45, holidayMinutes: 120, lightWeekday: 4 }
   d.sections = ['Verse 1', 'Chorus', 'Dance Break'].map((name, i) => ({ id: `s${i + 1}`, name, lines: [], track: { start: 2 + i * 8, end: 9 + i * 8 }, refs: {}, createdAt: `2031-01-0${i + 1}T00:00:00.000Z` }))
+  // Version 1.2: she has heard the skill lessons, so this is about the day's blocks.
+  d.lessons.done = [...SKILL_LESSON_IDS]
   return d
 }
 

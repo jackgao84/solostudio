@@ -100,7 +100,7 @@ test('works offline after the first visit, and leaves the other apps alone', asy
     await page.goto('./?from=icon#/practice/sec-1/rap-say')
     await expect(page.locator('.lyric-line')).toHaveCount(4)
     await page.goto('./index.html#/lessons')
-    await expect(page.locator('.lesson-card')).toHaveCount(6)
+    await expect(page.locator('.lesson-card')).toHaveCount(7)
     await page.goto('./?x=1#/section/sec-2')
     await expect(page.locator('.ladder')).toHaveCount(3)
 
