@@ -34,7 +34,7 @@ function part(id: string, from: number, over: Partial<MyPart> = {}): MyPart {
 /** A fresh iPad (nothing set up) where she has saved parts in the practice room. */
 function noSetup(parts: MyPart[] = [], skillsDone = true): SaveData {
   const d = defaultSave()
-  d.parts = parts
+  d.parts = parts.map((p) => ({ ...p, done: [...p.done] }))
   if (skillsDone) d.lessons.done = [...SKILL_LESSON_IDS]
   return d
 }
