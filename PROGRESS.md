@@ -83,6 +83,36 @@
     update specs seed no YouTube stand-in (routing can't reach a worker-controlled page).
   No assertion was changed anywhere.
 
+## After 1.3.0: the flaky recording check (fixed, not yet pushed)
+
+`e2e/filming.spec.ts:14` failed now and then with "WebKitBlobResource error 3" (1 in 12 runs on 1.3.0,
+3 in 20 on 1.2.1). Two causes:
+
+- **An app bug (fixed, bd28dba; checks first fd43486):** when Stop came a few milliseconds after
+  recording started, WebKit's recorder handed back an empty clip, and the app kept it (pushing out one
+  of her newest 3 clips) and tried to play it (the error is WebKit's range error on a 0-byte blob;
+  forcing an instant Stop reproduced it 16/16). Now a recording runs for at least `MIN_RECORD_MS`
+  (1 s; a Stop before then waits), and an empty clip is never kept: she sees "Nothing was recorded that
+  time. Tap Record to try again." and Record is there again (`src/model/clips.ts`,
+  `src/screens/kid/record.ts`; checks `tests/unit/short-recording.test.ts`,
+  `e2e/short-recording.spec.ts`).
+- **The test browser:** its recorder sometimes hands back nothing at all with the stand-in camera,
+  whatever the app does (3 of 40 runs after the fix; other stand-in cameras, drawn every frame or with
+  `requestFrame`, did no better). **Check change approved by the owner, committed on its own
+  (7f5690f):** `e2e/helpers.ts` keeps WebKit's real recording whenever it has data, and otherwise hands
+  the app a one-second test clip (`tests/fixtures/test-clip.ts`, WebKit's own recording of the stand-in
+  camera's colour blocks, base64 MP4). No assertion changed.
+- My own new `e2e/short-recording.spec.ts` first asserted an instant Stop always gives a non-empty clip;
+  it now asserts what the app guarantees (the recorder runs at least `MIN_RECORD_MS`; a clip is kept
+  only with something in it) (833c58c).
+- Results: the once-flaky check 40/40 repeats at both orientations; the recording specs 36/36 (twice
+  each); typecheck clean; unit 349/349 in 39 files; privacy scan clean; Playwright WebKit 172/172 (86
+  tests × iPad portrait and landscape) twice in a row on the same build (9.5 min each), no retries.
+  (A run before that was cut short when the Mac paused; its three failures each took about 10 minutes
+  against a 90 s limit.)
+- Only the iPad can confirm: that a real recording is never empty (the note should never appear in
+  normal use) and that a quick Stop simply records for a second.
+
 ## Version 1.3 (done)
 
 The owner's 1.3 brief: practice that needs no setup. Three parts, each checks first, then code, a

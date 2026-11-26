@@ -197,7 +197,9 @@ These can't be checked anywhere else:
 - **The practice room** (1.3): her loop goes round on the beat of the real video with the count-in,
   the nudges feel right on a real touch screen, and **Test YouTube** gives the right answer on this
   iPad's own network and Screen Time settings (try it once with Wi-Fi off: it should say offline).
-- **The camera records**: allow the camera when asked. Her clips stay on the iPad.
+- **The camera records**: allow the camera when asked. Her clips stay on the iPad. A recording
+  always runs at least a second; if one ever comes out empty she sees "Nothing was recorded that time"
+  and nothing is kept (it should never happen with the real camera).
 - **Her track at 50% and 75% keeps its pitch** (slower, not lower).
 - **The screen stays awake** during practice (iPadOS 16.4 or later).
 - **Sound levels**: the coach, the stage-light sound, the crowd and the applause at a comfortable
