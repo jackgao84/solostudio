@@ -1,8 +1,11 @@
 # Setting up Solo Studio on the iPad
 
-For a grown-up. About 10 minutes, and she can start practising after the first three steps; the
-rest can be done any time later. Everything you type (her name, the show, the dates, the rap lines)
-stays on the iPad and is never part of the app.
+For a grown-up. **She can practise before any of this** (version 1.3): the **Practice room** (on the
+welcome screen and her home page) plays any video, makes her own loops and keeps them as her parts,
+and today's practice uses those parts until you add her song's sections. Setup takes about 10
+minutes, and her own lessons start after the first three steps; the rest can be done any time later.
+Everything you type (her name, the show, the dates, the rap lines) stays on the iPad and is never
+part of the app.
 
 You need: the iPad (on Wi-Fi the first time), her practice track (the showcase music with the vocals
 removed) as a file, and the lines of her rap.
@@ -99,6 +102,25 @@ one, every section learned slowly by about ten days out, rap and dance together 
 full run-throughs and performing for family in the last four days, with a lighter day before the
 show. Without one, her day is simply the next lessons on her path.
 
+## The practice room (version 1.3, no setup needed)
+
+- **Practice room** is on the welcome screen and next to **Start today's practice** on her home page.
+  She picks a video (mirrored follow-along, tutorials, performance, original, listen-and-read, slow
+  music, any video you added) or **My track** once her track is on the iPad, and plays it at her
+  speed.
+- **Her own loop**: she taps **Loop start** and **Loop end** while it plays; the arrows beside each
+  nudge that end a little earlier or later. The loop then goes round with "5, 6, 7, 8" each time.
+  The same loop buttons are on every video she practises with.
+- **Her parts**: **Save as my part** names a loop. She picks a part later and taps **I did it** at
+  50%, then 75%, then 100% speed (three lamps). She can rename or delete any part.
+- **Before you add sections**, her parts on the mirrored follow-along are the dance lessons on her
+  path, in the order they come in the video, and today's practice opens them in the practice room.
+  With no parts yet, today's dance block opens the practice room with a short spoken hint on making
+  a loop. Once you add sections (step 2), everything works as below and her parts stay in the
+  practice room.
+- **Rap lessons for a section with no lines** play the listen-and-read video (the words are in it)
+  and her track, with the same loop buttons.
+
 ## Her home page
 
 The top shows only **Start today's practice**, the D-day and today's lessons. Below is her whole
@@ -115,11 +137,18 @@ the coach says what's next.
   lessons on or off (the cues stay; she can turn those down or off in **Today → Sounds**). Each skill
   lesson's video can be swapped here: paste a YouTube link and a start time (m:ss).
 - **Videos** (as before): seven reference videos. No video needs marking: tutorials and the
-  listen-and-read video play from the start, with her own speed buttons and **Loop from here** /
-  **Loop to here** to repeat any bit. If you mark where a section starts on a video (in **Sections**,
+  listen-and-read video play from the start, with her own speed buttons and **Loop start** /
+  **Loop end** (with nudges) to repeat any bit. If you mark where a section starts on a video (in **Sections**,
   **Mark it on**), that video starts there for that section.
 - If a video says **"This video won't play inside the app"**, paste a different link into its box
   and tap **Save**.
+- **Test YouTube** (on the grown-ups' home, version 1.3) says which case it is: the iPad is offline;
+  the iPad is online but YouTube's player didn't load (YouTube may be blocked: check **Settings →
+  Screen Time → Content & Privacy Restrictions** and any filter on your Wi-Fi or school network);
+  YouTube works; or the test video won't play inside apps. She sees "Videos need the internet" only
+  when the iPad is offline; when it's online and the player doesn't load, she sees "The video didn't
+  load" with **Try again** and **Open in YouTube**, and a note to ask you to check YouTube isn't
+  blocked.
 
 ## Showtime routine, notes and sounds (3 minutes, optional)
 
@@ -150,6 +179,8 @@ track, local videos and clips.)
 - **Updating from 1.1**: everything carries over by itself the first time 1.2 opens (the 1.1 save is
   kept as the backup copy), and the wizard counts what was set up as done. Her walk-on time stays as
   it was (1.1 used 8 seconds); change it in step 7 if you like.
+- **Updating from 1.2**: everything carries over by itself the first time 1.3 opens (the 1.2 save is
+  kept as the backup copy); she starts with no parts of her own.
 
 ## Things to check on the iPad itself
 
@@ -163,6 +194,9 @@ These can't be checked anywhere else:
 - **Filming** (1.2): **Record this section** says "Get to your spot" with a countdown, then counts her
   in; check the clip starts with the music. **Film my Showtime** asks for the camera at Start.
 - **Each video plays inside the app**, including the eight lesson videos. If one doesn't, swap it.
+- **The practice room** (1.3): her loop goes round on the beat of the real video with the count-in,
+  the nudges feel right on a real touch screen, and **Test YouTube** gives the right answer on this
+  iPad's own network and Screen Time settings (try it once with Wi-Fi off: it should say offline).
 - **The camera records**: allow the camera when asked. Her clips stay on the iPad.
 - **Her track at 50% and 75% keeps its pitch** (slower, not lower).
 - **The screen stays awake** during practice (iPadOS 16.4 or later).

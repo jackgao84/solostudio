@@ -113,6 +113,12 @@ test('with no parts yet, the dance block opens the practice room on the follow-a
   await expect(hint).toContainText('Loop start')
   await expect.poll(() => clipsSaid(page), { timeout: 20_000 }).toEqual(expect.arrayContaining([KID_COPY.room.hint1, KID_COPY.room.hint2]))
   await expect(page.locator('main')).not.toContainText(WAIT_FOR_GROWNUP)
+  // The buttons the hint talks about are on screen with it, without scrolling.
+  const vh = page.viewportSize()!.height
+  for (const name of ['Play', 'Next', 'Loop start', 'Loop end']) {
+    const box = (await page.getByRole('button', { name, exact: true }).first().boundingBox())!
+    expect(box.y + box.height, `${name} is on screen with the hint`).toBeLessThanOrEqual(vh)
+  }
   await checkScreen(page, 'kid', 'the practice room with the hint')
   await assertYouTubeRules(page, 'the practice room with the hint')
   await tap(page.getByRole('button', { name: 'Next', exact: true }))

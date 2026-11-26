@@ -43,6 +43,15 @@ headset mic while dancing, at a showcase and again at a talent show.
   then the count-in, then recording; Film my Showtime.
 - **Videos with no marking** (1.2): tutorials and the listen-and-read video play from the start (or a
   chapter time), with speed and her own "loop this bit"; marks only cue a video to a section.
+- **The practice room** (1.3): practice that needs no setup. From the welcome screen or next to
+  Start today's practice: any video, or her track once it's loaded, at her speed; her own loop with
+  Loop start and Loop end (with nudges), going round with the count-in; loops saved as her parts,
+  ticked at 50, 75 and 100% speed, hers to rename or delete. Before a grown-up adds sections, her
+  parts on the mirrored follow-along are her dance lessons and today's practice opens them; with
+  none yet, the dance block opens the room with a spoken hint on making a loop.
+- **Honest video messages** (1.3): "Videos need the internet" only when the iPad is offline; online,
+  a player that didn't load says so, with Try again and Open in YouTube. **Test YouTube** in the
+  grown-ups' area says whether the iPad is offline, YouTube is blocked, or it works.
 - **Grown-ups' area** behind a press-and-hold: **Set up**, a wizard of about 10 minutes that can be
   paused (1.2: her track, all her lines in one box, a tap as each section starts on one play of her
   track; then optionally the follow-along taps, line timing, the beat worked out from her track and
@@ -56,7 +65,7 @@ videos and clips stay on the iPad; nothing is uploaded and there are no accounts
 
 ## Put it on an iPad
 
-See **[SETUP.md](SETUP.md)** (about 10 minutes; she can start after the first three steps).
+See **[SETUP.md](SETUP.md)**. She can use the practice room straight away; setup takes about 10 minutes, and her own lessons start after its first three steps.
 
 ## Work on it
 
