@@ -4,6 +4,7 @@
  * water is refused with a kind note. Checks that are due are listed, shaky ones first.
  */
 import { go, save, sectionsInOrder, today, update } from '../../app/ctx'
+import { startSession, todaysItems } from '../../app/session'
 import { gateButton } from '../../app/gate'
 import type { Screen } from '../../app/router'
 import { applyUpdateIfSafe, onUpdateReady } from '../../app/sw-register'
@@ -65,6 +66,9 @@ export const todayScreen: Screen = (root) => {
     head.append(h('p', { class: 'countdown' }, countdownText(daysBetween(t, d.show.date), showName)))
     if (day) {
       head.append(h('p', { class: 'phase' }, PHASE_COPY[day.phase].name))
+      // One main action: the guided session through today's blocks.
+      if (todaysItems().length) el.append(h('div', { class: 'today__start' }, button(T.startPractice, () => startSession(), { variant: 'primary', class: 'btn--huge' })))
+      if (!d.tour.seen) el.append(tourCard())
       if (day.light && day.phase !== 'showDay') el.append(h('p', { class: 'light-day' }, T.lightDay))
       el.append(h('p', { class: 'note' }, PHASE_COPY[day.phase].about))
       if (d.sections.length === 0) el.append(h('p', { class: 'note' }, T.noSections))
@@ -78,14 +82,38 @@ export const todayScreen: Screen = (root) => {
     h(
       'div',
       { class: 'nav-row' },
-      button(KID_COPY.nav.showtime, () => go('/showtime'), { variant: 'primary' }),
+      button(KID_COPY.nav.showtime, () => go('/showtime')),
       button(KID_COPY.nav.sections, () => go('/sections')),
       button(KID_COPY.nav.lessons, () => go('/lessons')),
       button(KID_COPY.nav.clips, () => go('/clips')),
+      button(KID_COPY.nav.sounds, () => go('/sounds'), { variant: 'quiet' }),
     ),
     h('div', { class: 'row' }, gateButton()),
   )
   return () => stopUpdates()
+
+  function tourCard(): HTMLElement {
+    const seen = () =>
+      update((s) => {
+        s.tour.seen = true
+      })
+    const card = h(
+      'section',
+      { class: 'tour-card card' },
+      h('h2', null, T.tourTitle),
+      h('p', null, T.tourHow),
+      h(
+        'div',
+        { class: 'row' },
+        button(T.tourGo, () => go('/tour')),
+        button(T.tourLater, () => {
+          seen()
+          card.remove()
+        }, { variant: 'quiet' }),
+      ),
+    )
+    return card
+  }
 
   function checksList(): HTMLElement | null {
     const names = new Map(sectionsInOrder().map((s) => [s.id, s.name]))
@@ -121,7 +149,7 @@ export const todayScreen: Screen = (root) => {
           const done = state.done.includes(b.id)
           const title = blockCopy(b).title
           const focus = b.sectionIds.map((id) => names.get(id)).filter(Boolean).join(', ')
-          const actions = h('div', { class: 'block__actions' }, button(T.start, () => go(`/block/${b.id}`), { label: fill(T.startLabel, { title }), variant: done ? undefined : 'primary' }))
+          const actions = h('div', { class: 'block__actions' }, button(T.start, () => go(`/block/${b.id}`), { label: fill(T.startLabel, { title }) }))
           if (!PINNED_TYPES.includes(b.type)) {
             actions.append(button('▲', () => move(blocks, b.id, -1), { label: T.moveUp, class: 'move' }), button('▼', () => move(blocks, b.id, 1), { label: T.moveDown, class: 'move' }))
           }

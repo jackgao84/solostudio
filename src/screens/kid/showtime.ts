@@ -9,9 +9,11 @@
  * Afterwards: one thing that went well, one to work on, and Up Anyway if someone watched.
  * With ?family=1 it is "perform for your family".
  *
- * The player stays in one place in the page the whole time (a YouTube player that is moved reloads).
+ * The player stays in one place in the page the whole time (a YouTube player that is moved reloads),
+ * and a video standing in for her track is shown only while it plays.
  */
 import { go, save, sectionsInOrder, today, update } from '../../app/ctx'
+import { sessionCue, sessionItem, sessionNext } from '../../app/session'
 import type { Screen } from '../../app/router'
 import { GATE_HOLD_MS } from '../../app/gate'
 import { playApplause, startCrowd, type SoundHandle } from '../../audio/sfx'
@@ -44,6 +46,8 @@ function songLines(): { start: number; text: string }[] {
 export const showtimeScreen: Screen = (root, { query }) => {
   const family = query.get('family') === '1'
   const blockId = query.get('block')
+  const item = sessionItem(query)
+  const inSession = item?.kind === 'showtime' && item.blockId === blockId
   const el = kidScreen(root, 'showtime', topbar())
   const top = h('div', { class: 'stack showtime-top' })
   const playerArea = h('div', { class: 'player-area', hidden: true })
@@ -88,7 +92,8 @@ export const showtimeScreen: Screen = (root, { query }) => {
 
   function startView(done: string | null = null): void {
     cancel()
-    playerArea.hidden = !src?.standIn
+    // A video standing in for her track shows only while it plays, so Start is always in reach.
+    playerArea.hidden = true
     top.replaceChildren(
       ...([
         h('h1', null, family ? S.familyTitle : S.title),
@@ -262,6 +267,7 @@ export const showtimeScreen: Screen = (root, { query }) => {
           }),
         [watched, h('div', { class: 'row' }, button(S.again, () => startView()), button(S.recordRun, () => go('/record/run')))],
       ),
+      ...(inSession ? [h('div', { class: 'answer main-actions' }, button(KID_COPY.session.next, () => sessionNext(), { class: 'btn--huge' }))] : []),
     )
   }
 
@@ -271,6 +277,12 @@ export const showtimeScreen: Screen = (root, { query }) => {
     if (gone) return src?.player.destroy()
     loaded = true
     if (!top.querySelector('.routine-stage, .showtime-stage')) startView()
+    // In the session: say what's next, then the routine starts by itself.
+    if (inSession && src) {
+      say(sessionCue())
+      const t = window.setTimeout(() => void full(), 2500)
+      timers.add(t)
+    }
   })()
 
   return () => {

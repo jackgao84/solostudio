@@ -49,7 +49,10 @@ part by part: checks first, then the code, a commit after each part.
    `tests/unit/week.test.ts`, `e2e/grownups-week.spec.ts`).
 5. [x] Listening run on light days (block type `listen` in `src/model/plan.ts`,
    `src/screens/kid/listen.ts`; checks `tests/unit/listening.test.ts`, `e2e/listening.spec.ts`).
-6. [ ] Ease of use: guided session, spoken cues and count-ins, looping reps, sound settings, tour.
+6. [x] Ease of use: guided session, spoken cues and count-ins, looping reps, sound settings, tour
+   (`src/model/session.ts`, `src/app/session.ts`, `src/screens/kid/sounds.ts`, `tour.ts`, practice
+   and drill screens on `RepLoop`; checks `tests/unit/session.test.ts`, `e2e/session.spec.ts`,
+   `e2e/reach.spec.ts`).
 7. [ ] Fun: stage lights, light stick, D-day, build the line, celebrations, her stage's name and colours.
 8. [ ] Docs (REVIEW.md, SETUP.md), full checks, screens in both orientations, version 1.1.0, deploy.
 
@@ -90,6 +93,21 @@ Decisions (1.1):
   before the cool-down, on every light day (the weekly one, the day before the show, show day). It
   is not a voice block and she can move it. A cue to close her eyes, 3.5 s to settle, her whole
   track with nothing on screen but a soft glow, then a cue to open them.
+
+- D11. The guided session is in memory: each item opens its usual screen with `?session=1`, which
+  says the item's cue and calls `sessionNext()` on I did it or Next; a block is marked done as she
+  leaves its last item. A reload simply ends the session. Practice blocks give one item per section
+  (`practiceChoices`, shared with the block screen). In the session, reps, drills, the listening
+  run and Showtime start by themselves after the cue; warm-up, water and cool-down wait for Next.
+- D12. Every practice screen loops: Play → count-in → the rep → 1.5 s rest → count-in → again,
+  until Pause, Again/Next or I did it. "From the start" is gone (Again does it). The main buttons
+  are 96 px tall and share one row; the count-in shows in the row below them so nothing moves.
+  A cue's gap before the count-in grows with its length (65 ms a character, at least 1.4 s).
+- D13. Today has one primary button, Start today's practice (Showtime and the block Start buttons
+  are plain). The tour is offered on Today (Take the tour / Not now), never forced, five slides of
+  6 s read out loud. Sounds: five volume steps each for cues and effects, plus mute.
+- D14. On Showtime's start view a stand-in video is hidden until her track plays, so Start is in
+  reach in landscape too.
 
 **Check change approved by the owner (1.1):** `e2e/journey.spec.ts` steps 13–14: only the waits
 grow by the Showtime routine's length (the routine now comes before and after her track); every

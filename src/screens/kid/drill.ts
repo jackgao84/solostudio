@@ -8,6 +8,7 @@
  * The player sits beside the words and counts, never under anything.
  */
 import { go, save, sectionsInOrder, setActiveBlock, today, update } from '../../app/ctx'
+import { sessionCue, sessionItem, sessionNext } from '../../app/session'
 import type { Screen } from '../../app/router'
 import { DRILL_COPY } from '../../content/blocks'
 import { KID_COPY } from '../../content/kid'
@@ -40,6 +41,9 @@ export const drillScreen: Screen = (root, { params, query }) => {
     return
   }
   const blockId = query.get('block')
+  const item = sessionItem(query)
+  const inSession = item?.kind === 'drill' && item.drill === drill
+  let sessionCueLeft: string | null = inSession ? sessionCue() : null
   const timer = blockTimer()
   const copy = DRILL_COPY[drill]
   const el = kidScreen(root, 'drill', topbar(timer?.el ?? null), h('header', { class: 'practice__head' }, h('h1', null, copy.title), h('p', { class: 'note' }, drill === 'anywhere' ? D.anywhereHow : D.rejoinHow)))
@@ -72,9 +76,10 @@ export const drillScreen: Screen = (root, { params, query }) => {
   let fired = false
   let eventTimer = 0
 
-  const playBtn = button(P.play, () => loop?.toggle(), { variant: 'primary', class: 'btn--huge' })
+  const playBtn = button(P.play, () => loop?.toggle(), { class: 'btn--huge' })
   const nextBtn = button(D.next, () => loop?.skip(), { class: 'btn--huge' })
-  const toggles = h('div', { class: 'row' }, toggle(P.showWords, true, (on) => {
+  const doneBtn = inSession ? button(P.didIt, () => sessionNext(), { variant: 'primary', class: 'btn--huge' }) : null
+  const toggles = h('div', { class: 'row' }, countIn.el, toggle(P.showWords, true, (on) => {
     words = on
     if (lyrics) lyrics.el.hidden = !on
   }))
@@ -82,9 +87,9 @@ export const drillScreen: Screen = (root, { params, query }) => {
     video = on
     void setSource()
   }))
-  const playerCol = h('div', { class: 'player-col' }, playerArea, countIn.el, h('div', { class: 'answer main-actions' }, playBtn, nextBtn), toggles)
+  const playerCol = h('div', { class: 'player-col' }, playerArea, h('div', { class: 'answer main-actions' }, playBtn, nextBtn, doneBtn), toggles)
   el.append(notes, h('div', { class: 'stage has-side' }, playerCol, side))
-  if (blockId) el.append(h('div', { class: 'answer' }, button(KID_COPY.block.allDone, () => finishBlock(blockId), { class: 'btn--big' })))
+  if (blockId && !inSession) el.append(h('div', { class: 'answer' }, button(KID_COPY.block.allDone, () => finishBlock(blockId), { class: 'btn--big' })))
 
   /** Sections she can be dropped into: marked on her track (and on the video, when it's on). */
   const eligible = (): Section[] => sectionsInOrder().filter((s) => spanOf(s.track) && (!video || (ref && spanOf(s.refs[ref.id]))))
@@ -124,7 +129,9 @@ export const drillScreen: Screen = (root, { params, query }) => {
 
   const repFor = (s: Section): Rep => {
     const trackSpan = spanOf(s.track)!
-    const cue = fill(KID_COPY.cues.nextSection, { section: s.name })
+    // In the session, the first rep also says which drill this is ("Next: Start anywhere").
+    const cue = [sessionCueLeft, fill(KID_COPY.cues.nextSection, { section: s.name })].filter(Boolean).join('. ')
+    sessionCueLeft = null
     event = null
     fired = false
     if (video && ref) {
@@ -190,6 +197,7 @@ export const drillScreen: Screen = (root, { params, query }) => {
     loop.onTick = tick
     loop.onCount = (w) => countIn.show(w)
     if (!eligible().length) note(D.needsMarks)
+    else if (inSession && !video) loop.play()
   }
 
   void setSource()

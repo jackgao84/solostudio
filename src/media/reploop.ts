@@ -23,8 +23,13 @@ export type LoopState = 'idle' | 'counting' | 'playing' | 'resting' | 'paused'
 
 /** The short pause between reps. */
 export const REST_MS = 1500
-/** Time for a cue to be said before the count-in starts. */
+/** Time for a cue to be said before the count-in starts: at least this, longer for a longer cue. */
 export const CUE_MS = 1400
+
+/** About how long the iPad takes to say a cue. */
+export function cueTime(text: string): number {
+  return Math.max(CUE_MS, Math.round(text.length * 65))
+}
 
 export class RepLoop {
   state: LoopState = 'idle'
@@ -49,6 +54,13 @@ export class RepLoop {
     this.range = new RangePlayer(player, 0, Infinity, 1)
     this.range.onTick = (t) => this.onTick?.(t)
     this.range.onStop = () => this.ended()
+  }
+
+  /** Change the speed now (and for the reps after this one, via the screen's next()). */
+  setSpeed(speed: number): number {
+    this.range.speed = speed
+    if (this.rep) this.rep.speed = speed
+    return this.player.setRate(speed)
   }
 
   /** Reps are on their way or playing. */
@@ -142,7 +154,7 @@ export class RepLoop {
       this.player.seek(rep.from)
       this.onTick?.(rep.from)
     }
-    const cueMs = withCue && rep.cue ? CUE_MS : 0
+    const cueMs = withCue && rep.cue ? cueTime(rep.cue) : 0
     if (cueMs) say(rep.cue!)
     const plan = countInSchedule(this.bpm(), rep.speed)
     plan.beats.forEach((ms, i) =>

@@ -79,10 +79,10 @@ export const quizScreen: Screen = (root, { params }) => {
         draw()
       }),
     ),
-    h('div', { class: 'answer' }, button(P.again, () => {
+    h('div', { class: 'answer main-actions' }, button(P.again, () => {
       attempt++
       draw()
-    }, { class: 'btn--big' }), button(P.didIt, () => finish(s.id, 'rap'), { variant: 'primary', class: 'btn--big' })),
+    }, { class: 'btn--huge' }), button(P.didIt, () => finish(s.id, 'rap'), { variant: 'primary', class: 'btn--huge' })),
   )
 }
 
@@ -101,7 +101,7 @@ function countsQuiz(root: HTMLElement, sectionId: string, back: HTMLElement): ()
   const playBtn = button(P.play, async () => {
     if (!range) return
     playBtn.textContent = (await range.toggle()) ? P.pause : P.play
-  }, { variant: 'primary' })
+  }, { class: 'btn--huge' })
   const showBtn = button(Q.showCounts, () => {
     shown = !shown
     showBtn.textContent = shown ? Q.hideCounts : Q.showCounts
@@ -114,7 +114,7 @@ function countsQuiz(root: HTMLElement, sectionId: string, back: HTMLElement): ()
       counts = null
     }
   })
-  el.append(h('div', { class: 'controls' }, playBtn, showBtn), h('div', { class: 'answer' }, button(P.again, () => void range?.playFromTop().then((ok) => (playBtn.textContent = ok ? P.pause : P.play)), { class: 'btn--big' }), button(P.didIt, () => finish(sectionId, 'dance'), { variant: 'primary', class: 'btn--big' })))
+  el.append(h('div', { class: 'controls' }, playBtn, showBtn), h('div', { class: 'answer main-actions' }, button(P.again, () => void range?.playFromTop().then((ok) => (playBtn.textContent = ok ? P.pause : P.play)), { class: 'btn--huge' }), button(P.didIt, () => finish(sectionId, 'dance'), { variant: 'primary', class: 'btn--huge' })))
   void (async () => {
     const src = await trackSource(playerArea, save())
     if (gone) return src?.player.destroy()

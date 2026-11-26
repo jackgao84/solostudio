@@ -4,6 +4,7 @@
  * light up karaoke style at any speed. She ticks the rung herself ("I did it") or goes again.
  */
 import { go, save, sectionById, today, update } from '../../app/ctx'
+import { sessionCue, sessionItem, sessionNext } from '../../app/session'
 import type { Screen } from '../../app/router'
 import { KID_COPY } from '../../content/kid'
 import { STEP_COPY } from '../../content/ladders'
@@ -14,8 +15,10 @@ import { progressOf, reviewLadder, setFade, tickStep } from '../../model/progres
 import { isDue } from '../../model/spacing'
 import { lineStarts, wordsOf } from '../../model/sync'
 import { PRE_ROLL, mapTime, playRange, previousSection, spanOf } from '../../model/timing'
-import { RangePlayer, type Player } from '../../media/player'
+import type { Player } from '../../media/player'
+import { RepLoop } from '../../media/reploop'
 import { button, toggle } from '../../ui/components'
+import { CountInView } from '../../ui/countin'
 import { CountsView } from '../../ui/counts'
 import { fill, h } from '../../ui/dom'
 import { LyricsView } from '../../ui/lyrics'
@@ -24,7 +27,7 @@ import { blockTimer, kidScreen, topbar } from './common'
 
 const P = KID_COPY.practice
 
-export const practiceScreen: Screen = (root, { params }) => {
+export const practiceScreen: Screen = (root, { params, query }) => {
   const section = sectionById(params.section)
   const found = stepById(params.step)
   if (!section || !found) {
@@ -33,6 +36,8 @@ export const practiceScreen: Screen = (root, { params }) => {
   }
   const step = found
   const sid = section.id
+  const item = sessionItem(query)
+  const inSession = item?.kind === 'practice' && item.sectionId === section.id && item.stepId === found.id
   const prog = () => progressOf(save().progress, sid)
   const timer = blockTimer()
   const copy = STEP_COPY[step.id]
@@ -80,22 +85,25 @@ export const practiceScreen: Screen = (root, { params }) => {
     side.append(h('p', { class: 'note' }, P.noLines))
   }
 
-  const controls = h('div', { class: 'controls' })
-  const playBtn = button(P.play, () => void togglePlay(), { variant: 'primary' })
-  const fromStart = button(P.fromStart, () => void range?.playFromTop().then((ok) => setPlaying(ok)))
+  // The main buttons, big enough to hit from a step away: Play/Pause, Again (or Next in the
+  // session), I did it. Reps loop on their own, each with a count-in, until one of them is tapped.
+  const countIn = new CountInView()
+  const playBtn = button(P.play, () => loop?.toggle(), { class: 'btn--huge' })
+  const secondBtn = inSession ? button(KID_COPY.session.next, () => sessionNext(), { class: 'btn--huge' }) : button(P.again, () => loop?.again(), { class: 'btn--huge' })
+  const main = h('div', { class: 'answer main-actions' }, playBtn, secondBtn, button(P.didIt, () => didIt(), { variant: 'primary', class: 'btn--huge' }))
+  // The count-in shows in the row under the main buttons, so they never move while she heads to her spot.
+  const controls = h('div', { class: 'controls' }, countIn.el)
   const speedEl = h('p', { class: 'speed' }, fill(P.speed, { speed: Math.round(step.speed * 100) }))
   let speed = step.speed
   /** Her track goes from 50% to 100% in 5% steps; YouTube offers 50%, 75% and 100%. */
   const changeSpeed = (dir: -1 | 1) => {
-    if (!range || !player) return
+    if (!loop || !player) return
     const steps = player.kind === 'youtube' ? [0.5, 0.75, 1] : Array.from({ length: 11 }, (_, i) => Math.round((0.5 + i * 0.05) * 100) / 100)
     const at = steps.reduce((best, r, i) => (Math.abs(r - speed) < Math.abs(steps[best] - speed) ? i : best), 0)
-    speed = steps[Math.min(steps.length - 1, Math.max(0, at + dir))]
-    range.speed = speed
-    speed = player.setRate(speed)
+    speed = loop.setSpeed(steps[Math.min(steps.length - 1, Math.max(0, at + dir))])
     speedEl.textContent = fill(P.speed, { speed: Math.round(speed * 100) })
   }
-  controls.append(playBtn, fromStart, button(P.slower, () => changeSpeed(-1), { variant: 'quiet' }), speedEl, button(P.faster, () => changeSpeed(1), { variant: 'quiet' }))
+  controls.append(button(P.slower, () => changeSpeed(-1), { variant: 'quiet' }), speedEl, button(P.faster, () => changeSpeed(1), { variant: 'quiet' }))
 
   if (lyrics) {
     side.append(lyrics.el)
@@ -119,7 +127,7 @@ export const practiceScreen: Screen = (root, { params }) => {
 
   // ---- The player -----------------------------------------------------------------------------
   let player: Player | null = null
-  let range: RangePlayer | null = null
+  let loop: RepLoop | null = null
   let toTrack: (t: number) => number | null = () => null
   let scale = 1
   let counts: CountsView | null = null
@@ -135,13 +143,9 @@ export const practiceScreen: Screen = (root, { params }) => {
     lyrics?.update(tt, rate)
     counts?.update(tt)
   }
-  async function togglePlay(): Promise<void> {
-    if (!range) return
-    setPlaying(await range.toggle())
-  }
   const disable = (text: string) => {
     playBtn.disabled = true
-    fromStart.disabled = true
+    if (!inSession) secondBtn.disabled = true
     note(text)
   }
 
@@ -182,10 +186,19 @@ export const practiceScreen: Screen = (root, { params }) => {
       stage.classList.add('has-side')
       stage.append(side)
     }
-    range = new RangePlayer(player, from, to, step.speed)
-    range.onTick = tick
-    range.onStop = () => setPlaying(false)
+    // The session's cue ("Next: Chorus, Dance, 75% speed") is said before the first rep only.
+    let cue: string | null = inSession ? sessionCue() : null
+    loop = new RepLoop(player, () => {
+      const rep = { from, to, speed, cue }
+      cue = null
+      return rep
+    }, () => save().tempo.bpm)
+    loop.onState = (s) => setPlaying(s === 'counting' || s === 'playing' || s === 'resting')
+    loop.onTick = tick
+    loop.onCount = (w) => countIn.show(w)
     tick(from)
+    // In the session the reps start by themselves: she is already on her way to her spot.
+    if (inSession) loop.play()
   }
 
   const teacher = save().notes.teacher[sid]
@@ -200,19 +213,7 @@ export const practiceScreen: Screen = (root, { params }) => {
     stage.classList.add('has-side')
     stage.append(side)
   }
-  playerCol.append(controls)
-
-  // ---- I did it / Again -------------------------------------------------------------------------
-  playerCol.append(
-    h(
-      'div',
-      { class: 'answer' },
-      button(P.again, () => {
-        if (range) void range.playFromTop().then((ok) => setPlaying(ok))
-      }, { class: 'btn--big' }),
-      button(P.didIt, () => didIt(), { variant: 'primary', class: 'btn--big' }),
-    ),
-  )
+  playerCol.append(main, controls)
 
   function didIt(): void {
     const s = sectionById(sid)!
@@ -236,6 +237,8 @@ export const practiceScreen: Screen = (root, { params }) => {
       d.progress[sid] = p
       if (!before[step!.ladder].done.includes(step!.id)) logTick(d, t, sid, step!.id)
     })
+    loop?.stop()
+    if (inSession) return sessionNext()
     const steps = LADDERS[step!.ladder]
     const next = steps[steps.findIndex((x) => x.id === step!.id) + 1]
     go(next ? `/practice/${sid}/${next.id}` : `/section/${sid}`)
@@ -245,7 +248,7 @@ export const practiceScreen: Screen = (root, { params }) => {
   return () => {
     gone = true
     timer?.stop()
-    range?.destroy()
+    loop?.destroy()
     player?.destroy()
   }
 }

@@ -14,8 +14,11 @@ import { trackSource, type TrackSource } from '../../ui/video'
 const L = KID_COPY.listen
 /** Time to close her eyes after the cue, before the music. */
 const SETTLE_MS = 3500
+/** In the session: time for "Next: Listening run" to be said first. */
+const AUTO_START_MS = 2500
 
-export function listeningRun(): { el: HTMLElement; destroy: () => void } {
+/** The listening run. With autoStart (in the session) it begins once the session's cue is said. */
+export function listeningRun(opts: { autoStart?: boolean } = {}): { el: HTMLElement; destroy: () => void } {
   const panel = h('div', { class: 'listen-panel' })
   const playerArea = h('div', { class: 'player-area', hidden: true })
   let src: TrackSource | null = null
@@ -75,6 +78,7 @@ export function listeningRun(): { el: HTMLElement; destroy: () => void } {
     if (gone) return src?.player.destroy()
     playerArea.hidden = !src?.standIn
     if (!src) panel.replaceChildren(h('p', { class: 'note' }, KID_COPY.practice.needsTrack))
+    else if (opts.autoStart) timer = window.setTimeout(() => state === 'idle' && void toggle(), AUTO_START_MS)
   })()
 
   return {

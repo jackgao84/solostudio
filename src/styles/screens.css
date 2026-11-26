@@ -1142,3 +1142,167 @@
 .block[data-type='listen'] {
   border-left-color: var(--violet);
 }
+
+/* ---- 1.1: Today's start, the tour, sounds ------------------------------------------------- */
+
+.today__start {
+  margin: 14px 0 8px;
+}
+
+.today__start .btn {
+  width: 100%;
+  max-width: 640px;
+}
+
+.tour-card {
+  margin: 10px 0;
+  border-color: rgba(69, 227, 255, 0.5);
+}
+
+.tour-card h2 {
+  margin: 0;
+}
+
+.tour-body {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.tour-slide {
+  min-height: 46vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 24px;
+  padding: 28px;
+  border-radius: 28px;
+  border: 2px solid rgba(167, 123, 255, 0.5);
+  background: radial-gradient(70% 60% at 50% 100%, rgba(255, 95, 174, 0.22), transparent 70%), rgba(0, 0, 0, 0.3);
+  text-align: center;
+}
+
+.tour-text {
+  margin: 0;
+  font-size: 40px;
+  font-weight: 750;
+  line-height: 1.2;
+  max-width: 24ch;
+}
+
+.tour-art {
+  display: flex;
+  gap: 16px;
+  height: 90px;
+  align-items: flex-end;
+}
+
+.tour-art span {
+  width: 42px;
+  border-radius: 12px;
+  background: linear-gradient(var(--pink), var(--violet));
+  animation: eq 1.2s ease-in-out infinite alternate;
+}
+
+.tour-art span:nth-child(2) {
+  animation-delay: -0.4s;
+  background: linear-gradient(var(--cyan), var(--violet));
+}
+
+.tour-art span:nth-child(3) {
+  animation-delay: -0.8s;
+  background: linear-gradient(var(--gold), var(--pink));
+}
+
+.tour-dots {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  margin-top: 16px;
+}
+
+.tour-dots span {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.tour-dots span.is-on {
+  background: var(--cyan);
+}
+
+.sound-cards {
+  display: grid;
+  gap: 18px;
+}
+
+@media (orientation: landscape) and (min-width: 900px) {
+  .sound-cards {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+.volume-row {
+  gap: 14px;
+}
+
+.meter {
+  display: inline-flex;
+  gap: 6px;
+  align-items: flex-end;
+  height: 40px;
+}
+
+.meter span {
+  width: 14px;
+  border-radius: 4px;
+  background: rgba(255, 255, 255, 0.18);
+}
+
+.meter span:nth-child(1) {
+  height: 30%;
+}
+.meter span:nth-child(2) {
+  height: 45%;
+}
+.meter span:nth-child(3) {
+  height: 60%;
+}
+.meter span:nth-child(4) {
+  height: 80%;
+}
+.meter span:nth-child(5) {
+  height: 100%;
+}
+
+.meter span.is-on {
+  background: linear-gradient(var(--cyan), var(--violet));
+}
+
+.volume-label {
+  margin: 0;
+  font-weight: 700;
+  min-width: 8ch;
+}
+
+/* The main buttons share one row, even in the narrower player column in landscape. */
+.main-actions > .btn--huge {
+  flex: 1 1 0;
+  min-width: 140px;
+  padding: 16px 22px;
+}
+
+.controls:has(> .count-in:not([hidden])) {
+  min-height: 96px;
+}
+
+.practice__notes {
+  gap: 2px;
+  margin: 4px 0 10px;
+}
+
+.practice__notes p {
+  margin: 0;
+}

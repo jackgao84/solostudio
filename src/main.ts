@@ -22,6 +22,8 @@ import { unlockSpeech } from './audio/voice'
 import { startActivityLog } from './app/activity'
 import { weekScreen } from './screens/grownups/week'
 import { notesScreen } from './screens/grownups/notes'
+import { soundsScreen } from './screens/kid/sounds'
+import { tourScreen } from './screens/kid/tour'
 import { recordScreen } from './screens/kid/record'
 import { clipsScreen } from './screens/kid/clips'
 import { lessonScreen, lessonsScreen } from './screens/kid/lessons'
@@ -78,6 +80,8 @@ const routes: [string, Screen][] = [
   ['/drill/:kind', drillScreen],
   ['/record/:target', recordScreen],
   ['/clips', clipsScreen],
+  ['/sounds', soundsScreen],
+  ['/tour', tourScreen],
   ['/lessons', lessonsScreen],
   ['/lesson/:id', lessonScreen],
   ['/grownups', grownupsHome],
