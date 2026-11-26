@@ -1,39 +1,60 @@
 /**
  * Putting a source on screen: her track (or a YouTube video standing in for it), a YouTube
- * reference, or a local video. A video that can't play is replaced by a calm panel; one that won't
- * embed offers "Open in YouTube".
+ * reference, or a local video. A video that can't play is replaced by a calm panel that says why,
+ * honestly (version 1.3): offline, or online and YouTube's player didn't load (Try again, Open in
+ * YouTube, ask a grown-up to check YouTube isn't blocked), or a video that won't play inside apps.
  */
+import { button } from './components'
 import { KID_COPY } from '../content/kid'
 import { localVideoPlayer } from '../media/local-video'
 import type { Player } from '../media/player'
 import { trackPlayer } from '../media/track'
-import { youTubePlayer } from '../media/youtube'
-import { watchUrl, type ErrorKind } from '../media/youtube-util'
+import { youTubePlayer, type YouTubePlayer } from '../media/youtube'
+import { watchUrl } from '../media/youtube-util'
+import { problemPanel, type VideoProblem } from '../model/video-problems'
 import type { Reference, SaveData } from '../storage/schema'
 import { h } from './dom'
 
 const P = KID_COPY.practice
 
-export function videoErrorPanel(kind: ErrorKind | 'offline', videoId: string): HTMLElement {
-  const text = kind === 'blocked' ? P.videoBlocked : kind === 'missing' ? P.videoMissing : kind === 'offline' ? P.videoOffline : P.videoOther
+export function videoErrorPanel(kind: VideoProblem, videoId: string, onTryAgain?: () => void): HTMLElement {
+  const spec = problemPanel(kind)
   return h(
     'div',
-    { class: 'yt-error', role: 'status' },
-    h('p', null, text),
-    kind === 'offline' ? null : h('a', { class: 'btn open-in-youtube', href: watchUrl(videoId), target: '_blank', rel: 'noopener noreferrer' }, P.openInYouTube),
-    kind === 'offline' ? null : h('p', { class: 'note' }, P.swapNote),
+    { class: 'yt-error', role: 'status', 'data-problem': kind },
+    h('p', null, spec.text),
+    spec.tryAgain || spec.openInYouTube
+      ? h(
+          'div',
+          { class: 'row' },
+          spec.tryAgain && onTryAgain ? button(P.tryAgain, () => onTryAgain(), { variant: 'primary' }) : null,
+          spec.openInYouTube ? h('a', { class: 'btn open-in-youtube', href: watchUrl(videoId), target: '_blank', rel: 'noopener noreferrer' }, P.openInYouTube) : null,
+        )
+      : null,
+    spec.note ? h('p', { class: 'note' }, spec.note) : null,
   )
 }
 
-/** A YouTube player in `box`, swapped for the error panel if it can't play. */
+/** A YouTube player in `box`, swapped for the honest panel if it can't play (and back again on Try again). */
 export function youTubeIn(box: HTMLElement, videoId: string, onFail?: () => void, start?: number): Player {
-  return youTubePlayer(box, videoId, {
+  let panel: HTMLElement | null = null
+  const again = () => {
+    panel?.remove()
+    panel = null
+    p.retry()
+  }
+  const p: YouTubePlayer = youTubePlayer(box, videoId, {
     start,
     onError: (kind) => {
-      box.append(videoErrorPanel(kind, videoId))
+      panel?.remove()
+      panel = videoErrorPanel(kind, videoId, again)
+      box.append(panel)
+      // Offline: it comes back by itself once the iPad is online again.
+      if (kind === 'offline') window.addEventListener('online', () => panel?.isConnected && again(), { once: true })
       onFail?.()
     },
   })
+  return p
 }
 
 export function referencePlayer(box: HTMLElement, ref: Reference, onFail?: () => void): Player {

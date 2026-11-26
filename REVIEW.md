@@ -2,7 +2,7 @@
 
 Every piece of kid-facing text in the app, grouped by where it appears. Words in {curly brackets} are filled in on the iPad (her name, a section name, a number). The rap lines themselves are typed on the iPad by a grown-up and are never part of the app.
 
-- 503 lines in 27 groups
+- 506 lines in 27 groups
 
 **This file is generated from `src/content`. Don’t edit it by hand.** To change the words, edit the files in `src/content`, then run `npm run review` to rebuild this file. `npm test` fails while it is out of date.
 
@@ -256,7 +256,7 @@ Each ladder and each rung, with the one-line how-to shown on the practice screen
 - Link it up <sub>`step.together-linked.name`</sub>
 - Start in the part before and flow straight into this one. <sub>`step.together-linked.how`</sub>
 
-## 10. Practising (39)
+## 10. Practising (42)
 
 The practice screen: buttons, notes, speeds and what she sees when a video won’t play.
 
@@ -286,7 +286,10 @@ The practice screen: buttons, notes, speeds and what she sees when a video won�
 - A grown-up needs to mark this part on your track first. <sub>`kid.practice.needsTrackMarks`</sub>
 - A grown-up needs to load your track first. <sub>`kid.practice.needsTrack`</sub>
 - Your track isn’t loaded yet, so a video is standing in. <sub>`kid.practice.standIn`</sub>
-- Videos need the internet. Your track still works. <sub>`kid.practice.videoOffline`</sub>
+- Videos need the internet. This one plays as soon as the iPad is back online. <sub>`kid.practice.videoOffline`</sub>
+- The video didn’t load. <sub>`kid.practice.videoNotLoaded`</sub>
+- Try again <sub>`kid.practice.tryAgain`</sub>
+- If it keeps happening, ask a grown-up to check YouTube isn’t blocked on this iPad. <sub>`kid.practice.videoAskGrownUp`</sub>
 - This video won’t play inside the app. <sub>`kid.practice.videoBlocked`</sub>
 - This video can’t be found. <sub>`kid.practice.videoMissing`</sub>
 - This video won’t play right now. <sub>`kid.practice.videoOther`</sub>

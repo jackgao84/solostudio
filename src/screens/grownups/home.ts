@@ -1,10 +1,16 @@
-/** The grown-ups' home: a setup checklist, the menu, storage, the version line and updates. */
+/**
+ * The grown-ups' home: a setup checklist, the menu, Test YouTube (version 1.3: it says whether the
+ * iPad is offline, YouTube is blocked, or it works), storage, the version line and updates.
+ */
 import { go, save } from '../../app/ctx'
 import type { Screen } from '../../app/router'
 import { applyUpdateIfSafe, onUpdateReady } from '../../app/sw-register'
 import { versionLine } from '../../app/version'
 import { mediaIdsIn } from '../../storage/backup'
 import { media } from '../../storage/media'
+import { DEFAULT_REFS } from '../../content/references'
+import { youTubePlayer, type YouTubePlayer } from '../../media/youtube'
+import { YOUTUBE_TEST_WORDS, youTubeTestResult, type YouTubeTest } from '../../model/video-problems'
 import { spanOf } from '../../model/timing'
 import { button } from '../../ui/components'
 import { h } from '../../ui/dom'
@@ -21,7 +27,7 @@ export const grownupsHome: Screen = (root) => {
     'grownups',
     'Grown-ups',
     null,
-    h('p', null, 'Set up Solo Studio here: about 10 minutes, and she can start after the first three steps. SETUP.md (in the project) walks through it.'),
+    h('p', null, 'She can already use the practice room with no setup. Set up Solo Studio here to add her own song: about 10 minutes, and her lessons start after the first three steps. SETUP.md (in the project) walks through it.'),
     h('div', { class: 'row' }, button(setupButtonLabel(), () => go('/grownups/setup'), { variant: 'primary', class: 'btn--big setup-go' })),
     h(
       'section',
@@ -39,6 +45,55 @@ export const grownupsHome: Screen = (root) => {
   )
   const missing = h('p', { class: 'media-missing', hidden: true })
   el.append(missing)
+
+  // Test YouTube: offline, blocked, or working (with the mirrored follow-along as the test video).
+  const testBox = h('div', { class: 'yt-test-box' })
+  const result = h('p', { class: 'yt-test-result', role: 'status', hidden: true })
+  let testPlayer: YouTubePlayer | null = null
+  const runTest = () => {
+    testPlayer?.destroy()
+    testPlayer = null
+    testBox.replaceChildren()
+    result.hidden = false
+    result.removeAttribute('data-result')
+    result.textContent = 'Testing YouTube…'
+    const show = (r: YouTubeTest) => {
+      result.setAttribute('data-result', r)
+      result.textContent = YOUTUBE_TEST_WORDS[r]
+    }
+    if (!navigator.onLine) return show('offline')
+    const id = save().refs.find((r) => r.role === 'mirrored' && r.kind === 'youtube' && r.youtubeId)?.youtubeId ?? DEFAULT_REFS.find((r) => r.role === 'mirrored')!.youtubeId
+    let settled = false
+    const p = youTubePlayer(testBox, id, {
+      onError: (kind) => {
+        if (settled) return
+        settled = true
+        show(youTubeTestResult(kind))
+      },
+    })
+    testPlayer = p
+    // YouTube can say a video won't play inside apps just after its player is ready: give it a moment.
+    p.ready.then(
+      () =>
+        window.setTimeout(() => {
+          if (settled || testPlayer !== p) return
+          settled = true
+          show(youTubeTestResult('ready'))
+        }, 2000),
+      () => undefined,
+    )
+  }
+  el.append(
+    h(
+      'section',
+      { class: 'card yt-test' },
+      h('h2', null, 'YouTube on this iPad'),
+      h('p', null, 'If videos don’t play for her, test YouTube here. It says whether the iPad is offline, YouTube is blocked, or it works.'),
+      h('div', { class: 'row' }, button('Test YouTube', () => runTest())),
+      result,
+      testBox,
+    ),
+  )
   void (async () => {
     try {
       const db = await media()
@@ -86,5 +141,8 @@ export const grownupsHome: Screen = (root) => {
     h('section', { class: 'card' }, storage, updateSlot, h('p', { class: 'version-line' }, versionLine())),
     h('div', { class: 'row' }, button('Back to practice', () => go(save().setup.complete ? '/today' : '/welcome'), { variant: 'primary' })),
   )
-  return () => stop()
+  return () => {
+    stop()
+    testPlayer?.destroy()
+  }
 }

@@ -39,6 +39,13 @@ export function parseYouTubeId(input: string): string | null {
 
 export type ErrorKind = 'blocked' | 'missing' | 'other'
 
+/** YouTube's player didn't load: the iPad is offline, or it is online and the player still didn't load. */
+export type LoadFailure = 'offline' | 'unloaded'
+
+export function loadFailure(online: boolean): LoadFailure {
+  return online ? 'unloaded' : 'offline'
+}
+
 export function errorKind(code: number): ErrorKind {
   if (code === 101 || code === 150) return 'blocked'
   if (code === 100) return 'missing'

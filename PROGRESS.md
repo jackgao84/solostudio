@@ -97,7 +97,12 @@ nothing to practise); `e2e/videos.spec.ts`: her loop buttons are "Loop start" / 
    the rap lesson's card says the words are in the video. All her screens are open before setup;
    `/` opens the welcome until setup is done or she has a part; the welcome has Let's go.
    Narration: 3 new clips (the hint), 214 characters.
-3. [ ] Honest video messages, and Test YouTube in the grown-ups' area.
+3. [x] Honest video messages, and Test YouTube in the grown-ups' area. Checks first (c573f65):
+   `tests/unit/video-messages.test.ts`, `e2e/video-messages.spec.ts`. Code:
+   `src/model/video-problems.ts` (what each case shows; Test YouTube's words), `loadFailure` in
+   `src/media/youtube-util.ts`, `src/media/youtube.ts` (offline vs not loaded, a 20 s limit for the
+   player to get ready, `retry()`), `src/ui/video.ts` (the panel with Try again; offline comes back by
+   itself on the `online` event), Test YouTube on the grown-ups' home.
 4. [ ] Narration for new lines; full checks; every new screen in both orientations; 1.3.0; deploy.
 
 Decisions (1.3):
@@ -118,6 +123,13 @@ Decisions (1.3):
   15-minute dance block in the room (the hint, read aloud), cool-down 5. A rap block with no sections
   opens the room on the listen-and-read video. Once a grown-up adds sections, nothing about the path
   or the plan changes from 1.2; her parts stay in the room.
+- D32. "Videos need the internet" only when `navigator.onLine` is false. Online, a failed YouTube
+  script or a player not ready within 20 s (a player kept hidden, like Showtime's stand-in, gets its
+  time once it is on screen) says "The video didn’t load." with Try again, Open in YouTube and "If it
+  keeps happening, ask a grown-up to check YouTube isn’t blocked on this iPad." Errors 150/101/100 are
+  as before; other YouTube errors also offer Try again. Test YouTube (grown-ups' home) tests the
+  mirrored follow-along: offline, blocked (online, didn't load), works (ready, and no error within
+  2 s), or "this video won't play inside apps".
 - D30. A part is ticked at 50, 75 and 100% speed: "I did it" ticks the highest of those at or below
   the speed it plays at, then moves to the next speed. Picking a part opens it at its next speed.
   Rename and Delete (with "Yes, delete it") are on every part.

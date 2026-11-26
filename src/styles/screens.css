@@ -2309,3 +2309,22 @@ html[data-theme='mint'] {
 .my-part .part-form {
   flex: 1 1 100%;
 }
+
+/* Test YouTube in the grown-ups' area (version 1.3). */
+.yt-test-box {
+  max-width: 480px;
+}
+
+.yt-test-result[data-result='works'] {
+  color: var(--lime);
+}
+
+.yt-test-result[data-result='offline'],
+.yt-test-result[data-result='blocked'],
+.yt-test-result[data-result='video'] {
+  color: var(--gold);
+}
+
+.yt-error .row {
+  margin: 0;
+}

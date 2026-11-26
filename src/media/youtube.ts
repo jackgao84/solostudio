@@ -2,11 +2,13 @@
  * YouTube through the IFrame Player API only, embedded from youtube-nocookie.com, playing inline.
  * The player sits in its own box (at least 200 × 200, sized by CSS) with nothing over it and no CSS
  * transforms on it or around it. A video that won't embed reports its error so the screen can show
- * "Open in YouTube" in its place.
+ * "Open in YouTube" in its place. Version 1.3: a player that didn't load says whether the iPad is
+ * offline or YouTube's player simply didn't load (its script, or the player within READY_TIMEOUT_MS),
+ * and can try again.
  */
 import { trackYouTube } from './now-playing'
 import type { Player } from './player'
-import { YT_API, YT_HOST, errorKind, nearestRate, playerVars, type ErrorKind } from './youtube-util'
+import { YT_API, YT_HOST, errorKind, loadFailure, nearestRate, playerVars, type ErrorKind, type LoadFailure } from './youtube-util'
 
 interface YTPlayer {
   playVideo(): void
@@ -35,7 +37,7 @@ declare global {
 
 let api: Promise<YTNamespace> | null = null
 
-/** Load the IFrame Player API once. Rejects when offline. */
+/** Load the IFrame Player API once. Rejects when it can't load (offline, or blocked); a later call tries again. */
 export function loadYouTubeApi(): Promise<YTNamespace> {
   if (window.YT?.Player) return Promise.resolve(window.YT)
   if (!api) {
@@ -66,69 +68,102 @@ export function loadYouTubeApi(): Promise<YTNamespace> {
 }
 
 export interface YouTubeOptions {
-  /** The video can't play here (blocked, missing, offline…). The player has been removed. */
-  onError?: (kind: ErrorKind | 'offline') => void
+  /** The video can't play here (blocked, missing, offline, not loaded…). The player has been removed. */
+  onError?: (kind: ErrorKind | LoadFailure) => void
   /** Start here (seconds) the first time it plays. */
   start?: number
 }
 
-export function youTubePlayer(container: HTMLElement, videoId: string, opts: YouTubeOptions = {}): Player {
+/** How long YouTube's player gets to be ready before she is told it didn't load (version 1.3). */
+export const READY_TIMEOUT_MS = 20_000
+
+/** A YouTube player that can try again after it didn't load. */
+export interface YouTubePlayer extends Player {
+  /** Load it again (after an error); a player that is fine is left alone. */
+  retry(): void
+}
+
+export function youTubePlayer(container: HTMLElement, videoId: string, opts: YouTubeOptions = {}): YouTubePlayer {
   const frame = document.createElement('div')
   frame.className = 'yt-frame'
-  const host = document.createElement('div')
-  host.className = 'yt-host'
-  frame.append(host)
-  container.append(frame)
   let yt: YTPlayer | null = null
   let state = -1
   let ended: (() => void) | null = null
   let gone = false
   let failed = false
   let wantedRate = 1
+  let readyTimer = 0
+  let ready: Promise<void> = Promise.resolve()
 
-  const fail = (kind: ErrorKind | 'offline') => {
+  const fail = (kind: ErrorKind | LoadFailure) => {
     if (failed || gone) return
     failed = true
+    window.clearTimeout(readyTimer)
     try {
       yt?.destroy()
     } catch {
       /* already gone */
     }
     yt = null
+    state = -1
     frame.remove()
     opts.onError?.(kind)
   }
 
-  const ready = new Promise<void>((resolve, reject) => {
-    loadYouTubeApi().then(
-      (YT) => {
-        if (gone) return reject(new Error('gone'))
-        yt = new YT.Player(host, {
-          host: YT_HOST,
-          videoId,
-          width: '100%',
-          height: '100%',
-          playerVars: opts.start ? { ...playerVars(window.location.origin), start: Math.floor(opts.start) } : playerVars(window.location.origin),
-          events: {
-            onReady: () => resolve(),
-            onStateChange: (e: { data: number }) => {
-              state = e.data
-              if (e.data === 0) ended?.()
+  /** Put the player in its box and load it (again, after Try again). */
+  const load = () => {
+    failed = false
+    state = -1
+    const host = document.createElement('div')
+    host.className = 'yt-host'
+    frame.replaceChildren(host)
+    container.append(frame)
+    ready = new Promise<void>((resolve, reject) => {
+      loadYouTubeApi().then(
+        (YT) => {
+          if (gone) return reject(new Error('gone'))
+          // Online with the script, but the player itself may still never load (a filter, say). A
+          // player kept hidden for now (Showtime's stand-in) gets its time once it is on screen.
+          const check = () => {
+            if (frame.isConnected && frame.getClientRects().length === 0) {
+              readyTimer = window.setTimeout(check, READY_TIMEOUT_MS)
+              return
+            }
+            fail(loadFailure(navigator.onLine))
+            reject(new Error('not ready'))
+          }
+          readyTimer = window.setTimeout(check, READY_TIMEOUT_MS)
+          yt = new YT.Player(host, {
+            host: YT_HOST,
+            videoId,
+            width: '100%',
+            height: '100%',
+            playerVars: opts.start ? { ...playerVars(window.location.origin), start: Math.floor(opts.start) } : playerVars(window.location.origin),
+            events: {
+              onReady: () => {
+                window.clearTimeout(readyTimer)
+                resolve()
+              },
+              onStateChange: (e: { data: number }) => {
+                state = e.data
+                if (e.data === 0) ended?.()
+              },
+              onError: (e: { data: number }) => {
+                fail(errorKind(e.data))
+                reject(new Error(`youtube ${e.data}`))
+              },
             },
-            onError: (e: { data: number }) => {
-              fail(errorKind(e.data))
-              reject(new Error(`youtube ${e.data}`))
-            },
-          },
-        })
-      },
-      () => {
-        fail('offline')
-        reject(new Error('offline'))
-      },
-    )
-  })
-  ready.catch(() => undefined)
+          })
+        },
+        () => {
+          fail(loadFailure(navigator.onLine))
+          reject(new Error('not loaded'))
+        },
+      )
+    })
+    ready.catch(() => undefined)
+  }
+  load()
 
   const call = (fn: (p: YTPlayer) => void) => {
     if (yt && !failed) {
@@ -140,9 +175,11 @@ export function youTubePlayer(container: HTMLElement, videoId: string, opts: You
     }
   }
 
-  const player: Player = {
+  const player: YouTubePlayer = {
     kind: 'youtube',
-    ready,
+    get ready() {
+      return ready
+    },
     play: () => call((p) => p.playVideo()),
     pause: () => {
       call((p) => p.pauseVideo())
@@ -182,13 +219,18 @@ export function youTubePlayer(container: HTMLElement, videoId: string, opts: You
     set onEnded(fn) {
       ended = fn
     },
+    retry: () => {
+      if (gone || !failed) return
+      load()
+    },
     destroy: () => {
       gone = true
       state = -1
+      window.clearTimeout(readyTimer)
       call((p) => p.destroy())
       yt = null
       frame.remove()
     },
   }
-  return trackYouTube(player)
+  return trackYouTube(player) as YouTubePlayer
 }
