@@ -7,7 +7,25 @@
 
 ## Status
 
-- **Version 1.3 in progress (2026-11-26): practice that needs no setup.** Parts 1–3 built and committed, 1.3.0 bumped, not pushed; one WebKit failure to look at (see "Version 1.3" step 4).
+- **Version 1.3.0 done and live (2026-11-26), build 75e988e:** practice that needs no setup (see
+  "Version 1.3" below). Confirmed in WebKit against the live site at iPad portrait and landscape: "Version
+  1.3.0 · build 75e988e"; one `solostudio:precache:<hash>` cache of 227 files (218 clips); a fresh iPad
+  opens on the welcome, reaches the practice room (7 videos), saves a part, and then opens on home with
+  the part on her path; Test YouTube says it works; a 1.2 save carries over (save version 4, everything
+  kept, no parts, the 1.2 document as the backup copy); no console errors. The deploy workflow's unit
+  checks passed (38 files, 346).
+- 1.3.0 final checks: typecheck clean; unit 346/346 in 38 files; privacy scan clean; Playwright WebKit
+  (84 tests × iPad portrait and landscape): 168/168 on a clean run (10.1 min). Three more full runs on
+  the same build each had failures that are not 1.3's: 6 timing failures while the Mac's load average
+  was 74–100 (all passed on rerun, 24/24); the hand-tapped tempo in the journey reading 75.5 BPM while
+  the load was still high; and once `e2e/filming.spec.ts:14` logged "WebKitBlobResource error 3"
+  reading a just-recorded clip. That last one is older than 1.3: the same check on 1.2.1's code failed
+  3 of 20 repeats with the same error (1.3 1 of 12); the recording code is unchanged since 1.2.1.
+- Only the iPad can confirm (1.3): her loop going round on the real YouTube player on the beat with the
+  count-in (real seeks land on keyframes); the nudges by touch; the hint in the coach's voice; Test
+  YouTube's answers on the iPad's own network and Screen Time settings (and "offline" with Wi-Fi off);
+  the 20 s "didn't load" when YouTube really is blocked; Showtime's hidden stand-in never tripping that
+  limit; a real "won't play inside apps" error arriving within Test YouTube's 2 s wait.
 - **Version 1.2.1 done and live (2026-11-26), build 6a9e548:** Rap basics (see "Version 1.2.1"
   below). Confirmed in WebKit against the live site at iPad portrait and landscape: "Version 1.2.1 ·
   build 6a9e548"; one precache cache of 224 files (215 clips); 8 lesson cards; on the path Rap basics
@@ -65,7 +83,7 @@
     update specs seed no YouTube stand-in (routing can't reach a worker-controlled page).
   No assertion was changed anywhere.
 
-## Version 1.3 (in progress)
+## Version 1.3 (done)
 
 The owner's 1.3 brief: practice that needs no setup. Three parts, each checks first, then code, a
 commit after each; a 1.2 save migrates through a tested migration (save version 4).
@@ -103,13 +121,13 @@ nothing to practise); `e2e/videos.spec.ts`: her loop buttons are "Loop start" / 
    `src/media/youtube-util.ts`, `src/media/youtube.ts` (offline vs not loaded, a 20 s limit for the
    player to get ready, `retry()`), `src/ui/video.ts` (the panel with Try again; offline comes back by
    itself on the `online` event), Test YouTube on the grown-ups' home.
-4. [ ] Narration done (3 clips, 214 characters; all clips 218, 11,541 characters). Every new screen
-   looked at in both orientations (fixed: portrait room order and video height so Loop start/end
-   stay on screen with the hint; the narrator bar inside the hint card). Version 1.3.0 (7525869).
-   Typecheck clean; unit 346/346 in 38 files; privacy scan clean. **Stopped here (usage limit):** the
-   first full WebKit run showed a failure in `e2e/countin-everywhere.spec.ts:12` (recording a section
-   with a count-in), not yet investigated. Next: read that failure (test-results/), fix, run the full
-   WebKit suite twice, then push, confirm the deploy, and run the live check. Not pushed.
+4. [x] Narration: 3 new clips (the hint), 214 characters; all clips 218, 11,541 characters
+   (ElevenLabs characters used in 1.3: 214). Every new screen looked at in both orientations (fixed:
+   the room in portrait puts the player, her buttons and her loop before the videos, with a shorter
+   video while the hint shows, so Loop start/end stay on screen; the narrator's buttons sit plainly in
+   the hint card). SETUP.md and README for 1.3 (f06e843). Version 1.3.0 (7525869). Full checks and the
+   live site: see Status. (The first full run was cut short when the Mac paused; its recording failures
+   passed on rerun, 12/12.)
 
 Decisions (1.3):
 
