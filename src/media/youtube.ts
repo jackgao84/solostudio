@@ -4,6 +4,7 @@
  * transforms on it or around it. A video that won't embed reports its error so the screen can show
  * "Open in YouTube" in its place.
  */
+import { trackYouTube } from './now-playing'
 import type { Player } from './player'
 import { YT_API, YT_HOST, errorKind, nearestRate, playerVars, type ErrorKind } from './youtube-util'
 
@@ -16,6 +17,8 @@ interface YTPlayer {
   setPlaybackRate(r: number): void
   getPlaybackRate(): number
   getAvailablePlaybackRates(): number[]
+  mute(): void
+  unMute(): void
   destroy(): void
 }
 
@@ -135,11 +138,15 @@ export function youTubePlayer(container: HTMLElement, videoId: string, opts: You
     }
   }
 
-  return {
+  const player: Player = {
     kind: 'youtube',
     ready,
     play: () => call((p) => p.playVideo()),
-    pause: () => call((p) => p.pauseVideo()),
+    pause: () => {
+      call((p) => p.pauseVideo())
+      // The player reports the pause a moment later; it is not playing from now on.
+      if (state === 1 || state === 3) state = 2
+    },
     seek: (t) => call((p) => p.seekTo(Math.max(0, t), true)),
     time: () => {
       let t = 0
@@ -166,6 +173,7 @@ export function youTubePlayer(container: HTMLElement, videoId: string, opts: You
       return d
     },
     playing: () => state === 1 || state === 3,
+    setMuted: (on) => call((p) => (on ? p.mute() : p.unMute())),
     get onEnded() {
       return ended
     },
@@ -174,9 +182,11 @@ export function youTubePlayer(container: HTMLElement, videoId: string, opts: You
     },
     destroy: () => {
       gone = true
+      state = -1
       call((p) => p.destroy())
       yt = null
       frame.remove()
     },
   }
+  return trackYouTube(player)
 }

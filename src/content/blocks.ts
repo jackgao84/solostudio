@@ -1,5 +1,5 @@
 /** Names for the plan's phases and the day's blocks, as she sees them on Today. */
-import type { BlockType, Phase } from '../model/plan'
+import type { BlockType, Drill, Phase } from '../model/plan'
 
 export const PHASE_COPY: Record<Phase, { name: string; about: string }> = {
   learn: { name: 'Learning the parts', about: 'Rap lines and dance moves, one section at a time, slowly.' },
@@ -17,4 +17,15 @@ export const BLOCK_COPY: Record<BlockType, { title: string; how: string }> = {
   runthrough: { title: 'Run-through', how: 'The whole song from the top, no stopping.' },
   family: { title: 'Perform for your family', how: 'Show someone at home. That’s a brave thing!' },
   cooldown: { title: 'Cool-down', how: 'Stretch, breathe slowly and rest your voice.' },
+}
+
+/** The drills: rap-and-dance-together blocks from the together phase on. */
+export const DRILL_COPY: Record<Drill, { title: string; how: string }> = {
+  anywhere: { title: 'Start anywhere', how: 'Land in a random part and rap and dance from there.' },
+  rejoin: { title: 'Jump back in', how: 'If the music stops or skips, keep going and pick it back up.' },
+}
+
+/** A block's name and how-to (a drill's own, or its type's). */
+export function blockCopy(b: { type: BlockType; drill?: Drill }): { title: string; how: string } {
+  return b.drill ? DRILL_COPY[b.drill] : BLOCK_COPY[b.type]
 }

@@ -105,6 +105,20 @@ export const KID_COPY = {
     noLines: 'A grown-up types the lines for this part on the iPad.',
     reviewNote: 'Quick check: do it once from memory.',
   },
+  drills: {
+    startDrill: 'Start the drill',
+    anywhereHow: 'You land in a random part of your song. Rap and dance from right there.',
+    rejoinHow: 'Sometimes the music drops out or skips ahead. Keep going, then pick it back up.',
+    now: 'Now: {section}',
+    showVideo: 'Show the video',
+    next: 'Next',
+    keepGoing: 'Keep going!',
+    needsMarks: 'A grown-up needs to mark your sections on your track first.',
+  },
+  cues: {
+    countIn: '5, 6, 7, 8',
+    nextSection: 'Next: {section}',
+  },
   sections: {
     title: 'Your sections',
     open: 'Open {section}',

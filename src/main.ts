@@ -16,6 +16,9 @@ import { practiceScreen } from './screens/kid/practice'
 import { sectionScreen, sectionsScreen } from './screens/kid/sections'
 import { quizScreen } from './screens/kid/quiz'
 import { showtimeScreen } from './screens/kid/showtime'
+import { drillScreen } from './screens/kid/drill'
+import { unlockEffects } from './audio/sfx'
+import { unlockSpeech } from './audio/voice'
 import { recordScreen } from './screens/kid/record'
 import { clipsScreen } from './screens/kid/clips'
 import { lessonScreen, lessonsScreen } from './screens/kid/lessons'
@@ -50,6 +53,14 @@ window.addEventListener('storage', (e) => {
 
 registerServiceWorker()
 
+// iPadOS lets a page speak and play sounds only after a tap: her first tap wakes both (silently).
+const unlock = () => {
+  unlockSpeech()
+  unlockEffects()
+  document.removeEventListener('pointerdown', unlock, true)
+}
+document.addEventListener('pointerdown', unlock, true)
+
 const routes: [string, Screen][] = [
   ['/welcome', welcomeScreen],
   ['/today', todayScreen],
@@ -59,6 +70,7 @@ const routes: [string, Screen][] = [
   ['/section/:id', sectionScreen],
   ['/quiz/:id/:kind', quizScreen],
   ['/showtime', showtimeScreen],
+  ['/drill/:kind', drillScreen],
   ['/record/:target', recordScreen],
   ['/clips', clipsScreen],
   ['/lessons', lessonsScreen],

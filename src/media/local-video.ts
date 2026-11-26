@@ -44,6 +44,9 @@ export function localVideoPlayer(container: HTMLElement, mediaId: string, mirror
     rate: () => v.playbackRate,
     duration: () => (Number.isFinite(v.duration) ? v.duration : null),
     playing: () => !v.paused && !v.ended,
+    setMuted: (on) => {
+      v.muted = on
+    },
     get onEnded() {
       return ended
     },

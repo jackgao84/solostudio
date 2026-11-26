@@ -7,7 +7,7 @@ import { go, save, sectionsInOrder, today, update } from '../../app/ctx'
 import { gateButton } from '../../app/gate'
 import type { Screen } from '../../app/router'
 import { applyUpdateIfSafe, onUpdateReady } from '../../app/sw-register'
-import { BLOCK_COPY, PHASE_COPY } from '../../content/blocks'
+import { PHASE_COPY, blockCopy } from '../../content/blocks'
 import { KID_COPY } from '../../content/kid'
 import { LADDER_COPY } from '../../content/ladders'
 import { daysBetween } from '../../model/dates'
@@ -103,7 +103,7 @@ export const todayScreen: Screen = (root) => {
       list.replaceChildren(
         ...blocks.map((b) => {
           const done = state.done.includes(b.id)
-          const title = BLOCK_COPY[b.type].title
+          const title = blockCopy(b).title
           const focus = b.sectionIds.map((id) => names.get(id)).filter(Boolean).join(', ')
           const actions = h('div', { class: 'block__actions' }, button(T.start, () => go(`/block/${b.id}`), { label: fill(T.startLabel, { title }), variant: done ? undefined : 'primary' }))
           if (!PINNED_TYPES.includes(b.type)) {
@@ -111,7 +111,7 @@ export const todayScreen: Screen = (root) => {
           }
           return h(
             'li',
-            { class: `block${done ? ' is-done' : ''}`, 'data-block-id': b.id, 'data-type': b.type },
+            { class: `block${done ? ' is-done' : ''}`, 'data-block-id': b.id, 'data-type': b.type, 'data-drill': b.drill },
             h(
               'div',
               { class: 'block__info' },

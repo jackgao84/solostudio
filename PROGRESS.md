@@ -37,13 +37,31 @@ part by part: checks first, then the code, a commit after each part.
    `tests/unit/migration.test.ts`, `e2e/migration.spec.ts`, fixture `tests/fixtures/v1-save.ts`).
    A 1.0 save loads unchanged with the new parts at their defaults; the 1.0 document is kept as
    the backup copy before the new one is written, once; 1.0 backup files still import.
-2. [ ] Start anywhere and rejoin drills, in the plan from the together phase on.
+2. [x] Start anywhere and jump back in (rejoin), in the plan from the together phase on
+   (`src/model/drills.ts`, `src/model/countin.ts`, `src/media/reploop.ts`, `src/screens/kid/drill.ts`;
+   checks `tests/unit/drills.test.ts`, `tests/unit/routes-v11.test.ts`, `e2e/drills.spec.ts`, with a
+   speech stand-in in `e2e/voice.ts`).
 3. [ ] The Showtime routine, audience sound, walk-on and bow on their own.
 4. [ ] Grown-ups' week, teacher notes per section, a note for her on Today.
 5. [ ] Listening run on light days.
 6. [ ] Ease of use: guided session, spoken cues and count-ins, looping reps, sound settings, tour.
 7. [ ] Fun: stage lights, light stick, D-day, build the line, celebrations, her stage's name and colours.
 8. [ ] Docs (REVIEW.md, SETUP.md), full checks, screens in both orientations, version 1.1.0, deploy.
+
+Decisions (1.1):
+
+- D1. Drills are rap-and-dance-together blocks (`type: 'together'` plus `drill`), so the voice rule,
+  water gaps and headset reminders apply unchanged and no 1.0 plan check moves. They take a small
+  share of together-phase and show-ready days (the first to go on a short day); none while learning.
+- D2. Start anywhere: shaky sections weigh 3, never the same section twice in a row, from the
+  section's start at 100%; the video option uses the mirrored follow-along. Jump back in: one event
+  per rep, a drop-out of 2–4 s (muted, so her track keeps its place; iPadOS ignores volume) or a jump
+  from inside a line to the next line's start, from 1 s before the section.
+- D3. Count-in: 1.5 s to get to her spot, then "5, 6, 7, 8" at her track's tempo × speed (kept
+  between 0.4 and 1 s a beat; 0.6 s with no tempo); the music comes in on the 1. Timed by the app,
+  never by speech events (Playwright's WebKit has no voices and never ends an utterance).
+- D4. Cues are never spoken while her track, a video or a YouTube player plays (`mediaPlaying()`);
+  a YouTube player counts as paused as soon as it is told to pause.
 
 **Check change approved by the owner (1.1):** `e2e/journey.spec.ts` steps 13–14: only the waits
 grow by the Showtime routine's length (the routine now comes before and after her track); every

@@ -12,6 +12,9 @@
  *    any other block, a water break included, rests her voice;
  *  - a water break about every 25 minutes: never more than WATER_MAX_GAP_MIN minutes without one;
  *  - from the middle phase on, practice blocks remind her to wear her headset mic or a headband.
+ * From the together phase on, two drills join the day (version 1.1): start anywhere and jump back in
+ * (rejoin). Both are rap-and-dance-together blocks (type 'together' with a `drill`), so the voice rule
+ * and the headset reminders apply to them like any other together block.
  * Everything here is pure, so the same settings always give the same plan.
  */
 import { orderSections } from './timing'
@@ -20,6 +23,9 @@ import type { SaveData } from '../storage/schema'
 
 export type Phase = 'learn' | 'together' | 'showReady' | 'showDay'
 export type BlockType = 'warmup' | 'rap' | 'dance' | 'water' | 'together' | 'runthrough' | 'family' | 'cooldown'
+/** The drills, each a kind of rap-and-dance-together block. */
+export type Drill = 'anywhere' | 'rejoin'
+export const DRILLS: readonly Drill[] = ['anywhere', 'rejoin']
 
 export const VOICE_TYPES: readonly BlockType[] = ['rap', 'together', 'runthrough', 'family']
 export const PINNED_TYPES: readonly BlockType[] = ['warmup', 'water', 'cooldown']
@@ -50,6 +56,8 @@ export interface Block {
   minutes: number
   sectionIds: string[]
   headset: boolean
+  /** A together block that is a drill: start anywhere or jump back in. */
+  drill?: Drill
 }
 
 export interface Focus {
@@ -120,30 +128,42 @@ function lightMinutes(normal: number): number {
   return light < normal ? light : Math.max(10, normal - 5)
 }
 
-type Weights = Partial<Record<BlockType, number>>
+/** What a day's minutes are shared between: the block types, and the drills (together blocks). */
+type Kind = BlockType | Drill
+type Weights = Partial<Record<Kind, number>>
 
-/** What fills the middle of a day, by phase. Dance is the longer job while learning. */
+/**
+ * What fills the middle of a day, by phase. Dance is the longer job while learning. The drills take
+ * a small share from the together phase on (lightest first to go when a day is short).
+ */
 function weightsFor(phase: Phase, light: boolean, daysToShow: number): Weights {
   switch (phase) {
     case 'learn':
       return { rap: 0.38, dance: 0.62 }
     case 'together':
-      return light ? { together: 0.45, dance: 0.3, runthrough: 0.25 } : { rap: 0.15, dance: 0.25, together: 0.4, runthrough: 0.2 }
+      return light ? { together: 0.35, anywhere: 0.1, dance: 0.3, runthrough: 0.25 } : { rap: 0.14, dance: 0.24, together: 0.26, anywhere: 0.09, rejoin: 0.09, runthrough: 0.18 }
     case 'showReady':
-      return light || daysToShow <= 1 ? { runthrough: 0.6, dance: 0.4 } : { runthrough: 0.35, family: 0.2, together: 0.2, dance: 0.25 }
+      return light || daysToShow <= 1 ? { runthrough: 0.52, rejoin: 0.1, dance: 0.38 } : { runthrough: 0.32, family: 0.19, together: 0.12, anywhere: 0.07, rejoin: 0.07, dance: 0.23 }
     case 'showDay':
       return { together: 1 }
   }
 }
 
-/** Order of types within a day (the brief's order: rap, dance, together, run-through, family). */
-const ORDER: readonly BlockType[] = ['rap', 'dance', 'together', 'runthrough', 'family']
-const MAX_CHUNK: Record<BlockType, number> = { warmup: 10, rap: 15, dance: 20, water: 2, together: 12, runthrough: 12, family: 10, cooldown: 10 }
+/** Order of kinds within a day (the brief's order: rap, dance, together and its drills, run-through, family). */
+const ORDER: readonly Kind[] = ['rap', 'dance', 'together', 'anywhere', 'rejoin', 'runthrough', 'family']
+const MAX_CHUNK: Record<Kind, number> = { warmup: 10, rap: 15, dance: 20, water: 2, together: 12, anywhere: 6, rejoin: 6, runthrough: 12, family: 10, cooldown: 10 }
 const MIN_CHUNK = 3
+
+const isDrill = (k: Kind): k is Drill => (DRILLS as readonly string[]).includes(k)
 
 interface Piece {
   type: BlockType
   minutes: number
+  drill?: Drill
+}
+
+function piece(kind: Kind, minutes: number): Piece {
+  return isDrill(kind) ? { type: 'together', minutes, drill: kind } : { type: kind, minutes }
 }
 
 /** Split `total` minutes between the weighted types (largest remainder), each at least MIN_CHUNK. */
@@ -172,16 +192,16 @@ function allocate(total: number, weights: Weights): Piece[] {
       out[i]++
     }
   }
-  return use.map((type, i) => ({ type, minutes: out[i] })).filter((p) => p.minutes > 0)
+  return use.map((kind, i) => piece(kind, out[i])).filter((p) => p.minutes > 0)
 }
 
 /** Split each type's minutes into even blocks no longer than its MAX_CHUNK. */
 function chunk(pieces: Piece[]): Piece[][] {
   return pieces.map((p) => {
-    const n = Math.max(1, Math.ceil(p.minutes / MAX_CHUNK[p.type]))
+    const n = Math.max(1, Math.ceil(p.minutes / MAX_CHUNK[p.drill ?? p.type]))
     const base = Math.floor(p.minutes / n)
     const extra = p.minutes - base * n
-    return Array.from({ length: n }, (_, i) => ({ type: p.type, minutes: base + (i < extra ? 1 : 0) }))
+    return Array.from({ length: n }, (_, i) => ({ ...p, minutes: base + (i < extra ? 1 : 0) }))
   })
 }
 
@@ -284,14 +304,15 @@ function pad(day: Piece[], spare: number): Piece[] | null {
 
 /** A plain layout that always keeps the rules: short blocks, water whenever it's due. */
 function safeLayout(minutes: number, warm: number, cool: number, weights: Weights): Piece[] {
-  const types = ORDER.filter((t) => (weights[t] ?? 0) > 0)
+  const kinds = ORDER.filter((t) => (weights[t] ?? 0) > 0)
   const out: Piece[] = [{ type: 'warmup', minutes: warm }]
   let left = minutes - warm - cool
   let since = warm
   let run = 0
   let i = 0
   while (left > 0) {
-    const type = types[i % types.length]
+    const kind = kinds[i % kinds.length]
+    const type = piece(kind, 0).type
     let size = Math.min(8, left)
     if (left - size > 0 && left - size < MIN_CHUNK) size = left
     if (since + size > WATER_MAX_GAP_MIN - cool || (isVoice(type) && run + size > VOICE_LIMIT_MIN)) {
@@ -302,7 +323,7 @@ function safeLayout(minutes: number, warm: number, cool: number, weights: Weight
       run = 0
       continue
     }
-    out.push({ type, minutes: size })
+    out.push(piece(kind, size))
     left -= size
     since += size
     run = isVoice(type) ? run + size : 0
@@ -370,13 +391,18 @@ export function buildPlan(input: PlanInput): PlanDay[] {
     }
 
     const pieces = layout(minutes, phase, light, daysToShow)
-    const blocks: Block[] = pieces.map((p, idx) => ({
-      id: `${date}-${idx}-${p.type}`,
-      type: p.type,
-      minutes: p.minutes,
-      sectionIds: p.type === 'rap' ? focus.rap : p.type === 'dance' ? focus.dance : p.type === 'together' ? focus.together : [],
-      headset: headset && (isVoice(p.type) || p.type === 'dance'),
-    }))
+    const blocks: Block[] = pieces.map((p, idx) => {
+      const b: Block = {
+        id: `${date}-${idx}-${p.drill ?? p.type}`,
+        type: p.type,
+        minutes: p.minutes,
+        // A drill chooses its own sections as it goes.
+        sectionIds: p.drill ? [] : p.type === 'rap' ? focus.rap : p.type === 'dance' ? focus.dance : p.type === 'together' ? focus.together : [],
+        headset: headset && (isVoice(p.type) || p.type === 'dance'),
+      }
+      if (p.drill) b.drill = p.drill
+      return b
+    })
     days.push({ date, daysToShow, phase, light, holiday, minutes, blocks, headset, focus })
   }
   return days

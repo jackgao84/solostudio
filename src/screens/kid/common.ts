@@ -1,6 +1,6 @@
 /** Pieces every one of her screens uses: the screen frame, the top bar, the block timer pill. */
 import { go, getActiveBlock, today } from '../../app/ctx'
-import { BLOCK_COPY } from '../../content/blocks'
+import { blockCopy } from '../../content/blocks'
 import { KID_COPY } from '../../content/kid'
 import { planDay, planInputFrom } from '../../model/plan'
 import { save } from '../../app/ctx'
@@ -35,7 +35,7 @@ export function blockTimer(): { el: HTMLElement; stop: () => void } | null {
     el.setAttribute('data-elapsed', String(elapsed))
     ring.style.setProperty('--p', String(Math.min(1, elapsed / total)))
     const left = leftMin >= 1 ? fill(KID_COPY.block.minutesLeft, { minutes: leftMin }) : KID_COPY.block.lessThanMinute
-    text.textContent = fill(KID_COPY.block.timerLabel, { title: BLOCK_COPY[block.type].title, left })
+    text.textContent = fill(KID_COPY.block.timerLabel, { title: blockCopy(block).title, left })
     el.classList.toggle('is-over', elapsed >= total)
   }
   tick()

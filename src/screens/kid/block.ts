@@ -5,7 +5,7 @@
  */
 import { go, save, sectionById, setActiveBlock, getActiveBlock, today, update } from '../../app/ctx'
 import type { Screen } from '../../app/router'
-import { BLOCK_COPY } from '../../content/blocks'
+import { blockCopy } from '../../content/blocks'
 import { KID_COPY } from '../../content/kid'
 import { STEP_COPY } from '../../content/ladders'
 import { ROUTINES } from '../../content/routines'
@@ -33,7 +33,7 @@ export const blockScreen: Screen = (root, { params }) => {
   const active = getActiveBlock()
   if (!active || active.id !== block.id || active.date !== t) setActiveBlock({ id: block.id, date: t, startedAt: Date.now() })
   const timer = blockTimer()
-  const copy = BLOCK_COPY[block.type]
+  const copy = blockCopy(block)
   const el = kidScreen(root, 'block', topbar(timer?.el ?? null), h('h1', null, copy.title), h('p', { class: 'note' }, copy.how))
   if (block.headset) el.append(h('p', { class: 'headset-note' }, B.headsetOn))
   const timeUp = h('p', { class: 'note', hidden: true }, B.timeUp)
@@ -50,6 +50,8 @@ export const blockScreen: Screen = (root, { params }) => {
     el.append(button(B.runthroughGo, () => go(`/showtime?block=${encodeURIComponent(block.id)}`), { variant: 'primary', class: 'btn--big' }))
   } else if (block.type === 'family') {
     el.append(h('p', null, B.familyHow), button(B.familyGo, () => go(`/showtime?family=1&block=${encodeURIComponent(block.id)}`), { variant: 'primary', class: 'btn--big' }))
+  } else if (block.drill) {
+    el.append(button(KID_COPY.drills.startDrill, () => go(`/drill/${block.drill}?block=${encodeURIComponent(block.id)}`), { variant: 'primary', class: 'btn--big' }))
   } else if (ladder) {
     if (day.phase === 'showDay') el.append(h('p', null, B.showDayHow))
     el.append(stepsFor(ladder, block))

@@ -889,3 +889,66 @@
 .media-missing {
   color: var(--gold);
 }
+
+/* ---- 1.1: main actions, count-in, drills -------------------------------------------------- */
+
+/* The main buttons: big enough to hit from a step away. */
+.btn--huge {
+  min-height: 96px;
+  min-width: 190px;
+  padding: 16px 38px;
+  font-size: 1.3em;
+}
+
+.main-actions {
+  gap: 16px;
+}
+
+/* The count-in: big, beside the player (never on it). */
+.count-in {
+  margin: 0;
+  font-size: 96px;
+  line-height: 1;
+  font-weight: 900;
+  text-align: center;
+  color: var(--gold);
+  text-shadow: 0 0 28px rgba(255, 211, 110, 0.7);
+}
+
+.count-in.is-beat {
+  animation: count-pop 0.35s ease-out;
+}
+
+@keyframes count-pop {
+  from {
+    transform: scale(1.35);
+  }
+  to {
+    transform: scale(1);
+  }
+}
+
+.player-col > .count-in {
+  order: 2;
+}
+
+.player-col > .main-actions {
+  order: 2;
+  margin: 0;
+}
+
+.player-col > .row {
+  order: 2;
+}
+
+.drill-now {
+  font-size: 34px;
+  font-weight: 800;
+  color: var(--cyan);
+  margin: 0;
+}
+
+.side .keep-going {
+  margin: 0;
+  font-size: 44px;
+}

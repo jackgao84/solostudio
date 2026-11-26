@@ -117,6 +117,10 @@ export function trackPlayer(mediaId: string): Player {
     rate: () => a.playbackRate,
     duration: () => (Number.isFinite(a.duration) ? a.duration : null),
     playing: () => !a.paused && !a.ended,
+    // iPadOS ignores an audio element's volume, but muting works.
+    setMuted: (on) => {
+      a.muted = on
+    },
     get onEnded() {
       return ended
     },
@@ -125,6 +129,7 @@ export function trackPlayer(mediaId: string): Player {
     },
     destroy: () => {
       a.pause()
+      a.muted = false
       a.removeEventListener('ended', onEnded)
       ended = null
     },

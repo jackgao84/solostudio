@@ -2,7 +2,7 @@
  * All kid-facing text, gathered for REVIEW.md and the copy checks: KID_COPY, phases and blocks,
  * ladders and rungs, routines, reflection choices, the sources' names and the lessons.
  */
-import { BLOCK_COPY, PHASE_COPY } from './blocks'
+import { BLOCK_COPY, DRILL_COPY, PHASE_COPY } from './blocks'
 import { KID_COPY } from './kid'
 import { LADDER_COPY, STEP_COPY } from './ladders'
 import { LESSONS } from './lessons'
@@ -28,6 +28,8 @@ export const KID_GROUPS: readonly { id: string; title: string; about: string }[]
   { id: 'routines', title: 'Warm-up, water and cool-down', about: 'The steps shown in those blocks.' },
   { id: 'ladders', title: 'The three ladders', about: 'Each ladder and each rung, with the one-line how-to shown on the practice screen.' },
   { id: 'practice', title: 'Practising', about: 'The practice screen: buttons, notes, speeds and what she sees when a video won’t play.' },
+  { id: 'drills', title: 'Start anywhere and jump back in', about: 'The two drills from the together phase on: a random part with a count-in, and keeping going when the music drops out or skips.' },
+  { id: 'cues', title: 'Spoken cues', about: 'What the iPad says out loud in its English voice. Only between reps, never over a video or her track.' },
   { id: 'sections', title: 'Her sections', about: 'The list of sections and each section’s page.' },
   { id: 'quiz', title: 'Quick tests', about: 'Missing words and counts from memory.' },
   { id: 'showtime', title: 'Showtime', about: 'The whole track from the top, with no stopping.' },
@@ -51,6 +53,10 @@ export function kidStrings(): KidString[] {
   for (const [type, c] of Object.entries(BLOCK_COPY)) {
     out.push({ group: 'plan', sub: 'Blocks', where: `block.${type}.title`, text: c.title })
     out.push({ group: 'plan', sub: 'Blocks', where: `block.${type}.how`, text: c.how })
+  }
+  for (const [drill, c] of Object.entries(DRILL_COPY)) {
+    out.push({ group: 'plan', sub: 'Drills', where: `drill.${drill}.title`, text: c.title })
+    out.push({ group: 'plan', sub: 'Drills', where: `drill.${drill}.how`, text: c.how })
   }
   for (const [id, r] of Object.entries(ROUTINES)) {
     out.push({ group: 'routines', sub: r.title, where: `routine.${id}.title`, text: r.title })

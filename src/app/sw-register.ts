@@ -15,7 +15,7 @@ import { SW_SKIP_WAITING } from '../storage/keys'
 
 const APPLY_TIMEOUT_MS = 5000
 /** Routes where nothing may reload the page: any practice. */
-const BUSY = /^#\/(practice|block|showtime|record|quiz)(\/|\?|$)/
+const BUSY = /^#\/(practice|block|showtime|record|quiz|drill)(\/|\?|$)/
 
 let registration: ServiceWorkerRegistration | null = null
 let checking = false

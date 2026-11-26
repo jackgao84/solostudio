@@ -12,6 +12,8 @@ export interface Player {
   rate(): number
   duration(): number | null
   playing(): boolean
+  /** Silences the sound while the media keeps playing (the rejoin drill's drop-outs). */
+  setMuted(on: boolean): void
   /** Called when the media plays to its end. */
   onEnded: (() => void) | null
   destroy(): void
