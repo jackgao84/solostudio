@@ -130,6 +130,15 @@ make their audio on the spot (tones and clicks).
    by); now realistic clicks and a whole-sample lag. That check also led to a sturdier alignment (the
    band limit and the low-pass above).
 
+3. [x] Every new screen looked at in both orientations (the room on a rung, Karaoke and memory rungs
+   with Back a step, the rap lesson, Videos, Tap section starts, the wizard's step 4, Her track with
+   the guide asking and ready, the voice control on every rap rung and on together/dance rungs, the
+   room on her track, Showtime and recording before she begins, and the one line with no guide).
+   Fixed: her track's art spilled its bars over the heading in portrait (WebKit sizes them before
+   max-height; now clipped); the room in portrait put the voice control above the hint (now beside
+   the speed controls); recording with her track pushed the voice choice and Record below the fold
+   (the track art is a slim strip there, and the camera a little shorter in landscape).
+
 Decisions (1.4):
 
 - D33. The rap ladder keeps its five rungs (ids, lamps, ticks, spacing and history carry over) and

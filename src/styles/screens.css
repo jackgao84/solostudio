@@ -367,6 +367,8 @@
   max-height: 300px;
   width: 100%;
   padding: 24px;
+  /* WebKit sizes the bars against the box before max-height applies: keep them inside it. */
+  overflow: hidden;
   border-radius: var(--radius);
   background:
     radial-gradient(70% 60% at 50% 100%, rgba(167, 123, 255, 0.35), transparent 70%),
@@ -2176,6 +2178,10 @@ html[data-theme='mint'] {
   margin: 0;
 }
 
+.room__main > .voice-slot {
+  order: 4;
+}
+
 .room__main > .loop-row {
   order: 5;
 }
@@ -2409,4 +2415,19 @@ html[data-theme='mint'] {
 
 .guide-status .row {
   flex-wrap: wrap;
+}
+
+/* Recording with her track (1.4 look): the music's art is a slim strip, so the camera, the voice
+   choice and Record all fit on one screen. */
+[data-screen='record'] .track-art {
+  aspect-ratio: auto;
+  height: 64px;
+  padding: 8px 24px;
+  gap: 8px;
+}
+
+@media (orientation: landscape) {
+  [data-screen='record']:has(.track-art) .camera-preview {
+    max-height: 46vh;
+  }
 }
