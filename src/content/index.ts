@@ -46,7 +46,7 @@ export const KID_GROUPS: readonly { id: string; title: string; about: string }[]
   { id: 'clips', title: 'Her clips', about: 'The list of clips kept on the iPad.' },
   { id: 'narrator', title: 'The coach’s voice', about: 'The buttons for the coach reading a lesson aloud.' },
   { id: 'video', title: 'Her own loop', about: 'Looping any bit of a video herself: tap where it starts and ends while it plays.' },
-  { id: 'lessons', title: 'Lessons', about: 'The seven skill lessons, in full, each read aloud by the coach word for word, with its “try it” and the line that puts her teachers first.' },
+  { id: 'lessons', title: 'Lessons', about: 'The eight skill lessons, in full, each read aloud by the coach word for word, with its “try it” and the line that puts her teachers first.' },
 ]
 
 const human = (key: string) => key.replace(/([A-Z])/g, ' $1').replace(/^./, (c) => c.toUpperCase())

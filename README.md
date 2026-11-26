@@ -30,10 +30,11 @@ headset mic while dancing, at a showcase and again at a talent show.
   day), a light stick in her colour beside the 8-count, a D-day countdown, Build the line, and a
   name and colours for her stage. Celebrations are only ever for doing things.
 - **Lessons are the home page** (1.2): the top shows only Start today's practice, the D-day and
-  today's lessons; below, her lesson path mixes seven skill lessons (counting, learning a dance, a
-  voice warm-up, breathing while she raps and dances, marking and full out, expressions, performing),
-  each just before the first lesson that needs it, with a Rap, a Dance and a Together lesson for every
-  section, each holding that ladder's rungs and its stage lights. Each puts her own teachers first.
+  today's lessons; below, her lesson path mixes eight skill lessons (counting, learning a dance, a
+  voice warm-up, rap basics, breathing while she raps and dances, marking and full out, expressions,
+  performing), each just before the first lesson that needs it, with a Rap, a Dance and a Together
+  lesson for every section, each holding that ladder's rungs and its stage lights. Each puts her own
+  teachers first.
 - **A coach's voice** (1.2): every lesson, cue and count-in is said in one warm recorded voice
   (ElevenLabs, recorded once by `npm run voice` and kept in the repo as small MP3s that work
   offline), word for word what's on screen; she can pause, replay or skip, and a grown-up can turn

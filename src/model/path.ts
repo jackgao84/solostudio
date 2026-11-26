@@ -3,7 +3,8 @@
  *  - section lessons built from her sections: Rap, Dance and Together for each, holding that ladder's
  *    rungs. Default order: each section's Rap then Dance, in song order; then each Together; then
  *    Showtime at the end;
- *  - the seven skill lessons, each placed just before the first lesson that needs it.
+ *  - the eight skill lessons, each placed just before the first lesson that needs it (Rap basics
+ *    since 1.2.1, right before her first rap lesson).
  * The path order is the default; the plan still decides which lessons are today's.
  * Pure, so the checks can read it.
  */
@@ -17,7 +18,7 @@ export type Need = LadderId | 'showtime'
 
 /** Which skill lessons each kind of lesson needs first, in path order. */
 export const SKILL_NEEDS: Record<Need, readonly SkillLessonId[]> = {
-  rap: ['counting', 'voice-warm-up'],
+  rap: ['counting', 'voice-warm-up', 'rap-basics'],
   dance: ['counting', 'learning-a-dance'],
   together: ['marking', 'breathing'],
   showtime: ['expressions', 'performing'],

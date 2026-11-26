@@ -220,7 +220,7 @@ export interface NarrationSettings {
  * The skill lessons on her lesson path (version 1.2). Their words live in src/content/lessons.ts; the
  * ids are listed here so the save can keep only real ones.
  */
-export const SKILL_LESSON_IDS = ['counting', 'learning-a-dance', 'voice-warm-up', 'breathing', 'marking', 'expressions', 'performing'] as const
+export const SKILL_LESSON_IDS = ['counting', 'learning-a-dance', 'voice-warm-up', 'rap-basics', 'breathing', 'marking', 'expressions', 'performing'] as const
 export type SkillLessonId = (typeof SKILL_LESSON_IDS)[number]
 
 /** A YouTube video and where in it to start, in seconds. */

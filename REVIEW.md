@@ -2,7 +2,7 @@
 
 Every piece of kid-facing text in the app, grouped by where it appears. Words in {curly brackets} are filled in on the iPad (her name, a section name, a number). The rap lines themselves are typed on the iPad by a grown-up and are never part of the app.
 
-- 455 lines in 26 groups
+- 465 lines in 26 groups
 
 **This file is generated from `src/content`. Don’t edit it by hand.** To change the words, edit the files in `src/content`, then run `npm run review` to rebuild this file. `npm test` fails while it is out of date.
 
@@ -556,9 +556,9 @@ Looping any bit of a video herself: tap where it starts and ends while it plays.
 - Loop from {from}. Now tap Loop to here. <sub>`kid.video.loopStarted`</sub>
 - Looping {from} to {to} <sub>`kid.video.looping`</sub>
 
-## 26. Lessons (69)
+## 26. Lessons (79)
 
-The seven skill lessons, in full, each read aloud by the coach word for word, with its “try it” and the line that puts her teachers first.
+The eight skill lessons, in full, each read aloud by the coach word for word, with its “try it” and the line that puts her teachers first.
 
 - Lessons <sub>`kid.lessons.title`</sub>
 - {n} min <sub>`kid.lessons.minutes`</sub>
@@ -602,6 +602,19 @@ The seven skill lessons, in full, each read aloud by the coach word for word, wi
 - If your voice feels croaky or hoarse, or it hurts, rest it. Practise the dance quietly instead, and tell a grown-up. <sub>`lesson.voice-warm-up.6`</sub>
 - Try it: sip some water, then hum gently for ten seconds. <sub>`lesson.voice-warm-up.tryIt`</sub>
 - Your own teachers come first. If they say something different, do it their way. <sub>`lesson.voice-warm-up.teachersFirst`</sub>
+
+### Rap basics
+
+- Rap basics <sub>`lesson.rap-basics.title`</sub>
+- Let’s talk about rapping. Rap is rhythm first. The beat is like a clock that never stops, and your words ride on top of it. <sub>`lesson.rap-basics.1`</sub>
+- Feel the beat before you say a word. Nod your head or tap your foot. Then let each line land right on the beat. If you start to rush, slow down and let the beat carry you. <sub>`lesson.rap-basics.2`</sub>
+- Make your consonants crisp. Consonants are sounds like t, k, p, s and d. Snap them out clearly, so everyone understands every word. <sub>`lesson.rap-basics.3`</sub>
+- Know where you breathe. Rap lines can be long and fast. Find the little gaps where a quick breath fits. Mark them in your lines, and breathe in the same place every time. <sub>`lesson.rap-basics.4`</sub>
+- Bring the energy. Rap with your whole face and body. Smile with your voice. Even quiet lines need energy behind them. <sub>`lesson.rap-basics.5`</sub>
+- Learn the Korean lines slowly, sound by sound. Take one line at a time. Say it slowly with your track, then a little faster. When one line feels easy, add the next one. <sub>`lesson.rap-basics.6`</sub>
+- In the video, the words light up as the song plays. Listen first, then read along. Then say the words with it. <sub>`lesson.rap-basics.7`</sub>
+- Try it: pick one line. Say it slowly with crisp consonants. Then say it on the beat with your track. <sub>`lesson.rap-basics.tryIt`</sub>
+- Your own teachers come first. If they say something different, do it their way. <sub>`lesson.rap-basics.teachersFirst`</sub>
 
 ### Breathing while you rap and dance
 

@@ -1,5 +1,5 @@
 /**
- * The seven skill lessons on her lesson path (version 1.2). Each is a script the coach reads aloud,
+ * The eight skill lessons on her lesson path (version 1.2; Rap basics since 1.2.1). Each is a script the coach reads aloud,
  * word for word as it shows on screen: short sentences, a warm voice, a minute or two each. Each has
  * a video (a grown-up can swap it) and ends by putting her own teachers first. No song or artist is
  * named anywhere. tests/unit/copy.test.ts checks length, sentence length and what each one covers.
@@ -73,6 +73,24 @@ export const LESSONS: readonly Lesson[] = [
     teachersFirst: TEACHERS_FIRST,
     links: [],
     video: { youtubeId: 'lNhnpCsoGdQ', start: 0 },
+  },
+  {
+    id: 'rap-basics',
+    title: 'Rap basics',
+    minutes: 2,
+    paragraphs: [
+      'Let’s talk about rapping. Rap is rhythm first. The beat is like a clock that never stops, and your words ride on top of it.',
+      'Feel the beat before you say a word. Nod your head or tap your foot. Then let each line land right on the beat. If you start to rush, slow down and let the beat carry you.',
+      'Make your consonants crisp. Consonants are sounds like t, k, p, s and d. Snap them out clearly, so everyone understands every word.',
+      'Know where you breathe. Rap lines can be long and fast. Find the little gaps where a quick breath fits. Mark them in your lines, and breathe in the same place every time.',
+      'Bring the energy. Rap with your whole face and body. Smile with your voice. Even quiet lines need energy behind them.',
+      'Learn the Korean lines slowly, sound by sound. Take one line at a time. Say it slowly with your track, then a little faster. When one line feels easy, add the next one.',
+      'In the video, the words light up as the song plays. Listen first, then read along. Then say the words with it.',
+    ],
+    tryIt: 'Try it: pick one line. Say it slowly with crisp consonants. Then say it on the beat with your track.',
+    teachersFirst: TEACHERS_FIRST,
+    links: [],
+    video: { youtubeId: '6DBtz2enWSA', start: 0 },
   },
   {
     id: 'breathing',

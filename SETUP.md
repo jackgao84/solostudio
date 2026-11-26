@@ -102,9 +102,10 @@ show. Without one, her day is simply the next lessons on her path.
 ## Her home page
 
 The top shows only **Start today's practice**, the D-day and today's lessons. Below is her whole
-lesson path: seven skill lessons (counting, learning a dance, a voice warm-up, breathing while she
-raps and dances, marking and full out, expressions, performing), each just before the first lesson
-that needs it, and a Rap, a Dance and a Together lesson for each section, with its stage lights.
+lesson path: eight skill lessons (counting, learning a dance, a voice warm-up, rap basics, breathing
+while she raps and dances, marking and full out, expressions, performing), each just before the
+first lesson that needs it, and a Rap, a Dance and a Together lesson for each section, with its
+stage lights.
 Finished lessons fold away. **Start today's practice** runs today's lessons one after another, and
 the coach says what's next.
 
@@ -161,7 +162,7 @@ These can't be checked anywhere else:
 - **The beat worked out from her real track** (1.2): check it against the click in step 6.
 - **Filming** (1.2): **Record this section** says "Get to your spot" with a countdown, then counts her
   in; check the clip starts with the music. **Film my Showtime** asks for the camera at Start.
-- **Each video plays inside the app**, including the seven lesson videos. If one doesn't, swap it.
+- **Each video plays inside the app**, including the eight lesson videos. If one doesn't, swap it.
 - **The camera records**: allow the camera when asked. Her clips stay on the iPad.
 - **Her track at 50% and 75% keeps its pitch** (slower, not lower).
 - **The screen stays awake** during practice (iPadOS 16.4 or later).
