@@ -8,8 +8,8 @@
 ## Status
 
 - **Version 1.2 in progress (2026-11-26).** Part 1 (narration) has started: the privacy scan now
-  catches API keys. Waiting on the ElevenLabs key being visible to the build shell, then on the
-  owner choosing one of three voice samples (`.private/voice-samples/`). See "Version 1.2" below.
+  catches API keys, and three voice samples are in `.private/voice-samples/`. Waiting on the owner
+  to choose a voice and to approve five check changes. See "Version 1.2" below.
 - **Version 1.1.0 done and live (2026-11-26), build dafb6ff.** Confirmed in WebKit against the live
   site at iPad portrait and landscape: the service worker controls `/solostudio/` with one
   `solostudio:precache:<hash>` cache; a 1.0 save carries over (schema 2, sections and progress
@@ -58,15 +58,18 @@ first, then code, a commit after each; a 1.1 save migrates through a tested migr
      never the text. `PRIVACY_ROOT` points it at another folder. Check:
      `tests/unit/privacy-scan.test.ts` (runs the scan on a throwaway git folder; fake keys are
      built at run time, so nothing key-shaped sits in the repo).
-   - [ ] Three warm, clear English voices, a 10-second sample of each in `.private/voice-samples/`;
-     the owner picks one.
+   - [x] Three warm, clear English voices, a ~10-second sample of each in `.private/voice-samples/`
+     (mp3_22050_32, mono, model eleven_multilingual_v2, the same line for each): 1 Jessica (bright,
+     warm, young American woman), 2 Alice (clear, friendly British educator), 3 Chris (warm,
+     down-to-earth American man). 402 characters billed (134 each).
+   - [ ] The owner picks one.
    - [ ] MP3 narration (small mono) for every lesson script, fixed cue and standard section name,
      made by a voice script with a content-hash cache; precached; pause, replay, skip; a grown-up
      can turn narration off; lesson scripts rewritten for listening.
-   **Blocked (2026-11-26):** `ELEVENLABS_API_KEY` is not visible to the build shell (not in this
-   session's environment or any zsh startup file). The owner was asked to make it available.
-   The sample script is ready (one-off, outside the repo): it lists the account's voices, then makes
-   one ~10 s sample per chosen voice in the app's own format (mp3_22050_32, mono).
+   The key lives in the owner's `~/.zshenv`; build commands that need it run through `zsh -c` (the
+   session shell started before it was added). The key is scoped: it can read voices and make
+   speech, but not the account's usage (`user_read`) or the model list (`models_read`), so the
+   characters used are counted from each response's `character-cost` header.
    **Check changes proposed to the owner (not yet approved; nothing changed):**
    - `e2e/voice.ts`: also record each narration clip the app plays (the MP3 cues) in the same log
      (wrap `AudioBufferSourceNode.prototype.start`, log nodes the app labels with their words).
