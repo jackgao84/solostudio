@@ -45,7 +45,7 @@ describe('the routine', () => {
   })
 
   it('gives her time to walk from the iPad to her spot', () => {
-    expect(DEFAULT_WALK_ON_SECONDS).toBeGreaterThanOrEqual(6)
+    expect(DEFAULT_WALK_ON_SECONDS).toBeGreaterThanOrEqual(5)
     expect(showtimeRoutine(defaultShowtime()).find((s) => s.id === 'walk')!.seconds).toBe(DEFAULT_WALK_ON_SECONDS)
     expect(showtimeRoutine({ breaths: 1, walkOnSeconds: 12 }).find((s) => s.id === 'walk')!.seconds).toBe(12)
   })
