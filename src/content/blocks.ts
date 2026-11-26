@@ -16,6 +16,7 @@ export const BLOCK_COPY: Record<BlockType, { title: string; how: string }> = {
   together: { title: 'Rap and dance together', how: 'Put the words and the moves together.' },
   runthrough: { title: 'Run-through', how: 'The whole song from the top, no stopping.' },
   family: { title: 'Perform for your family', how: 'Show someone at home. That’s a brave thing!' },
+  listen: { title: 'Listening run', how: 'Close your eyes and listen to your track. Imagine you are on stage doing it.' },
   cooldown: { title: 'Cool-down', how: 'Stretch, breathe slowly and rest your voice.' },
 }
 

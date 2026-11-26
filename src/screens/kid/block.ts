@@ -16,6 +16,7 @@ import type { LadderId } from '../../storage/schema'
 import { button } from '../../ui/components'
 import { fill, h } from '../../ui/dom'
 import { blockTimer, kidScreen, topbar } from './common'
+import { listeningRun } from './listen'
 
 const B = KID_COPY.block
 
@@ -43,7 +44,11 @@ export const blockScreen: Screen = (root, { params }) => {
   }, 1000)
 
   const ladder = LADDER_OF[block.type]
-  if (block.type === 'warmup' || block.type === 'water' || block.type === 'cooldown') {
+  let listening: { el: HTMLElement; destroy: () => void } | null = null
+  if (block.type === 'listen') {
+    listening = listeningRun()
+    el.append(listening.el)
+  } else if (block.type === 'warmup' || block.type === 'water' || block.type === 'cooldown') {
     const r = ROUTINES[block.type]
     el.append(h('ol', { class: 'routine' }, ...r.steps.map((s) => h('li', { class: 'routine-step' }, s))))
   } else if (block.type === 'runthrough') {
@@ -78,6 +83,7 @@ export const blockScreen: Screen = (root, { params }) => {
   return () => {
     timer?.stop()
     window.clearInterval(watchTime)
+    listening?.destroy()
   }
 
   function stepsFor(ladder: LadderId, b: Block): HTMLElement {

@@ -2,7 +2,7 @@
 
 Every piece of kid-facing text in the app, grouped by where it appears. Words in {curly brackets} are filled in on the iPad (her name, a section name, a number). The rap lines themselves are typed on the iPad by a grown-up and are never part of the app.
 
-- 333 lines in 17 groups
+- 340 lines in 18 groups
 
 **This file is generated from `src/content`. Don’t edit it by hand.** To change the words, edit the files in `src/content`, then run `npm run review` to rebuild this file. `npm test` fails while it is out of date.
 
@@ -59,7 +59,7 @@ Her day: the countdown, the phase, the blocks, moving blocks, checks that are du
 - A note from a grown-up <sub>`kid.today.noteTitle`</sub>
 - Got it <sub>`kid.today.noteGotIt`</sub>
 
-## 4. Phases and blocks (28)
+## 4. Phases and blocks (30)
 
 The names of the plan’s phases and the day’s blocks.
 
@@ -90,6 +90,8 @@ The names of the plan’s phases and the day’s blocks.
 - The whole song from the top, no stopping. <sub>`block.runthrough.how`</sub>
 - Perform for your family <sub>`block.family.title`</sub>
 - Show someone at home. That’s a brave thing! <sub>`block.family.how`</sub>
+- Listening run <sub>`block.listen.title`</sub>
+- Close your eyes and listen to your track. Imagine you are on stage doing it. <sub>`block.listen.how`</sub>
 - Cool-down <sub>`block.cooldown.title`</sub>
 - Stretch, breathe slowly and rest your voice. <sub>`block.cooldown.how`</sub>
 
@@ -256,14 +258,24 @@ The two drills from the together phase on: a random part with a count-in, and ke
 - Keep going! <sub>`kid.drills.keepGoing`</sub>
 - A grown-up needs to mark your sections on your track first. <sub>`kid.drills.needsMarks`</sub>
 
-## 10. Spoken cues (2)
+## 10. The listening run (5)
+
+On light days: her track with no words on screen while she imagines performing it, eyes closed.
+
+- Play your track <sub>`kid.listen.play`</sub>
+- Eyes closed. Picture yourself on stage, doing every move and every word. <sub>`kid.listen.eyes`</sub>
+- Close your eyes. Imagine you are on stage, performing your song. <sub>`kid.listen.cueStart`</sub>
+- Open your eyes. That was your listening run. <sub>`kid.listen.cueEnd`</sub>
+- That was your listening run. You can tap All done. <sub>`kid.listen.done`</sub>
+
+## 11. Spoken cues (2)
 
 What the iPad says out loud in its English voice. Only between reps, never over a video or her track.
 
 - 5, 6, 7, 8 <sub>`kid.cues.countIn`</sub>
 - Next: {section} <sub>`kid.cues.nextSection`</sub>
 
-## 11. Her sections (11)
+## 12. Her sections (11)
 
 The list of sections and each section’s page.
 
@@ -279,7 +291,7 @@ The list of sections and each section’s page.
 - Back for a quick check today <sub>`kid.sections.checkToday`</sub>
 - ticked <sub>`kid.sections.rungTicked`</sub>
 
-## 12. Quick tests (9)
+## 13. Quick tests (9)
 
 Missing words and counts from memory.
 
@@ -293,7 +305,7 @@ Missing words and counts from memory.
 - Show the counts <sub>`kid.quiz.showCounts`</sub>
 - Hide the counts <sub>`kid.quiz.hideCounts`</sub>
 
-## 13. Showtime (29)
+## 14. Showtime (29)
 
 The whole track from the top, with no stopping.
 
@@ -327,7 +339,7 @@ The whole track from the top, with no stopping.
 - That’s your bow. Big smile! <sub>`kid.showtime.bowDone`</sub>
 - Someone watched me <sub>`kid.showtime.someoneWatched`</sub>
 
-## 14. Looking back (25)
+## 15. Looking back (25)
 
 After Showtime, a clip or performing for family: one thing that went well, one to work on.
 
@@ -363,7 +375,7 @@ After Showtime, a clip or performing for family: one thing that went well, one t
 - My face and eyes <sub>`reflect.workOn.7`</sub>
 - Keeping the mic still <sub>`reflect.workOn.8`</sub>
 
-## 15. Recording (16)
+## 16. Recording (16)
 
 The camera, recording beside the reference, and the note when an older clip is deleted.
 
@@ -384,7 +396,7 @@ The camera, recording beside the reference, and the note when an older clip is d
 - The camera didn’t start. A grown-up can check the camera settings. <sub>`kid.record.cameraOff`</sub>
 - A grown-up needs to load your track before you can record. <sub>`kid.record.needsTrack`</sub>
 
-## 16. Her clips (8)
+## 17. Her clips (8)
 
 The list of clips kept on the iPad.
 
@@ -397,7 +409,7 @@ The list of clips kept on the iPad.
 - You keep the newest 3 of each. <sub>`kid.clips.keepNote`</sub>
 - Close <sub>`kid.clips.close`</sub>
 
-## 17. Lessons (52)
+## 18. Lessons (52)
 
 The six short reads, in full, each with its “try it” and the line that puts her teachers first.
 

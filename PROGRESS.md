@@ -47,7 +47,8 @@ part by part: checks first, then the code, a commit after each part.
 4. [x] Grown-ups' week, teacher notes per section, a note for her on Today (`src/model/week.ts`,
    `src/model/activity.ts`, `src/app/activity.ts`, Grown-ups → Her week and Notes; checks
    `tests/unit/week.test.ts`, `e2e/grownups-week.spec.ts`).
-5. [ ] Listening run on light days.
+5. [x] Listening run on light days (block type `listen` in `src/model/plan.ts`,
+   `src/screens/kid/listen.ts`; checks `tests/unit/listening.test.ts`, `e2e/listening.spec.ts`).
 6. [ ] Ease of use: guided session, spoken cues and count-ins, looping reps, sound settings, tour.
 7. [ ] Fun: stage lights, light stick, D-day, build the line, celebrations, her stage's name and colours.
 8. [ ] Docs (REVIEW.md, SETUP.md), full checks, screens in both orientations, version 1.1.0, deploy.
@@ -84,6 +85,11 @@ Decisions (1.1):
 - D9. The note for her shows on Today until she taps Got it; the grown-up's Notes screen says when
   she has seen it. Teacher notes show beside the lyrics and counts on that section's practice
   screens, never over a player.
+
+- D10. The listening run is 4 minutes (3 on days under 25 minutes), after the day's practice and
+  before the cool-down, on every light day (the weekly one, the day before the show, show day). It
+  is not a voice block and she can move it. A cue to close her eyes, 3.5 s to settle, her whole
+  track with nothing on screen but a soft glow, then a cue to open them.
 
 **Check change approved by the owner (1.1):** `e2e/journey.spec.ts` steps 13–14: only the waits
 grow by the Showtime routine's length (the routine now comes before and after her track); every

@@ -1106,3 +1106,39 @@
   padding: 8px 6px;
   border-bottom: 1px solid rgba(255, 255, 255, 0.12);
 }
+
+/* ---- 1.1: the listening run --------------------------------------------------------------- */
+
+.listen-panel:empty {
+  display: none;
+}
+
+.listen-eyes,
+.listen-done {
+  margin: 0;
+  padding: 36px 28px;
+  border-radius: 28px;
+  text-align: center;
+  font-size: 34px;
+  font-weight: 700;
+  line-height: 1.3;
+  background: radial-gradient(70% 80% at 50% 50%, rgba(167, 123, 255, 0.28), rgba(0, 0, 0, 0.45));
+  border: 2px solid rgba(167, 123, 255, 0.5);
+}
+
+.listen-eyes {
+  animation: listen-glow 5s ease-in-out infinite alternate;
+}
+
+@keyframes listen-glow {
+  from {
+    box-shadow: 0 0 18px rgba(167, 123, 255, 0.25);
+  }
+  to {
+    box-shadow: 0 0 60px rgba(167, 123, 255, 0.6);
+  }
+}
+
+.block[data-type='listen'] {
+  border-left-color: var(--violet);
+}

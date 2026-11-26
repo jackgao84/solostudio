@@ -118,6 +118,13 @@ export const KID_COPY = {
     keepGoing: 'Keep going!',
     needsMarks: 'A grown-up needs to mark your sections on your track first.',
   },
+  listen: {
+    play: 'Play your track',
+    eyes: 'Eyes closed. Picture yourself on stage, doing every move and every word.',
+    cueStart: 'Close your eyes. Imagine you are on stage, performing your song.',
+    cueEnd: 'Open your eyes. That was your listening run.',
+    done: 'That was your listening run. You can tap All done.',
+  },
   cues: {
     countIn: '5, 6, 7, 8',
     nextSection: 'Next: {section}',

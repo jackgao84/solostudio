@@ -29,6 +29,7 @@ export const KID_GROUPS: readonly { id: string; title: string; about: string }[]
   { id: 'ladders', title: 'The three ladders', about: 'Each ladder and each rung, with the one-line how-to shown on the practice screen.' },
   { id: 'practice', title: 'Practising', about: 'The practice screen: buttons, notes, speeds and what she sees when a video won’t play.' },
   { id: 'drills', title: 'Start anywhere and jump back in', about: 'The two drills from the together phase on: a random part with a count-in, and keeping going when the music drops out or skips.' },
+  { id: 'listen', title: 'The listening run', about: 'On light days: her track with no words on screen while she imagines performing it, eyes closed.' },
   { id: 'cues', title: 'Spoken cues', about: 'What the iPad says out loud in its English voice. Only between reps, never over a video or her track.' },
   { id: 'sections', title: 'Her sections', about: 'The list of sections and each section’s page.' },
   { id: 'quiz', title: 'Quick tests', about: 'Missing words and counts from memory.' },

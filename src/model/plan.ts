@@ -15,6 +15,8 @@
  * From the together phase on, two drills join the day (version 1.1): start anywhere and jump back in
  * (rejoin). Both are rap-and-dance-together blocks (type 'together' with a `drill`), so the voice rule
  * and the headset reminders apply to them like any other together block.
+ * Light days also end with a listening run (version 1.1): her track with the lyrics hidden while she
+ * imagines performing it, eyes closed, just before the cool-down. It rests her voice.
  * Everything here is pure, so the same settings always give the same plan.
  */
 import { orderSections } from './timing'
@@ -22,7 +24,7 @@ import { addDays, daysBetween, weekdayOf } from './dates'
 import type { SaveData } from '../storage/schema'
 
 export type Phase = 'learn' | 'together' | 'showReady' | 'showDay'
-export type BlockType = 'warmup' | 'rap' | 'dance' | 'water' | 'together' | 'runthrough' | 'family' | 'cooldown'
+export type BlockType = 'warmup' | 'rap' | 'dance' | 'water' | 'together' | 'runthrough' | 'family' | 'listen' | 'cooldown'
 /** The drills, each a kind of rap-and-dance-together block. */
 export type Drill = 'anywhere' | 'rejoin'
 export const DRILLS: readonly Drill[] = ['anywhere', 'rejoin']
@@ -37,6 +39,8 @@ export const WATER_MIN = 2
 export const LEARN_UNTIL_DAYS_OUT = 11
 /** The last days before the show are for run-throughs and performing for family. */
 export const SHOW_READY_DAYS = 4
+/** The listening run on light days (a little less on the shortest days). */
+export const LISTEN_MIN = 4
 
 export interface PlanInput {
   startDate: string
@@ -151,7 +155,7 @@ function weightsFor(phase: Phase, light: boolean, daysToShow: number): Weights {
 
 /** Order of kinds within a day (the brief's order: rap, dance, together and its drills, run-through, family). */
 const ORDER: readonly Kind[] = ['rap', 'dance', 'together', 'anywhere', 'rejoin', 'runthrough', 'family']
-const MAX_CHUNK: Record<Kind, number> = { warmup: 10, rap: 15, dance: 20, water: 2, together: 12, anywhere: 6, rejoin: 6, runthrough: 12, family: 10, cooldown: 10 }
+const MAX_CHUNK: Record<Kind, number> = { warmup: 10, rap: 15, dance: 20, water: 2, together: 12, anywhere: 6, rejoin: 6, runthrough: 12, family: 10, listen: LISTEN_MIN, cooldown: 10 }
 const MIN_CHUNK = 3
 
 const isDrill = (k: Kind): k is Drill => (DRILLS as readonly string[]).includes(k)
@@ -258,11 +262,13 @@ function placeWater(seq: Piece[]): Piece[] {
 function layout(minutes: number, phase: Phase, light: boolean, daysToShow: number): Piece[] {
   const warm = minutes >= 90 ? 10 : 5
   const cool = minutes >= 90 ? 8 : minutes >= 40 ? 5 : minutes >= 25 ? 4 : 3
+  const listen = light ? (minutes >= 25 ? LISTEN_MIN : 3) : 0
+  const tail: Piece[] = [...(listen ? [{ type: 'listen' as const, minutes: listen }] : []), { type: 'cooldown', minutes: cool }]
   const weights = weightsFor(phase, light, daysToShow)
   const build = (k: number): Piece[] => {
-    const middle = Math.max(0, minutes - warm - cool - WATER_MIN * k)
+    const middle = Math.max(0, minutes - warm - cool - listen - WATER_MIN * k)
     const seq = interleave(chunk(allocate(middle, weights)))
-    return placeWater([{ type: 'warmup', minutes: warm }, ...seq, { type: 'cooldown', minutes: cool }])
+    return placeWater([{ type: 'warmup', minutes: warm }, ...seq, ...tail])
   }
   const waters = (day: Piece[]) => day.filter((p) => p.type === 'water').length
   const k0 = Math.max(0, Math.ceil((minutes - WATER_MAX_GAP_MIN) / (WATER_MAX_GAP_MIN + WATER_MIN)))
@@ -278,7 +284,7 @@ function layout(minutes: number, phase: Phase, light: boolean, daysToShow: numbe
       if (padded && dayOk(padded)) fallback = padded
     }
   }
-  return fallback ?? safeLayout(minutes, warm, cool, weights)
+  return fallback ?? safeLayout(minutes, warm, cool, listen, weights)
 }
 
 /** Add `spare` minutes to blocks without breaking the rules (dance first, then the cool-down). */
@@ -303,10 +309,10 @@ function pad(day: Piece[], spare: number): Piece[] | null {
 }
 
 /** A plain layout that always keeps the rules: short blocks, water whenever it's due. */
-function safeLayout(minutes: number, warm: number, cool: number, weights: Weights): Piece[] {
+function safeLayout(minutes: number, warm: number, cool: number, listen: number, weights: Weights): Piece[] {
   const kinds = ORDER.filter((t) => (weights[t] ?? 0) > 0)
   const out: Piece[] = [{ type: 'warmup', minutes: warm }]
-  let left = minutes - warm - cool
+  let left = minutes - warm - cool - listen
   let since = warm
   let run = 0
   let i = 0
@@ -328,6 +334,13 @@ function safeLayout(minutes: number, warm: number, cool: number, weights: Weight
     since += size
     run = isVoice(type) ? run + size : 0
     i++
+  }
+  if (listen) {
+    if (since + listen > WATER_MAX_GAP_MIN - cool) {
+      out.push({ type: 'water', minutes: WATER_MIN })
+      left -= WATER_MIN
+    }
+    out.push({ type: 'listen', minutes: listen })
   }
   out.push({ type: 'cooldown', minutes: cool + Math.max(0, left) })
   return out
