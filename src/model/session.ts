@@ -13,6 +13,7 @@ import type { LadderId, SaveData, SkillLessonId } from '../storage/schema'
 import { fill } from '../ui/dom'
 import { LADDERS, stepById } from './ladders'
 import { applyOrder, type Block, type BlockType, type Drill, type PlanDay } from './plan'
+import { skillsDue, type Need } from './path'
 import { dueItems, nextStep, progressOf } from './progress'
 
 export type SessionItem =
@@ -50,15 +51,30 @@ export function practiceChoices(save: SaveData, block: Pick<Block, 'type' | 'sec
 export function sessionItems(save: SaveData, day: PlanDay, today: string): SessionItem[] {
   const state = save.days[day.date] ?? { order: [], done: [] }
   const out: SessionItem[] = []
+  // A skill lesson she hasn't done comes up once, just before the first thing that needs it.
+  const given = new Set<SkillLessonId>()
+  const lessonsFor = (need: Need, blockId: string) => {
+    for (const id of skillsDue(save, need)) {
+      if (given.has(id)) continue
+      given.add(id)
+      out.push({ kind: 'lesson', blockId, lessonId: id })
+    }
+  }
   for (const b of applyOrder(day.blocks, state.order)) {
     if (state.done.includes(b.id)) continue
     if (b.type === 'warmup' || b.type === 'water' || b.type === 'cooldown') out.push({ kind: 'routine', blockId: b.id, type: b.type })
-    else if (b.drill) out.push({ kind: 'drill', blockId: b.id, drill: b.drill })
-    else if (b.type === 'runthrough' || b.type === 'family') out.push({ kind: 'showtime', blockId: b.id, family: b.type === 'family' })
-    else if (b.type === 'listen') out.push({ kind: 'listen', blockId: b.id })
+    else if (b.drill) {
+      lessonsFor('together', b.id)
+      out.push({ kind: 'drill', blockId: b.id, drill: b.drill })
+    } else if (b.type === 'runthrough' || b.type === 'family') {
+      lessonsFor('showtime', b.id)
+      out.push({ kind: 'showtime', blockId: b.id, family: b.type === 'family' })
+    } else if (b.type === 'listen') out.push({ kind: 'listen', blockId: b.id })
     else {
       const choices = practiceChoices(save, b, today)
       if (!choices.length) out.push({ kind: 'empty', blockId: b.id, type: b.type })
+      const ladder = LADDER_OF[b.type]
+      if (choices.length && ladder) lessonsFor(ladder, b.id)
       for (const c of choices) out.push({ kind: 'practice', blockId: b.id, sectionId: c.sectionId, stepId: c.stepId, check: c.check })
     }
   }

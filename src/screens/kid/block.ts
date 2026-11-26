@@ -11,7 +11,8 @@ import { blockCopy } from '../../content/blocks'
 import { KID_COPY } from '../../content/kid'
 import { STEP_COPY } from '../../content/ladders'
 import { ROUTINES } from '../../content/routines'
-import { applyOrder, planDay, planInputFrom, type Block } from '../../model/plan'
+import { applyOrder, type Block } from '../../model/plan'
+import { todayPlan } from '../../model/today'
 import { practiceChoices } from '../../model/session'
 import type { LadderId } from '../../storage/schema'
 import { button } from '../../ui/components'
@@ -25,8 +26,7 @@ const LADDER_OF: Partial<Record<Block['type'], LadderId>> = { rap: 'rap', dance:
 
 export const blockScreen: Screen = (root, { params, query }) => {
   const t = today()
-  const input = planInputFrom(save())
-  const day = input ? planDay(input, t) : null
+  const day = todayPlan(save(), t)
   const block = day ? applyOrder(day.blocks, save().days[t]?.order ?? []).find((b) => b.id === params.id) : null
   if (!day || !block) {
     go('/today')

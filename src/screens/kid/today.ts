@@ -1,10 +1,17 @@
 /**
- * Today: the countdown, the phase, and the day's blocks with a gentle "about N min" each. She can
- * move blocks (warm-up, water and cool-down stay put); a move that would strain her voice or skip
- * water is refused with a kind note. Checks that are due are listed, shaky ones first.
+ * Home (version 1.2): lessons are the home page. The top shows only the big "Start today's
+ * practice", the D-day and today's lessons (the plan's blocks, with any skill lesson due today just
+ * before the block that needs it). Below: notes, the tour, checks that are due, then her whole
+ * lesson path with finished lessons folded away and her stage lights on every section lesson.
+ * She can move blocks (warm-up, water and cool-down stay put); a move that would strain her voice or
+ * skip water is refused with a kind note. With no dates set yet, today is the next lessons on her path.
  */
 import { go, save, sectionsInOrder, today, update } from '../../app/ctx'
 import { startSession, todaysItems } from '../../app/session'
+import { LESSONS } from '../../content/lessons'
+import { todayPlan } from '../../model/today'
+import { lessonPathView } from '../../ui/path'
+import type { SessionItem } from '../../model/session'
 import { gateButton } from '../../app/gate'
 import type { Screen } from '../../app/router'
 import { applyUpdateIfSafe, onUpdateReady } from '../../app/sw-register'
@@ -13,13 +20,14 @@ import { KID_COPY } from '../../content/kid'
 import { LADDER_COPY } from '../../content/ladders'
 import { daysBetween } from '../../model/dates'
 import { ddayLabel } from '../../model/stage'
-import { PINNED_TYPES, applyOrder, moveBlock, planDay, planInputFrom, type Block } from '../../model/plan'
+import { PINNED_TYPES, applyOrder, moveBlock, type Block } from '../../model/plan'
 import { dueItems } from '../../model/progress'
 import { button } from '../../ui/components'
 import { fill, h } from '../../ui/dom'
 import { kidScreen } from './common'
 
 const T = KID_COPY.today
+const H = KID_COPY.home
 
 function countdownText(days: number, show: string): string {
   if (days <= 0) return fill(T.countdownToday, { show })
@@ -37,8 +45,15 @@ export const todayScreen: Screen = (root) => {
     updateSlot.replaceChildren(button(KID_COPY.nav.newVersion, () => applyUpdateIfSafe(), { variant: 'primary' }))
   })
 
-  const head = h('header', { class: 'today__head' }, h('h1', null, d.profile.name ? fill(T.hello, { name: d.profile.name }) : T.helloNoName))
-  el.append(head, updateSlot)
+  // The top: Start, the D-day, today's lessons. Everything else sits below it.
+  const top = h('div', { class: 'home-top' })
+  const head = h('header', { class: 'today__head dday-row' })
+  const hello = h('h1', { class: 'today__hello' }, d.profile.name ? fill(T.hello, { name: d.profile.name }) : T.helloNoName)
+  const headText = h('div', { class: 'dday-row__text' }, hello)
+  head.append(headText)
+  el.append(top, updateSlot)
+  const below = h('div', { class: 'home-below' })
+  el.append(below)
   const forHer = d.notes.forHer
   if (forHer && !forHer.seen) {
     const card = h(
@@ -53,35 +68,37 @@ export const todayScreen: Screen = (root) => {
         card.remove()
       }),
     )
-    el.append(card)
+    below.append(card)
   }
 
-  const input = planInputFrom(d)
   const showName = d.show?.name || T.showFallback
-  if (!input || !d.show) {
-    el.append(h('p', { class: 'note' }, T.noPlan))
-  } else if (t > d.show.date) {
-    el.append(h('p', { class: 'show-over' }, T.showOver))
+  const day = todayPlan(d, t)
+  if (d.show && t > d.show.date) {
+    top.append(head)
+    below.append(h('p', { class: 'show-over' }, T.showOver))
   } else {
-    const day = planDay(input, t < input.startDate ? input.startDate : t)
-    const dday = ddayLabel(daysBetween(t, d.show.date))
-    if (dday) head.append(h('p', { class: 'dday' }, dday))
-    head.append(h('p', { class: 'countdown' }, countdownText(daysBetween(t, d.show.date), showName)))
-    if (day) {
-      head.append(h('p', { class: 'phase' }, PHASE_COPY[day.phase].name))
-      // One main action: the guided session through today's blocks.
-      if (todaysItems().length) el.append(h('div', { class: 'today__start' }, button(T.startPractice, () => startSession(), { variant: 'primary', class: 'btn--huge' })))
-      if (!d.tour.seen) el.append(tourCard())
-      if (day.light && day.phase !== 'showDay') el.append(h('p', { class: 'light-day' }, T.lightDay))
-      el.append(h('p', { class: 'note' }, PHASE_COPY[day.phase].about))
-      if (d.sections.length === 0) el.append(h('p', { class: 'note' }, T.noSections))
-      const checks = checksList()
-      if (checks) el.append(checks)
-      el.append(blocksList(day.blocks))
-    }
+    if (d.show) {
+      const dday = ddayLabel(daysBetween(t, d.show.date))
+      if (dday) head.prepend(h('p', { class: 'dday' }, dday))
+      headText.append(h('p', { class: 'countdown' }, countdownText(daysBetween(t, d.show.date), showName)))
+    } else if (day) headText.append(h('p', { class: 'note' }, H.noDates))
+    if (day && d.show) headText.append(h('p', { class: 'phase' }, PHASE_COPY[day.phase].name))
+    // One main action: the guided session through today's lessons.
+    const items = todaysItems()
+    if (items.length) top.append(h('div', { class: 'today__start' }, button(T.startPractice, () => startSession(), { variant: 'primary', class: 'btn--huge' })))
+    top.append(head)
+    if (day) top.append(blocksList(day.blocks, items))
+    else if (!d.show) below.append(h('p', { class: 'note' }, T.noPlan))
+    if (!d.tour.seen && day) below.append(tourCard())
+    if (day?.light && day.phase !== 'showDay') below.append(h('p', { class: 'light-day' }, T.lightDay))
+    if (day && d.show) below.append(h('p', { class: 'note' }, PHASE_COPY[day.phase].about))
+    if (d.sections.length === 0) below.append(h('p', { class: 'note' }, T.noSections))
+    const checks = checksList()
+    if (checks) below.append(checks)
   }
+  below.append(lessonPathView(save()))
 
-  el.append(
+  below.append(
     h(
       'div',
       { class: 'nav-row' },
@@ -137,8 +154,11 @@ export const todayScreen: Screen = (root) => {
     )
   }
 
-  function blocksList(planned: Block[]): HTMLElement {
-    const wrap = h('section', { class: 'today__blocks' }, h('h2', null, T.practiceTitle))
+  function blocksList(planned: Block[], items: SessionItem[]): HTMLElement {
+    const wrap = h('section', { class: 'today__blocks today-lessons' }, h('h2', null, H.todayTitle))
+    // Skill lessons due today, by the block they come just before.
+    const skillsBefore = new Map<string, string[]>()
+    for (const i of items) if (i.kind === 'lesson') skillsBefore.set(i.blockId, [...(skillsBefore.get(i.blockId) ?? []), i.lessonId])
     const note = h('p', { class: 'move-note', role: 'status', hidden: true })
     const list = h('ol', { class: 'blocks' })
     const allDone = h('p', { class: 'note', hidden: true }, T.allDone)
@@ -148,7 +168,20 @@ export const todayScreen: Screen = (root) => {
       const state = save().days[t] ?? { order: [], done: [] }
       const blocks = applyOrder(planned, state.order)
       list.replaceChildren(
-        ...blocks.map((b) => {
+        ...blocks.flatMap((b) => [...(skillsBefore.get(b.id) ?? []).map(skillCard), blockItem(b)]),
+      )
+      allDone.hidden = !blocks.every((b) => state.done.includes(b.id))
+      function skillCard(id: string): HTMLElement {
+        const lesson = LESSONS.find((l) => l.id === id)!
+        return h(
+          'li',
+          { class: 'today-skill', 'data-lesson': id },
+          h('div', { class: 'block__info' }, h('p', { class: 'block__meta today-skill__tag' }, H.lessonTag), h('p', { class: 'block__title' }, lesson.title), h('p', { class: 'block__meta' }, fill(KID_COPY.lessons.minutes, { n: lesson.minutes }))),
+          h('div', { class: 'block__actions' }, button(T.start, () => go(`/lesson/${id}`), { label: fill(H.openLesson, { title: lesson.title }) })),
+        )
+      }
+      function blockItem(b: Block): HTMLElement {
+        {
           const done = state.done.includes(b.id)
           const title = blockCopy(b).title
           const focus = b.sectionIds.map((id) => names.get(id)).filter(Boolean).join(', ')
@@ -170,9 +203,8 @@ export const todayScreen: Screen = (root) => {
             ),
             actions,
           )
-        }),
-      )
-      allDone.hidden = !blocks.every((b) => state.done.includes(b.id))
+        }
+      }
     }
     const move = (blocks: Block[], id: string, dir: -1 | 1) => {
       const r = moveBlock(blocks, id, dir)

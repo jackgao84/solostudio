@@ -6,7 +6,7 @@
  */
 import { say } from '../audio/voice'
 import { KID_COPY } from '../content/kid'
-import { planDay, planInputFrom } from '../model/plan'
+import { todayPlan } from '../model/today'
 import { cueFor, routeFor, sessionItems, type SessionItem } from '../model/session'
 import { getActiveBlock, go, save, setActiveBlock, today, update } from './ctx'
 
@@ -20,8 +20,7 @@ let running: Running | null = null
 
 /** Today's session items (nothing when there's no plan for today or it's all done). */
 export function todaysItems(): SessionItem[] {
-  const input = planInputFrom(save())
-  const day = input ? planDay(input, today()) : null
+  const day = todayPlan(save(), today())
   return day ? sessionItems(save(), day, today()) : []
 }
 

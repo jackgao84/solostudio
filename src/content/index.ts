@@ -5,6 +5,7 @@
 import { BLOCK_COPY, DRILL_COPY, PHASE_COPY } from './blocks'
 import { KID_COPY } from './kid'
 import { LADDER_COPY, STEP_COPY } from './ladders'
+import { SECTION_LESSON_COPY } from './learn'
 import { LESSONS } from './lessons'
 import { WENT_WELL, WORK_ON } from './reflect'
 import { ROUTINES } from './routines'
@@ -23,6 +24,8 @@ export const KID_GROUPS: readonly { id: string; title: string; about: string }[]
   { id: 'welcome', title: 'Welcome and the grown-ups’ button', about: 'The first screen, before a grown-up has set things up, and the press-and-hold button.' },
   { id: 'nav', title: 'Buttons that appear everywhere', about: 'The buttons for getting around, and the "new version" button on Today.' },
   { id: 'today', title: 'Today', about: 'Her day: the countdown, the phase, the blocks, moving blocks, checks that are due.' },
+  { id: 'home', title: 'Home: today’s lessons and her lesson path', about: 'The top of the home page (Start, the D-day, today’s lessons) and her whole lesson path below it.' },
+  { id: 'learn', title: 'A section lesson', about: 'One of her sections on one ladder: its intro, its video, its steps, and what it says when setup hasn’t covered something yet.' },
   { id: 'plan', title: 'Phases and blocks', about: 'The names of the plan’s phases and the day’s blocks.' },
   { id: 'block', title: 'Inside a block', about: 'The screen for one block: the gentle timer and what to practise.' },
   { id: 'routines', title: 'Warm-up, water and cool-down', about: 'The steps shown in those blocks.' },
@@ -75,6 +78,10 @@ export function kidStrings(): KidString[] {
       out.push({ group: 'ladders', sub: c.name, where: `step.${id}.name`, text: s.name })
       out.push({ group: 'ladders', sub: c.name, where: `step.${id}.how`, text: s.how })
     }
+  }
+  for (const [ladder, c] of Object.entries(SECTION_LESSON_COPY)) {
+    out.push({ group: 'learn', sub: `${human(ladder)} lessons`, where: `learn.${ladder}.title`, text: c.title })
+    c.intro.forEach((t, i) => out.push({ group: 'learn', sub: `${human(ladder)} lessons`, where: `learn.${ladder}.${i + 1}`, text: t }))
   }
   WENT_WELL.forEach((t, i) => out.push({ group: 'reflect', sub: 'One thing that went well', where: `reflect.wentWell.${i + 1}`, text: t }))
   WORK_ON.forEach((t, i) => out.push({ group: 'reflect', sub: 'One thing to work on next', where: `reflect.workOn.${i + 1}`, text: t }))

@@ -6,6 +6,7 @@
  */
 import { BLOCK_COPY, DRILL_COPY } from './blocks'
 import { KID_COPY } from './kid'
+import { SECTION_LESSON_COPY } from './learn'
 import { LADDER_COPY } from './ladders'
 import { LESSONS, type Lesson } from './lessons'
 import { COUNT_IN_WORDS } from '../model/countin'
@@ -111,5 +112,6 @@ export function narrationLines(): NarrationLine[] {
   for (const t of fixedCues()) add({ text: t })
   for (const name of STANDARD_SECTIONS) for (const t of sectionCues(name)) add({ text: t })
   for (const l of LESSONS) for (const t of lessonScript(l)) add({ text: t })
+  for (const c of Object.values(SECTION_LESSON_COPY)) for (const t of c.intro) add({ text: t })
   return [...out.values()]
 }

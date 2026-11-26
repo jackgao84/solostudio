@@ -2,7 +2,7 @@
 
 Every piece of kid-facing text in the app, grouped by where it appears. Words in {curly brackets} are filled in on the iPad (her name, a section name, a number). The rap lines themselves are typed on the iPad by a grown-up and are never part of the app.
 
-- 421 lines in 23 groups
+- 452 lines in 25 groups
 
 **This file is generated from `src/content`. Don’t edit it by hand.** To change the words, edit the files in `src/content`, then run `npm run review` to rebuild this file. `npm test` fails while it is out of date.
 
@@ -67,7 +67,57 @@ Her day: the countdown, the phase, the blocks, moving blocks, checks that are du
 - Take the tour <sub>`kid.today.tourGo`</sub>
 - Not now <sub>`kid.today.tourLater`</sub>
 
-## 4. Phases and blocks (30)
+## 4. Home: today’s lessons and her lesson path (9)
+
+The top of the home page (Start, the D-day, today’s lessons) and her whole lesson path below it.
+
+- Today’s lessons <sub>`kid.home.todayTitle`</sub>
+- Your lesson path <sub>`kid.home.pathTitle`</sub>
+- Finished ({n}) <sub>`kid.home.finished`</sub>
+- Up next <sub>`kid.home.upNext`</sub>
+- Lesson <sub>`kid.home.lessonTag`</sub>
+- The whole show, start to finish <sub>`kid.home.showtimeItem`</sub>
+- {section}: {ladder} <sub>`kid.home.sectionLesson`</sub>
+- No show date yet, so today is your next lessons on the path. <sub>`kid.home.noDates`</sub>
+- Start {title} <sub>`kid.home.openLesson`</sub>
+
+## 5. A section lesson (22)
+
+One of her sections on one ladder: its intro, its video, its steps, and what it says when setup hasn’t covered something yet.
+
+- The steps <sub>`kid.learn.steps`</sub>
+- Practise: {step} <sub>`kid.learn.practise`</sub>
+- Practise it again <sub>`kid.learn.again`</sub>
+- Every step ticked! You can practise it again any time. <sub>`kid.learn.finished`</sub>
+- The video for this part <sub>`kid.learn.video`</sub>
+- This lesson needs your track on the iPad. <sub>`kid.learn.needsTrack`</sub>
+- This lesson needs the words of this part. <sub>`kid.learn.needsLines`</sub>
+- This lesson needs to know where this part starts in your track. <sub>`kid.learn.needsStarts`</sub>
+- A grown-up can add it in a minute. <sub>`kid.learn.askGrownUp`</sub>
+- Grown-ups: hold to open that step <sub>`kid.learn.openStep`</sub>
+
+### Rap lessons
+
+- {section}: Rap <sub>`learn.rap.title`</sub>
+- This is a rap lesson. First, listen and read along as the words light up. <sub>`learn.rap.1`</sub>
+- Then rap with the words, and watch them fade away a few at a time. <sub>`learn.rap.2`</sub>
+- Last, rap it from memory. I count you in every time. <sub>`learn.rap.3`</sub>
+
+### Dance lessons
+
+- {section}: Dance <sub>`learn.dance.title`</sub>
+- This is a dance lesson. Watch the tutorial first, and try the moves slowly. <sub>`learn.dance.1`</sub>
+- Then follow the mirrored video, at half speed, then faster. <sub>`learn.dance.2`</sub>
+- Last, dance it from memory, with just your track. <sub>`learn.dance.3`</sub>
+
+### Together lessons
+
+- {section}: Together <sub>`learn.together.title`</sub>
+- Now you put the words and the moves together. <sub>`learn.together.1`</sub>
+- Start by marking the moves small while you rap out loud. <sub>`learn.together.2`</sub>
+- Then go full out, and link it to the part before. <sub>`learn.together.3`</sub>
+
+## 6. Phases and blocks (30)
 
 The names of the plan’s phases and the day’s blocks.
 
@@ -110,7 +160,7 @@ The names of the plan’s phases and the day’s blocks.
 - Jump back in <sub>`drill.rejoin.title`</sub>
 - If the music stops or skips, keep going and pick it back up. <sub>`drill.rejoin.how`</sub>
 
-## 5. Inside a block (15)
+## 7. Inside a block (15)
 
 The screen for one block: the gentle timer and what to practise.
 
@@ -130,7 +180,7 @@ The screen for one block: the gentle timer and what to practise.
 - {minutes} min <sub>`kid.block.minutesLeft`</sub>
 - under a minute <sub>`kid.block.lessThanMinute`</sub>
 
-## 6. Warm-up, water and cool-down (18)
+## 8. Warm-up, water and cool-down (18)
 
 The steps shown in those blocks.
 
@@ -161,7 +211,7 @@ The steps shown in those blocks.
 - Sip some water. <sub>`routine.cooldown.4`</sub>
 - Hum softly for a few seconds, then rest your voice. <sub>`routine.cooldown.5`</sub>
 
-## 7. The three ladders (34)
+## 9. The three ladders (34)
 
 Each ladder and each rung, with the one-line how-to shown on the practice screen.
 
@@ -208,7 +258,7 @@ Each ladder and each rung, with the one-line how-to shown on the practice screen
 - Link it up <sub>`step.together-linked.name`</sub>
 - Start in the part before and flow straight into this one. <sub>`step.together-linked.how`</sub>
 
-## 8. Practising (39)
+## 10. Practising (39)
 
 The practice screen: buttons, notes, speeds and what she sees when a video won’t play.
 
@@ -252,7 +302,7 @@ The practice screen: buttons, notes, speeds and what she sees when a video won�
 - Quick check: do it once from memory. <sub>`kid.practice.reviewNote`</sub>
 - From your teacher <sub>`kid.practice.teacherNote`</sub>
 
-## 9. Start anywhere and jump back in (8)
+## 11. Start anywhere and jump back in (8)
 
 The two drills from the together phase on: a random part with a count-in, and keeping going when the music drops out or skips.
 
@@ -265,7 +315,7 @@ The two drills from the together phase on: a random part with a count-in, and ke
 - Keep going! <sub>`kid.drills.keepGoing`</sub>
 - A grown-up needs to mark your sections on your track first. <sub>`kid.drills.needsMarks`</sub>
 
-## 10. Her stage (14)
+## 12. Her stage (14)
 
 Naming her stage and choosing its colours and her light stick’s colour.
 
@@ -284,7 +334,7 @@ Naming her stage and choosing its colours and her light stick’s colour.
 - Lime <sub>`kid.stage.lime`</sub>
 - Gold <sub>`kid.stage.gold`</sub>
 
-## 11. The listening run (5)
+## 13. The listening run (5)
 
 On light days: her track with no words on screen while she imagines performing it, eyes closed.
 
@@ -294,14 +344,14 @@ On light days: her track with no words on screen while she imagines performing i
 - Open your eyes. That was your listening run. <sub>`kid.listen.cueEnd`</sub>
 - That was your listening run. You can tap All done. <sub>`kid.listen.done`</sub>
 
-## 12. The guided session (2)
+## 14. The guided session (2)
 
 Start today’s practice: the buttons she taps between reps.
 
 - Next <sub>`kid.session.next`</sub>
 - Part {n} of {total} <sub>`kid.session.progress`</sub>
 
-## 13. Sounds (10)
+## 15. Sounds (10)
 
 Her volume and mute for the spoken cues and the sound effects.
 
@@ -316,7 +366,7 @@ Her volume and mute for the spoken cues and the sound effects.
 - Volume {n} of 5 <sub>`kid.sounds.volume`</sub>
 - Off <sub>`kid.sounds.muted`</sub>
 
-## 14. The first-run tour (10)
+## 16. The first-run tour (10)
 
 Five short slides, about 30 seconds, offered on Today the first time.
 
@@ -331,7 +381,7 @@ Five short slides, about 30 seconds, offered on Today the first time.
 - Let’s go <sub>`kid.tour.go`</sub>
 - Skip the tour <sub>`kid.tour.skip`</sub>
 
-## 15. Spoken cues (7)
+## 17. Spoken cues (7)
 
 What the coach says out loud (recorded; a custom section name is said in the iPad’s own voice). Only between reps, never over a video or her track.
 
@@ -343,7 +393,7 @@ What the coach says out loud (recorded; a custom section name is said in the iPa
 - Get to your spot <sub>`kid.cues.getToSpot`</sub>
 - Again <sub>`kid.cues.again`</sub>
 
-## 16. Her sections (18)
+## 18. Her sections (18)
 
 The list of sections and each section’s page.
 
@@ -366,7 +416,7 @@ The list of sections and each section’s page.
 - Back for a quick check today <sub>`kid.sections.checkToday`</sub>
 - ticked <sub>`kid.sections.rungTicked`</sub>
 
-## 17. Quick tests (14)
+## 19. Quick tests (14)
 
 Missing words and counts from memory.
 
@@ -385,7 +435,7 @@ Missing words and counts from memory.
 - Next line <sub>`kid.quiz.nextLine`</sub>
 - You built every line! <sub>`kid.quiz.allBuilt`</sub>
 
-## 18. Showtime (29)
+## 20. Showtime (29)
 
 The whole track from the top, with no stopping.
 
@@ -419,7 +469,7 @@ The whole track from the top, with no stopping.
 - That’s your bow. Big smile! <sub>`kid.showtime.bowDone`</sub>
 - Someone watched me <sub>`kid.showtime.someoneWatched`</sub>
 
-## 19. Looking back (25)
+## 21. Looking back (25)
 
 After Showtime, a clip or performing for family: one thing that went well, one to work on.
 
@@ -455,7 +505,7 @@ After Showtime, a clip or performing for family: one thing that went well, one t
 - My face and eyes <sub>`reflect.workOn.7`</sub>
 - Keeping the mic still <sub>`reflect.workOn.8`</sub>
 
-## 20. Recording (16)
+## 22. Recording (16)
 
 The camera, recording beside the reference, and the note when an older clip is deleted.
 
@@ -476,7 +526,7 @@ The camera, recording beside the reference, and the note when an older clip is d
 - The camera didn’t start. A grown-up can check the camera settings. <sub>`kid.record.cameraOff`</sub>
 - A grown-up needs to load your track before you can record. <sub>`kid.record.needsTrack`</sub>
 
-## 21. Her clips (8)
+## 23. Her clips (8)
 
 The list of clips kept on the iPad.
 
@@ -489,7 +539,7 @@ The list of clips kept on the iPad.
 - You keep the newest 3 of each. <sub>`kid.clips.keepNote`</sub>
 - Close <sub>`kid.clips.close`</sub>
 
-## 22. The coach’s voice (4)
+## 24. The coach’s voice (4)
 
 The buttons for the coach reading a lesson aloud.
 
@@ -498,7 +548,7 @@ The buttons for the coach reading a lesson aloud.
 - Replay <sub>`kid.narrator.replay`</sub>
 - Skip <sub>`kid.narrator.skip`</sub>
 
-## 23. Lessons (69)
+## 25. Lessons (69)
 
 The seven skill lessons, in full, each read aloud by the coach word for word, with its “try it” and the line that puts her teachers first.
 

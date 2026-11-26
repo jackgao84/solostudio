@@ -3,7 +3,7 @@ import { takeCelebration } from '../../app/celebrate'
 import { go, getActiveBlock, today } from '../../app/ctx'
 import { blockCopy } from '../../content/blocks'
 import { KID_COPY } from '../../content/kid'
-import { planDay, planInputFrom } from '../../model/plan'
+import { todayPlan } from '../../model/today'
 import { save } from '../../app/ctx'
 import { button } from '../../ui/components'
 import { fill, h, type Child } from '../../ui/dom'
@@ -22,8 +22,7 @@ export function todayButton(): HTMLButtonElement {
 export function blockTimer(): { el: HTMLElement; stop: () => void } | null {
   const active = getActiveBlock()
   if (!active || active.date !== today()) return null
-  const input = planInputFrom(save())
-  const day = input ? planDay(input, active.date) : null
+  const day = todayPlan(save(), active.date)
   const block = day?.blocks.find((b) => b.id === active.id)
   if (!block) return null
   const ring = h('span', { class: 'block-timer__ring', 'aria-hidden': 'true' })
