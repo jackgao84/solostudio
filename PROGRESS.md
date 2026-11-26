@@ -7,7 +7,8 @@
 
 ## Status
 
-- **Version 1.4 in progress** (see "Version 1.4" below): part 1 built; part 2 next.
+- **Version 1.4.0 built** (see "Version 1.4" below): both parts, the approved check changes, every
+  new screen looked at; final checks and the push next.
 
 - **Version 1.3.0 done and live (2026-11-26), build 75e988e:** practice that needs no setup (see
   "Version 1.3" below). Confirmed in WebKit against the live site at iPad portrait and landscape: "Version
