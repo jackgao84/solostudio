@@ -7,8 +7,11 @@
  */
 import { DEFAULT_REFS } from '../content/references'
 
-/** 1: version 1.0. 2: version 1.1 (stage, sounds, Showtime routine, notes, practice log, tour, celebrations). */
-export const CURRENT_SCHEMA_VERSION = 2
+/**
+ * 1: version 1.0. 2: version 1.1 (stage, sounds, Showtime routine, notes, practice log, tour, celebrations).
+ * 3: version 1.2 (narration, her lessons, the setup wizard).
+ */
+export const CURRENT_SCHEMA_VERSION = 3
 
 export type Lang = 'en' | 'ko'
 
@@ -208,6 +211,45 @@ export interface DayActivity {
   shaky: string[]
 }
 
+/** The coach's voice reading lessons and intros aloud (a grown-up can turn it off). */
+export interface NarrationSettings {
+  on: boolean
+}
+
+/**
+ * The skill lessons on her lesson path (version 1.2). Their words live in src/content/lessons.ts; the
+ * ids are listed here so the save can keep only real ones.
+ */
+export const SKILL_LESSON_IDS = ['counting', 'learning-a-dance', 'voice-warm-up', 'breathing', 'marking', 'expressions', 'performing'] as const
+export type SkillLessonId = (typeof SKILL_LESSON_IDS)[number]
+
+/** A YouTube video and where in it to start, in seconds. */
+export interface LessonVideo {
+  youtubeId: string
+  start: number
+}
+
+export interface LessonState {
+  /** Skill lessons she has finished. */
+  done: SkillLessonId[]
+  /** A grown-up's own video for a skill lesson, by lesson id (else the default). */
+  videos: Partial<Record<SkillLessonId, LessonVideo>>
+}
+
+/**
+ * The setup wizard's steps, in order. The first three (her track, her lines, where each section
+ * starts) make the app usable; the rest are optional and can be done later.
+ */
+export const WIZARD_STEPS = ['track', 'lines', 'starts', 'follow', 'timing', 'beat', 'dates'] as const
+export type WizardStep = (typeof WIZARD_STEPS)[number]
+export const REQUIRED_WIZARD_STEPS: readonly WizardStep[] = ['track', 'lines', 'starts']
+
+export interface WizardState {
+  /** The step it was paused on (null: not started, or finished). */
+  at: WizardStep | null
+  done: WizardStep[]
+}
+
 export interface SaveData {
   schemaVersion: number
   setup: {
@@ -240,6 +282,9 @@ export interface SaveData {
   tour: { seen: boolean }
   /** One-off celebrations that have happened. */
   celebrated: { firstShowtime: boolean }
+  narration: NarrationSettings
+  lessons: LessonState
+  wizard: WizardState
 }
 
 /** The original video (a default reference) stands in for her track until it is loaded. */
@@ -270,7 +315,8 @@ export function defaultSettings(): Settings {
 }
 
 export const DEFAULT_BREATHS = 3
-export const DEFAULT_WALK_ON_SECONDS = 8
+/** Seconds to walk from the iPad to her spot (Showtime's walk-on, and before any filming). */
+export const DEFAULT_WALK_ON_SECONDS = 5
 
 export function defaultStage(): StageSettings {
   return { name: '', theme: 'neon', stick: 'pink' }
@@ -313,5 +359,8 @@ export function defaultSave(_now: Date = new Date()): SaveData {
     activity: {},
     tour: { seen: false },
     celebrated: { firstShowtime: false },
+    narration: { on: true },
+    lessons: { done: [], videos: {} },
+    wizard: { at: null, done: [] },
   }
 }

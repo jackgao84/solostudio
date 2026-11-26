@@ -15,7 +15,13 @@ import {
   defaultShowtime,
   defaultSound,
   defaultStage,
+  SKILL_LESSON_IDS,
+  WIZARD_STEPS,
   type DayActivity,
+  type LessonState,
+  type SkillLessonId,
+  type WizardState,
+  type WizardStep,
   type DayState,
   type LadderProgress,
   type Line,
@@ -188,6 +194,28 @@ function activity(v: unknown): DayActivity {
   }
 }
 
+const YOUTUBE_ID = /^[A-Za-z0-9_-]{11}$/
+
+function lessons(v: unknown): LessonState {
+  const o = isObj(v) ? v : {}
+  const known = (x: unknown): x is SkillLessonId => typeof x === 'string' && (SKILL_LESSON_IDS as readonly string[]).includes(x)
+  const done = [...new Set(arr(o.done).filter(known))]
+  const videos: LessonState['videos'] = {}
+  if (isObj(o.videos)) {
+    for (const [k, x] of Object.entries(o.videos)) {
+      if (!known(k) || !isObj(x) || typeof x.youtubeId !== 'string' || !YOUTUBE_ID.test(x.youtubeId)) continue
+      videos[k] = { youtubeId: x.youtubeId, start: Math.max(0, Math.round((num(x.start, 0) as number) * 10) / 10) }
+    }
+  }
+  return { done, videos }
+}
+
+function wizard(v: unknown): WizardState {
+  const o = isObj(v) ? v : {}
+  const known = (x: unknown): x is WizardStep => typeof x === 'string' && (WIZARD_STEPS as readonly string[]).includes(x)
+  return { at: known(o.at) ? o.at : null, done: [...new Set(arr(o.done).filter(known))] }
+}
+
 export function normalize(raw: unknown): SaveData {
   const d = defaultSave()
   const o = isObj(raw) ? raw : {}
@@ -239,6 +267,9 @@ export function normalize(raw: unknown): SaveData {
     activity: log,
     tour: { seen: bool(tour.seen, false) },
     celebrated: { firstShowtime: bool(celebrated.firstShowtime, false) },
+    narration: { on: bool(isObj(o.narration) ? o.narration.on : undefined, true) },
+    lessons: lessons(o.lessons),
+    wizard: wizard(o.wizard),
   }
 }
 
