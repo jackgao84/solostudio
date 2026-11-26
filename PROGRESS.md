@@ -8,9 +8,8 @@
 ## Status
 
 - **Version 1.2 in progress (2026-11-26).** All five parts are built and committed (checks first,
-  then code, a commit per part). Waiting on the owner's answer to a batch of check fixes (listed
-  under "Check changes waiting on the owner" below), then the final full checks, 1.2.0, push and
-  deploy. Characters used with ElevenLabs so far: 10,613 (402 for the three samples, 9,687 for the
+  then code, a commit per part); the owner approved the batch of check fixes (11ca6af). Now: the
+  final full checks twice, every new screen in both orientations, 1.2.0, push and deploy. Characters used with ElevenLabs so far: 10,613 (402 for the three samples, 9,687 for the
   first recording, 524 for the section-lesson intros).
 - **Version 1.1.0 done and live (2026-11-26), build dafb6ff.** Confirmed in WebKit against the live
   site at iPad portrait and landscape: the service worker controls `/solostudio/` with one
@@ -87,12 +86,19 @@ first, then code, a commit after each; a 1.1 save migrates through a tested migr
 5. [x] No step blocked by video marks (`src/model/videos.ts`, `src/ui/loop.ts`,
    `src/ui/video-controls.ts`; checks `tests/unit/videos.test.ts`, `e2e/videos.spec.ts`).
 6. [ ] Full checks, every new screen in both orientations, 1.2.0, push, deploy, live check.
+   - Every new screen looked at in both orientations (home and path, a skill lesson, a section
+     lesson and its setup gap, an unmarked tutorial, Showtime's start, recording, every wizard step,
+     Lessons and narration). Fixed: a tutorial step in landscape now puts the video left and her
+     buttons right (Play and I did it were below the fold); her loop row sat above the video in
+     portrait; the lesson video's speed buttons wrapped; the lit line had no room; the section
+     lesson's step buttons were long; the starts step said "Load her track first" beside "Done".
+   - Version 1.2.0 (dff0f9b).
 
 **Check changes approved by the owner (1.2), committed on their own:** save version 3 and a 5 s
 walk-on default (6a16905); cues recorded from clips in `e2e/voice.ts`, the seven skill lessons in
 `copy.test.ts`/`layout.spec.ts`, and the seeded save having heard the skill lessons (42da448).
 
-**Check changes waiting on the owner (nothing changed yet):**
+**Check fixes approved by the owner (1.2), committed on their own (11ca6af):**
 - `tests/unit/narration.test.ts` (new): the MP3 check reads the Info frame at the start of each file
   (its bitrate field says 56 kbps); it should skip an Info/Xing frame and read the first audio frame
   (all clips are 32 kbps mono, confirmed with afinfo and by reading every frame).
@@ -100,7 +106,7 @@ walk-on default (6a16905); cues recorded from clips in `e2e/voice.ts`, the seven
   clips needs one. Proposed: allow it in `src/audio/narration.ts` only, for URLs under the app's own
   `voice/` folder.
 - `e2e/offline.spec.ts:103` (1.0): expects 6 lesson cards; there are now 7 (LESSON_IDS.length).
-- `scripts/privacy-scan.mjs`: reads MP3s as text and 6 random audio bytes ("i@Y.Ue") fit the email
+- `scripts/privacy-scan.mjs`: reads MP3s as text and six random audio bytes fit the email
   pattern; proposed: skip .mp3 like the images and fonts it already skips.
 - `tests/unit/session.test.ts` (1.1): its own `save()` builds a save with no skill lesson heard, so
   two checks meet skill lessons in the session; proposed: mark them heard there too, as approved
@@ -135,6 +141,7 @@ Decisions (1.2):
   optional ones count only when a grown-up did them. The lines box: `[Name]` headers, `= meaning`
   under a line (marking it Korean said by sound); saving keeps sections with the same name (ids,
   marks, progress, breaths, timing). The beat guess is stored as the tempo until a grown-up checks it.
+- D27. The coach says "Again" when she taps Again (the session's cue still comes first, once).
 - D26. A practice video: one marked on the section wins and is cued to it; otherwise the step's video
   from a chapter time or its start (the tutorial with counts for Chorus and Dance break, the full one
   otherwise). Her loop on a practice screen counts in each time round, like every rep; on a lesson
