@@ -14,11 +14,25 @@ headset mic while dancing, at a showcase and again at a talent show.
   with the section before). Lines light up karaoke style at any speed, with an 8-count beside them.
 - **Quick tests** (missing words, counts from memory) and spaced checks after 1, 3 and 7 days; shaky
   sections come back sooner.
-- **Showtime**: her whole track from the top, no stopping, then one thing that went well and one to
-  work on. Optional **recording** with a mirrored front camera, played back beside the reference.
+- **Showtime**: the whole routine (backstage breathing with a circle, “I’m excited!”, the walk to her
+  spot, the opening pose on a spoken count, her whole track with no stopping, ending pose, bow,
+  applause, walking off), with an optional gentle audience made in Web Audio. Then one thing that
+  went well, one to work on, and Up Anyway if someone watched. Optional **recording** with a
+  mirrored front camera, played back beside the reference.
+- **Start today’s practice** (1.1): one big button walks through the day, saying what’s next in the
+  iPad’s English voice and counting her in (5, 6, 7, 8) before every rep. Reps loop until she taps
+  I did it, Next or Pause, with buttons big enough to hit from a step away. Cues are never spoken
+  over her music; cues and sound effects each have a volume and mute.
+- **Drills** from the together phase on: start anywhere (a random section, shaky ones more often)
+  and jump back in (the music drops out or skips a line and she keeps going). A **listening run** on
+  light days. A 30-second tour on first run.
+- **Her stage**: each section a lighting rig that lights up as she ticks steps (all lit on show
+  day), a light stick in her colour beside the 8-count, a D-day countdown, Build the line, and a
+  name and colours for her stage. Celebrations are only ever for doing things.
 - **Lessons**: six short reads, each putting her own teachers first.
-- **Grown-ups' area** behind a press-and-hold: the show and plan, her track, reference videos,
-  sections with typed lines, marks and tap-along, tempo, backup.
+- **Grown-ups' area** behind a press-and-hold: her week (the last 7 days), notes (a teacher’s note
+  per section, a note for her on Today), the show and plan, her track, reference videos, sections
+  with typed lines, marks and tap-along, tempo, the Showtime routine, backup.
 
 No lyrics, photos or logos are in this repo: a grown-up types the lines on the iPad and they stay
 there. YouTube videos play only through YouTube's own player (youtube-nocookie.com). Her track,

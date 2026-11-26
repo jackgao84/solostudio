@@ -1238,11 +1238,6 @@
   gap: 18px;
 }
 
-@media (orientation: landscape) and (min-width: 900px) {
-  .sound-cards {
-    grid-template-columns: 1fr 1fr;
-  }
-}
 
 .volume-row {
   gap: 14px;
@@ -1617,4 +1612,22 @@ html[data-theme='mint'] {
     transform: translateY(70vh) rotate(var(--r));
     opacity: 0;
   }
+}
+
+/* Before her first line (or with the words off), the stage glows with "Showtime!" softly. */
+.showtime-lyric.is-idle {
+  color: var(--muted);
+  opacity: 0.75;
+  font-size: 40px;
+}
+
+/* When a video stands in for her track in Showtime, the stage and the video share the screen so
+   Stop stays in reach (no transforms: the video's box is only given a height). */
+.showtime-top:has(+ .player-area:not([hidden])) .showtime-stage {
+  min-height: 22vh;
+}
+
+[data-screen='showtime'] .yt-frame {
+  max-height: 42vh;
+  min-height: 220px;
 }

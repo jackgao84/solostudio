@@ -57,11 +57,11 @@ part by part: checks first, then the code, a commit after each part.
    colours (`src/model/stage.ts`, `celebrate.ts`, `buildline.ts`, `src/app/celebrate.ts`,
    `src/screens/kid/mystage.ts`, `src/ui/theme.ts`; checks `tests/unit/fun.test.ts`,
    `e2e/fun.spec.ts`).
-8. [ ] Still to do: SETUP.md (Showtime routine timing, Notes, Her week, Sounds) and README for 1.1;
-   one more full run of all checks; finish looking at every new screen in both orientations (the
-   first portrait set looked right); version 1.1.0; push; confirm the deploy and the live site.
-   Done so far in this step: a count-in before recording a section and counts from memory
-   (`e2e/countin-everywhere.spec.ts`), and Sections' Open buttons made plain (one main action).
+8. [x] Count-ins before recording a section and counts from memory (`e2e/countin-everywhere.spec.ts`);
+   SETUP.md (step 8: Showtime routine, Notes, Sounds; what to check on the iPad) and README;
+   every new screen looked at in both orientations (fixed: Sounds' volume row wrapping in
+   landscape, a blank Showtime stage before her first line, and Stop below the fold when a video
+   stands in for her track); version 1.1.0; full checks; pushed and deployed.
 
 Decisions (1.1):
 
@@ -125,6 +125,9 @@ Decisions (1.1):
   same); any other chip wiggles and stays. Nothing about misses is stored. Peek lights the next chip.
 - D17. Colour themes (Neon, Sunset, Ocean, Mint) only change the colour variables; the light stick
   (Pink, Violet, Cyan, Lime, Gold) sits inside the 8-count box and pulses on each count.
+- D19. Showtime's stage says "Showtime!" softly until her first line lights (and all through
+  with the words off). With a video standing in for her track, the stage shrinks and the video is
+  capped at 42vh so Stop stays in reach.
 - D18. RangePlayer stops once per play, and also when the media stops or its clock freezes within
   0.5 s of the end (WebKit sometimes never fires "ended" there).
 
@@ -158,6 +161,12 @@ npm run build        # dist/ for GitHub Pages
 ```
 
 ## The checks (what decides "done")
+
+1.1 adds (all new files; 1.0's checks are unchanged except the approved journey waits):
+unit `migration`, `drills`, `routes-v11`, `showtime-routine`, `week`, `listening`, `session`, `fun`;
+WebKit `migration`, `drills`, `showtime-routine`, `grownups-week`, `listening`, `session`, `reach`
+(main buttons on screen without scrolling and ≥ 88 px), `fun`, `countin-everywhere`, with a speech
+stand-in in `e2e/voice.ts` that records each cue and whether any media was playing when it was said.
 
 Unit (`tests/unit`): timing, sync (line sync at every speed 50–100%), counts (tap tempo at every
 speed, 8-count), fade (a few words at a time, spread out, first word stays), spacing (1/3/7 days,

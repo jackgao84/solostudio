@@ -191,7 +191,9 @@ export const showtimeScreen: Screen = (root, { query }) => {
     const lyric = h('span', { class: 'showtime-lyric' })
     const keep = h('span', { class: 'keep-going', role: 'status', hidden: true }, h('span', null, S.keepGoing), h('span', { class: 'note' }, S.keepGoingMore))
     const bar = h('div', { class: 'progress__bar' })
-    const stageEl = h('button', { type: 'button', class: 'showtime-stage' }, words ? lyric : null, keep)
+    lyric.textContent = S.title
+    lyric.classList.add('is-idle')
+    const stageEl = h('button', { type: 'button', class: 'showtime-stage' }, lyric, keep)
     stageEl.addEventListener('click', () => {
       keep.hidden = false
       window.clearTimeout(keepTimer)
@@ -207,7 +209,9 @@ export const showtimeScreen: Screen = (root, { query }) => {
       if (words) {
         let current = ''
         for (const l of lines) if (l.start - LINE_LEAD <= t) current = l.text
-        if (lyric.textContent !== current) lyric.textContent = current
+        const text = current || S.title
+        if (lyric.textContent !== text) lyric.textContent = text
+        lyric.classList.toggle('is-idle', !current)
       }
       const d = player.duration()
       if (d) bar.style.width = `${Math.min(100, (t / d) * 100)}%`

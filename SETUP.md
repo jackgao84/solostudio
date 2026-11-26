@@ -81,11 +81,24 @@ Tap **Tempo and counts**, then **Play**. Tap **Tap tempo** along with the beat a
 Then tap **This is a 1** on the first beat of an 8-count. Watch the counts for a few seconds; use
 **Move the 1 earlier / later** if they drift. (If you know the beats per minute, type it instead.)
 
-## 8. Back up, then hand it over (2 minutes)
+## 8. Showtime routine, notes and sounds (version 1.1, 3 minutes)
+
+1. Tap **Showtime routine**. Stand where she will perform and time how long it takes to walk there
+   from the iPad; put that in **Seconds to walk to her spot** (8 is the default). Choose the
+   **Breaths backstage** (3 is the default). The **Audience sound** (a gentle crowd and applause,
+   never during her track) can be switched off here or on the Showtime screen. Tap **Save routine**.
+2. Tap **Notes**. A **teacher’s note** for a section shows on that section’s practice screens. A
+   **note for her** shows on Today until she taps **Got it**; this screen then says she has seen it.
+3. On her side, **Today → Sounds** has a volume and an off switch for the spoken cues (“Next:
+   Chorus, Dance, 75% speed” and the 5, 6, 7, 8 count-in) and for the sound effects. Set them with
+   her, with the iPad where it will stand while she practises.
+
+## 9. Back up, then hand it over (2 minutes)
 
 1. Tap **Backup**, then **Export backup**, and save the file in Files. (The backup holds everything
    except her track, local videos and clips.)
-2. Tap **Back to practice**. Today's plan is ready for her.
+2. Tap **Back to practice**. Today's plan is ready for her. The first time, Today offers her a
+   30-second tour; her big button is **Start today’s practice**.
 
 ## Later
 
@@ -94,6 +107,10 @@ Then tap **This is a 1** on the first beat of an 8-count. Watch the counts for a
 - **Updates**: when a new version is ready, Today shows **New version: tap to update**. It never
   updates in the middle of practice.
 - **The version** is shown at the bottom of the grown-ups' home.
+- **Her week**: Grown-ups → Her week shows the last 7 days: days and minutes practised, ladder steps
+  per section, sections marked shaky and her “one thing” notes.
+- **Updating from 1.0**: everything already set up carries over by itself the first time 1.1 opens
+  (the 1.0 save is kept as the backup copy). Nothing needs doing again.
 
 ## Things to check on the iPad itself
 
@@ -105,3 +122,12 @@ These can't be checked anywhere else:
   allow the camera when asked. Her clips stay on the iPad.
 - **Her track at 50% and 75% keeps its pitch** (it should sound slower, not lower).
 - **The screen stays awake** during a practice block (needs iPadOS 16.4 or later).
+- **The spoken cues** (1.1): tap **Start today’s practice** and listen for “Next: …” in the iPad’s
+  English voice, then “5, 6, 7, 8”. If nothing is said, check Today → Sounds, the ring/silent
+  switch and the volume; the count-in still shows on screen.
+- **The count-in lands on the beat** of her track, and the music comes in on the 1. If it feels
+  off, redo Tempo and counts (the count-in uses that tempo).
+- **Sound levels**: the cues, the stage-light sound, the crowd and the applause at a comfortable
+  level from where she dances (Today → Sounds).
+- **Recording** now starts after a count-in, so she can get to her spot: check the clip starts with
+  the music.
