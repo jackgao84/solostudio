@@ -19,6 +19,7 @@ import { addYouTubeVideo, canRemove, removeVideo, renameVideo, swapVideo } from 
 import { roomSources, videoName } from '../../src/model/room'
 import { rapMode, stepRoom, stepRoute, stepSource, stepVideo } from '../../src/model/videos'
 import { VIDEO_NAME_MAX, defaultSave, emptyProgress, type SaveData, type Section } from '../../src/storage/schema'
+import { lyricLine } from '../fixtures/placeholders'
 
 const D = '2031-03-07'
 
@@ -26,7 +27,7 @@ function sectionOn(marked: Record<string, { start: number | null; end: number | 
   return {
     id: 's1',
     name: 'Verse 1',
-    lines: Array.from({ length: lines }, (_, i) => ({ id: `l${i}`, lyric: `Line ${i + 1} of Verse 1`, lang: 'en' as const, meaning: '', breaths: [], time: 10 + i * 2 })),
+    lines: Array.from({ length: lines }, (_, i) => ({ id: `l${i}`, lyric: lyricLine(i + 1, 'Verse 1'), lang: 'en' as const, meaning: '', breaths: [], time: 10 + i * 2 })),
     track: { start: 10, end: 20 },
     refs: marked,
     createdAt: '2031-01-01T00:00:00.000Z',
