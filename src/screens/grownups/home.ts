@@ -58,6 +58,8 @@ export const grownupsHome: Screen = (root) => {
       { class: 'gu-menu' },
       ...(
         [
+          ['Her week', '/grownups/week'],
+          ['Notes', '/grownups/notes'],
           ['Show and plan', '/grownups/plan'],
           ['Her track', '/grownups/track'],
           ['Videos', '/grownups/refs'],

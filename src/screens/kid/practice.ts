@@ -9,6 +9,7 @@ import { KID_COPY } from '../../content/kid'
 import { STEP_COPY } from '../../content/ladders'
 import { sectionFadeLevels } from '../../model/fade'
 import { LADDERS, pickReference, stepById } from '../../model/ladders'
+import { logTick } from '../../model/activity'
 import { progressOf, reviewLadder, setFade, tickStep } from '../../model/progress'
 import { isDue } from '../../model/spacing'
 import { lineStarts, wordsOf } from '../../model/sync'
@@ -175,7 +176,7 @@ export const practiceScreen: Screen = (root, { params }) => {
     }
     if (step.counts && tempo.bpm && tempo.offset != null && toTrack(from) != null) {
       counts = new CountsView(tempo.bpm, tempo.offset)
-      side.append(counts.el)
+      side.insertBefore(counts.el, teacherEl)
     }
     if (side.childElementCount) {
       stage.classList.add('has-side')
@@ -185,6 +186,14 @@ export const practiceScreen: Screen = (root, { params }) => {
     range.onTick = tick
     range.onStop = () => setPlaying(false)
     tick(from)
+  }
+
+  const teacher = save().notes.teacher[sid]
+  const teacherEl = teacher ? h('section', { class: 'teacher-note', role: 'note' }, h('p', { class: 'teacher-note__title' }, P.teacherNote), h('p', null, teacher)) : null
+  if (teacherEl) side.append(teacherEl)
+  if (side.childElementCount && !side.isConnected) {
+    stage.classList.add('has-side')
+    stage.append(side)
   }
 
   if (wantsWords && lyrics && !side.isConnected) {
@@ -225,6 +234,7 @@ export const practiceScreen: Screen = (root, { params }) => {
     if (before[step!.ladder].finishedAt && isDue(p[step!.ladder].review, t)) p = reviewLadder(p, step!.ladder, t)
     update((d) => {
       d.progress[sid] = p
+      if (!before[step!.ladder].done.includes(step!.id)) logTick(d, t, sid, step!.id)
     })
     const steps = LADDERS[step!.ladder]
     const next = steps[steps.findIndex((x) => x.id === step!.id) + 1]

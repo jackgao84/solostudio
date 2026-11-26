@@ -2,7 +2,7 @@
 
 Every piece of kid-facing text in the app, grouped by where it appears. Words in {curly brackets} are filled in on the iPad (her name, a section name, a number). The rap lines themselves are typed on the iPad by a grown-up and are never part of the app.
 
-- 330 lines in 17 groups
+- 333 lines in 17 groups
 
 **This file is generated from `src/content`. Don’t edit it by hand.** To change the words, edit the files in `src/content`, then run `npm run review` to rebuild this file. `npm test` fails while it is out of date.
 
@@ -27,7 +27,7 @@ The buttons for getting around, and the "new version" button on Today.
 - My clips <sub>`kid.nav.clips`</sub>
 - New version: tap to update <sub>`kid.nav.newVersion`</sub>
 
-## 3. Today (25)
+## 3. Today (27)
 
 Her day: the countdown, the phase, the blocks, moving blocks, checks that are due.
 
@@ -56,6 +56,8 @@ Her day: the countdown, the phase, the blocks, moving blocks, checks that are du
 - {section}: {ladder} <sub>`kid.today.checkLine`</sub>
 - shaky <sub>`kid.today.shakyTag`</sub>
 - Today: {sections} <sub>`kid.today.sectionsFocus`</sub>
+- A note from a grown-up <sub>`kid.today.noteTitle`</sub>
+- Got it <sub>`kid.today.noteGotIt`</sub>
 
 ## 4. Phases and blocks (28)
 
@@ -196,7 +198,7 @@ Each ladder and each rung, with the one-line how-to shown on the practice screen
 - Link it up <sub>`step.together-linked.name`</sub>
 - Start in the part before and flow straight into this one. <sub>`step.together-linked.how`</sub>
 
-## 8. Practising (39)
+## 8. Practising (40)
 
 The practice screen: buttons, notes, speeds and what she sees when a video won’t play.
 
@@ -239,6 +241,7 @@ The practice screen: buttons, notes, speeds and what she sees when a video won�
 - Back to {section} <sub>`kid.practice.backToSection`</sub>
 - A grown-up types the lines for this part on the iPad. <sub>`kid.practice.noLines`</sub>
 - Quick check: do it once from memory. <sub>`kid.practice.reviewNote`</sub>
+- From your teacher <sub>`kid.practice.teacherNote`</sub>
 
 ## 9. Start anywhere and jump back in (8)
 

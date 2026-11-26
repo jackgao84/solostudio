@@ -37,6 +37,22 @@ export const todayScreen: Screen = (root) => {
 
   const head = h('header', { class: 'today__head' }, h('h1', null, d.profile.name ? fill(T.hello, { name: d.profile.name }) : T.helloNoName))
   el.append(head, updateSlot)
+  const forHer = d.notes.forHer
+  if (forHer && !forHer.seen) {
+    const card = h(
+      'section',
+      { class: 'note-for-her card', role: 'note' },
+      h('h2', null, T.noteTitle),
+      h('p', { class: 'note-for-her__text' }, forHer.text),
+      button(T.noteGotIt, () => {
+        update((s) => {
+          if (s.notes.forHer) s.notes.forHer.seen = true
+        })
+        card.remove()
+      }),
+    )
+    el.append(card)
+  }
 
   const input = planInputFrom(d)
   const showName = d.show?.name || T.showFallback

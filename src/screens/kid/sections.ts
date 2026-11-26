@@ -4,6 +4,7 @@ import type { Screen } from '../../app/router'
 import { KID_COPY } from '../../content/kid'
 import { LADDER_COPY, STEP_COPY } from '../../content/ladders'
 import { LADDERS, LADDER_IDS } from '../../model/ladders'
+import { logShaky } from '../../model/activity'
 import { clearShaky, dueItems, markShaky, progressOf } from '../../model/progress'
 import { button, toggle } from '../../ui/components'
 import { fill, h } from '../../ui/dom'
@@ -77,6 +78,7 @@ export const sectionScreen: Screen = (root, { params }) => {
         update((d) => {
           const cur = progressOf(d.progress, s.id)
           d.progress[s.id] = on ? markShaky(cur, today()) : clearShaky(cur)
+          if (on) logShaky(d, today(), s.id)
         }),
       ),
       h('p', { class: 'note' }, S.shakyNote),

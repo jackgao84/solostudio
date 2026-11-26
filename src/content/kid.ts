@@ -46,6 +46,8 @@ export const KID_COPY = {
     checkLine: '{section}: {ladder}',
     shakyTag: 'shaky',
     sectionsFocus: 'Today: {sections}',
+    noteTitle: 'A note from a grown-up',
+    noteGotIt: 'Got it',
   },
   block: {
     about: 'About {minutes} minutes',
@@ -104,6 +106,7 @@ export const KID_COPY = {
     backToSection: 'Back to {section}',
     noLines: 'A grown-up types the lines for this part on the iPad.',
     reviewNote: 'Quick check: do it once from memory.',
+    teacherNote: 'From your teacher',
   },
   drills: {
     startDrill: 'Start the drill',

@@ -44,7 +44,9 @@ part by part: checks first, then the code, a commit after each part.
 3. [x] The Showtime routine, audience sound, walk-on and bow on their own (`src/model/routine.ts`,
    `src/audio/audience.ts`, `src/audio/sfx.ts`, `src/screens/kid/showtime.ts`, Grown-ups →
    Showtime routine; checks `tests/unit/showtime-routine.test.ts`, `e2e/showtime-routine.spec.ts`).
-4. [ ] Grown-ups' week, teacher notes per section, a note for her on Today.
+4. [x] Grown-ups' week, teacher notes per section, a note for her on Today (`src/model/week.ts`,
+   `src/model/activity.ts`, `src/app/activity.ts`, Grown-ups → Her week and Notes; checks
+   `tests/unit/week.test.ts`, `e2e/grownups-week.spec.ts`).
 5. [ ] Listening run on light days.
 6. [ ] Ease of use: guided session, spoken cues and count-ins, looping reps, sound settings, tour.
 7. [ ] Fun: stage lights, light stick, D-day, build the line, celebrations, her stage's name and colours.
@@ -74,6 +76,14 @@ Decisions (1.1):
 - D7. The Showtime player stays in one place in the page and is shown or hidden (a moved YouTube
   iframe reloads). Up Anyway is offered after a plain Showtime with "Someone watched me"; performing
   for family offers it straight away, as before.
+
+- D8. Minutes practised are logged in 5 s steps while a practice screen is on screen and she is
+  active (media playing, or a tap in the last 10 minutes); a screen left open untouched adds
+  nothing. A day counts as practised with a minute or more, a ticked step, a finished block or a
+  reflection. The log keeps 120 days.
+- D9. The note for her shows on Today until she taps Got it; the grown-up's Notes screen says when
+  she has seen it. Teacher notes show beside the lyrics and counts on that section's practice
+  screens, never over a player.
 
 **Check change approved by the owner (1.1):** `e2e/journey.spec.ts` steps 13–14: only the waits
 grow by the Showtime routine's length (the routine now comes before and after her track); every

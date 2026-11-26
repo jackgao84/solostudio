@@ -19,6 +19,9 @@ import { showtimeScreen } from './screens/kid/showtime'
 import { drillScreen } from './screens/kid/drill'
 import { unlockEffects } from './audio/sfx'
 import { unlockSpeech } from './audio/voice'
+import { startActivityLog } from './app/activity'
+import { weekScreen } from './screens/grownups/week'
+import { notesScreen } from './screens/grownups/notes'
 import { recordScreen } from './screens/kid/record'
 import { clipsScreen } from './screens/kid/clips'
 import { lessonScreen, lessonsScreen } from './screens/kid/lessons'
@@ -61,6 +64,7 @@ const unlock = () => {
   document.removeEventListener('pointerdown', unlock, true)
 }
 document.addEventListener('pointerdown', unlock, true)
+startActivityLog()
 
 const routes: [string, Screen][] = [
   ['/welcome', welcomeScreen],
@@ -86,6 +90,8 @@ const routes: [string, Screen][] = [
   ['/grownups/backup', backupScreen],
   ['/grownups/links', linksScreen],
   ['/grownups/showtime', showtimeSettingsScreen],
+  ['/grownups/week', weekScreen],
+  ['/grownups/notes', notesScreen],
 ]
 
 const app = document.getElementById('app')
