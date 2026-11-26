@@ -4,6 +4,10 @@
  * or together block becomes one item per section (the next rung of that ladder, or a check that is
  * due); drills, run-throughs, performing for family and the listening run are items of their own.
  * Before each item the iPad says what's next, e.g. "Next: Chorus, Dance, 75% speed".
+ * Version 1.3: with no grown-up sections, a dance (or together) block opens her parts in the practice
+ * room, one item each ("Next: Spin, Dance, 50% speed"); with no parts yet it opens the practice room
+ * on the mirrored follow-along with the hint on making a loop. A rap block opens the practice room on
+ * the listen-and-read video.
  */
 import { BLOCK_COPY, DRILL_COPY } from '../content/blocks'
 import { KID_COPY } from '../content/kid'
@@ -15,6 +19,7 @@ import { LADDERS, stepById } from './ladders'
 import { applyOrder, type Block, type BlockType, type Drill, type PlanDay } from './plan'
 import { skillsDue, type Need } from './path'
 import { dueItems, nextStep, progressOf } from './progress'
+import { defaultSource, nextPartSpeed, roomSources } from './room'
 
 export type SessionItem =
   | { kind: 'routine'; blockId: string; type: BlockType }
@@ -25,6 +30,8 @@ export type SessionItem =
   | { kind: 'empty'; blockId: string; type: BlockType }
   /** A skill lesson due just before a block's practice (version 1.2): a part of its own, `before` that block. */
   | { kind: 'lesson'; blockId: string; lessonId: SkillLessonId; before: string }
+  /** The practice room (version 1.3): one of her parts, or a video (with the hint on making a loop). */
+  | { kind: 'room'; blockId: string; partId: string | null; source: string | null; hint: boolean }
 
 export const LADDER_OF: Partial<Record<BlockType, LadderId>> = { rap: 'rap', dance: 'dance', together: 'together' }
 
@@ -70,7 +77,11 @@ export function sessionItems(save: SaveData, day: PlanDay, today: string): Sessi
       lessonsFor('showtime', b.id)
       out.push({ kind: 'showtime', blockId: b.id, family: b.type === 'family' })
     } else if (b.type === 'listen') out.push({ kind: 'listen', blockId: b.id })
-    else {
+    else if (!save.sections.length && LADDER_OF[b.type]) {
+      // No grown-up sections yet: the practice room.
+      lessonsFor(LADDER_OF[b.type]!, b.id)
+      out.push(...roomItems(save, b))
+    } else {
       const choices = practiceChoices(save, b, today)
       if (!choices.length) out.push({ kind: 'empty', blockId: b.id, type: b.type })
       const ladder = LADDER_OF[b.type]
@@ -79,6 +90,17 @@ export function sessionItems(save: SaveData, day: PlanDay, today: string): Sessi
     }
   }
   return out
+}
+
+/** What a practice block opens in the practice room when there are no grown-up sections. */
+export function roomItems(save: SaveData, block: Pick<Block, 'id' | 'type' | 'partIds'>): SessionItem[] {
+  if (block.type === 'rap') {
+    const listen = roomSources(save).find((s) => s.role === 'listen')?.id ?? defaultSource(save)
+    return [{ kind: 'room', blockId: block.id, partId: null, source: listen, hint: false }]
+  }
+  const ids = (block.partIds ?? []).filter((id) => save.parts.some((p) => p.id === id))
+  if (ids.length) return ids.map((partId) => ({ kind: 'room', blockId: block.id, partId, source: null, hint: false }))
+  return [{ kind: 'room', blockId: block.id, partId: null, source: defaultSource(save), hint: true }]
 }
 
 /** What the iPad says before an item. */
@@ -102,6 +124,11 @@ export function cueFor(item: SessionItem, save: SaveData): string {
       return fill(C.nextBlock, { block: BLOCK_COPY.listen.title })
     case 'lesson':
       return fill(C.nextBlock, { block: LESSONS.find((l) => l.id === item.lessonId)?.title ?? '' })
+    case 'room': {
+      const part = item.partId ? save.parts.find((p) => p.id === item.partId) : null
+      if (part) return fill(C.nextStep, { section: part.name, ladder: LADDER_COPY.dance.name, speed: Math.round(nextPartSpeed(part) * 100) })
+      return fill(C.nextBlock, { block: BLOCK_COPY[item.hint || !item.source?.endsWith('listen') ? 'dance' : 'rap'].title })
+    }
   }
 }
 
@@ -116,6 +143,8 @@ export function routeFor(item: SessionItem): string {
       return `/showtime?block=${encodeURIComponent(item.blockId)}${item.family ? '&family=1' : ''}&session=1`
     case 'lesson':
       return `/lesson/${item.lessonId}?session=1`
+    case 'room':
+      return item.partId ? `/room?part=${encodeURIComponent(item.partId)}&session=1` : `/room?source=${encodeURIComponent(item.source ?? '')}${item.hint ? '&hint=1' : ''}&session=1`
     default:
       return `/block/${encodeURIComponent(item.blockId)}?session=1`
   }

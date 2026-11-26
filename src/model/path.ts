@@ -4,15 +4,18 @@
  *    rungs. Default order: each section's Rap then Dance, in song order; then each Together; then
  *    Showtime at the end;
  *  - the eight skill lessons, each placed just before the first lesson that needs it (Rap basics
- *    since 1.2.1, right before her first rap lesson).
+ *    since 1.2.1, right before her first rap lesson);
+ *  - version 1.3: while no grown-up sections exist, her own parts on the mirrored follow-along are the
+ *    dance lessons, in the order they appear in the video (each opens in the practice room).
  * The path order is the default; the plan still decides which lessons are today's.
  * Pure, so the checks can read it.
  */
-import type { LadderId, Reference, RefRole, SaveData, Section, SkillLessonId, WizardStep } from '../storage/schema'
+import type { LadderId, MyPart, Reference, RefRole, SaveData, Section, SkillLessonId, WizardStep } from '../storage/schema'
 import { orderSections, spanOf } from './timing'
 import { LADDERS } from './ladders'
+import { partFinished } from './room'
 
-export type PathItem = { kind: 'skill'; id: SkillLessonId } | { kind: 'section'; sectionId: string; ladder: LadderId } | { kind: 'showtime' }
+export type PathItem = { kind: 'skill'; id: SkillLessonId } | { kind: 'section'; sectionId: string; ladder: LadderId } | { kind: 'part'; partId: string } | { kind: 'showtime' }
 
 export type Need = LadderId | 'showtime'
 
@@ -25,14 +28,22 @@ export const SKILL_NEEDS: Record<Need, readonly SkillLessonId[]> = {
 }
 
 export function pathKey(i: PathItem): string {
-  return i.kind === 'skill' ? `skill:${i.id}` : i.kind === 'section' ? `section:${i.sectionId}:${i.ladder}` : 'showtime'
+  return i.kind === 'skill' ? `skill:${i.id}` : i.kind === 'section' ? `section:${i.sectionId}:${i.ladder}` : i.kind === 'part' ? `part:${i.partId}` : 'showtime'
 }
 
-export function lessonPath(save: Pick<SaveData, 'sections'>): PathItem[] {
+/** Her parts on the mirrored follow-along, in the order they appear in the video. */
+export function followAlongParts(save: Pick<SaveData, 'parts' | 'refs'>): MyPart[] {
+  const mirrored = new Set(save.refs.filter((r) => r.role === 'mirrored').map((r) => r.id))
+  return save.parts.filter((p) => mirrored.has(p.source)).sort((a, b) => a.from - b.from || a.to - b.to || a.createdAt.localeCompare(b.createdAt))
+}
+
+export function lessonPath(save: Pick<SaveData, 'sections' | 'parts' | 'refs'>): PathItem[] {
   const sections = orderSections(save.sections)
   const lessons: { item: PathItem; need: Need }[] = []
   for (const s of sections) for (const ladder of ['rap', 'dance'] as const) lessons.push({ item: { kind: 'section', sectionId: s.id, ladder }, need: ladder })
   for (const s of sections) lessons.push({ item: { kind: 'section', sectionId: s.id, ladder: 'together' }, need: 'together' })
+  // No grown-up sections yet: her own follow-along parts are the dance lessons.
+  if (!sections.length) for (const p of followAlongParts(save)) lessons.push({ item: { kind: 'part', partId: p.id }, need: 'dance' })
   lessons.push({ item: { kind: 'showtime' }, need: 'showtime' })
   const placed = new Set<SkillLessonId>()
   const out: PathItem[] = []
@@ -49,9 +60,13 @@ export function lessonPath(save: Pick<SaveData, 'sections'>): PathItem[] {
   return out
 }
 
-export function isDone(save: Pick<SaveData, 'lessons' | 'progress' | 'celebrated'>, i: PathItem): boolean {
+export function isDone(save: Pick<SaveData, 'lessons' | 'progress' | 'celebrated' | 'parts'>, i: PathItem): boolean {
   if (i.kind === 'skill') return save.lessons.done.includes(i.id)
   if (i.kind === 'showtime') return save.celebrated.firstShowtime
+  if (i.kind === 'part') {
+    const p = save.parts.find((x) => x.id === i.partId)
+    return !!p && partFinished(p)
+  }
   const p = save.progress[i.sectionId]?.[i.ladder]
   return !!p && LADDERS[i.ladder].every((s) => p.done.includes(s.id))
 }

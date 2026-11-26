@@ -85,7 +85,18 @@ nothing to practise); `e2e/videos.spec.ts`: her loop buttons are "Loop start" / 
    home's Practice room button beside Start today's practice, `/room` open before setup and busy (no
    update mid-practice, screen awake). The welcome no longer says a grown-up sets things up first;
    home's "a grown-up needs to set the show date / add the parts first" lines are gone.
-2. [ ] Her parts feed the path.
+2. [x] Her parts feed the path. Checks first (9b17802): `tests/unit/parts-path.test.ts`,
+   `e2e/parts-path.spec.ts`; my own new unit check then copied its fixture per test (it shared one
+   array between tests; no assertion changed). Code: `PathItem` kind `part` and `followAlongParts` in
+   `src/model/path.ts`; `src/model/today.ts` (free day from her parts, or one practice-room dance
+   block; with dates and no sections each dance/together block takes an open part in turn);
+   `SessionItem` kind `room` (`roomItems`, cue "Next: {part}, Dance, 50% speed", route `/room?…`);
+   the room joins the session (cue, auto-play of her part, Next, I did it moves on) and reads the hint
+   with `?hint=1`; `stepSource` in `src/model/videos.ts` (rap steps on a part with no lines: the
+   listen-and-read video where words would light up, her track for the rest, with her loop buttons);
+   the rap lesson's card says the words are in the video. All her screens are open before setup;
+   `/` opens the welcome until setup is done or she has a part; the welcome has Let's go.
+   Narration: 3 new clips (the hint), 214 characters.
 3. [ ] Honest video messages, and Test YouTube in the grown-ups' area.
 4. [ ] Narration for new lines; full checks; every new screen in both orientations; 1.3.0; deploy.
 
@@ -100,6 +111,13 @@ Decisions (1.3):
   round through RepLoop (a count-in at her tempo, the loop, a rest, again). Nudges move an end by
   0.2 s (never below 0, never under 1 s) and take effect next time round; nudging a picked part
   changes that part.
+- D31. With no grown-up sections, her parts on the mirrored follow-along (role `mirrored`) are the
+  dance lessons, sorted by where they start; counting and learning a dance come just before the
+  first. Parts on other videos stay in the room. The free day: warm-up 5, a dance block (8 min) per
+  open part in path order with water as the rules need, cool-down 5; with no parts, warm-up 5, one
+  15-minute dance block in the room (the hint, read aloud), cool-down 5. A rap block with no sections
+  opens the room on the listen-and-read video. Once a grown-up adds sections, nothing about the path
+  or the plan changes from 1.2; her parts stay in the room.
 - D30. A part is ticked at 50, 75 and 100% speed: "I did it" ticks the highest of those at or below
   the speed it plays at, then moves to the next speed. Picking a part opens it at its next speed.
   Rename and Delete (with "Yes, delete it") are on every part.

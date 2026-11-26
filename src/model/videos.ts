@@ -9,7 +9,7 @@
  * Her own loop goes round the bit between two taps.
  */
 import type { Reference, RefRole, SaveData, Section } from '../storage/schema'
-import { REF_PREFERENCE, type Source } from './ladders'
+import { REF_PREFERENCE, type Source, type StepDef } from './ladders'
 import { tutorialRoles } from './path'
 import { playRange, spanOf, type Span } from './timing'
 
@@ -43,6 +43,16 @@ export function stepVideo(save: Pick<SaveData, 'refs'>, section: Section, source
   if (chapter) return { ref: chapter, from: section.refs[chapter.id]!.start!, span: null }
   const first = candidates.find((r) => r.kind === 'youtube') ?? candidates[0]
   return first ? { ref: first, from: 0, span: null } : null
+}
+
+/**
+ * What a step plays (version 1.3): its own source, except a rap step on a part with no lines, where
+ * the listen-and-read video stands in wherever the words would light up (the words are in the video)
+ * and her track plays for the rest.
+ */
+export function stepSource(step: Pick<StepDef, 'ladder' | 'source' | 'words'>, section: Pick<Section, 'lines'>): Source {
+  if (step.ladder !== 'rap' || section.lines.length) return step.source
+  return step.words === 'show' ? 'listen' : 'track'
 }
 
 /** Her loop between two taps (either order), at least a second long. */

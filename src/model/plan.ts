@@ -62,6 +62,8 @@ export interface Block {
   headset: boolean
   /** A together block that is a drill: start anywhere or jump back in. */
   drill?: Drill
+  /** Her own parts this block practises in the practice room (version 1.3: no grown-up sections yet). */
+  partIds?: string[]
 }
 
 export interface Focus {

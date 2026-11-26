@@ -3,6 +3,8 @@
  * short intro the coach reads aloud, the right video for that part (from where it is marked, or
  * from the start: no marks needed), and the ladder's rungs, each practised with the count-in. If the
  * lesson needs something setup hasn't covered, it says so plainly and offers to open that step.
+ * Version 1.3: a rap lesson on a part with no lines starts straight away (the words are in the
+ * listen-and-read video); it only mentions that a grown-up can add the words too.
  */
 import { go, save, sectionById, unlockGrownups } from '../../app/ctx'
 import { GATE_HOLD_MS } from '../../app/gate'
@@ -45,6 +47,9 @@ export const learnScreen: Screen = (root, { params }) => {
   const p = progressOf(d.progress, section.id)[ladder]
   const next = nextStep(progressOf(d.progress, section.id), ladder)
   const gaps = lessonGaps(d, section.id, ladder)
+  // No lines on a rap lesson: the words are in the video, and her track plays the rest (no marks needed).
+  const wordsInVideo = ladder === 'rap' && gaps.includes('lines')
+  const shown = wordsInVideo ? gaps.filter((g) => g === 'track') : gaps
 
   const intro = copy.intro.map((t) => h('p', { class: 'narrated' }, t))
   const narrator = d.narration.on ? new Narrator(intro, copy.intro) : null
@@ -53,8 +58,9 @@ export const learnScreen: Screen = (root, { params }) => {
     ? h(
         'section',
         { class: 'lesson-gap card', role: 'note' },
-        ...gaps.map((g) => h('p', null, GAP_WORDS[g])),
-        h('p', { class: 'note' }, L.askGrownUp),
+        wordsInVideo ? h('p', null, L.wordsInVideo) : null,
+        ...shown.map((g) => h('p', null, GAP_WORDS[g])),
+        h('p', { class: 'note' }, shown.length ? L.askGrownUp : L.wordsLater),
         holdButton(L.openStep, GATE_HOLD_MS, () => {
           unlockGrownups()
           go(`/grownups/setup?step=${gaps[0]}`)

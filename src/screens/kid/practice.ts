@@ -10,7 +10,7 @@ import { KID_COPY } from '../../content/kid'
 import { STEP_COPY } from '../../content/ladders'
 import { sectionFadeLevels } from '../../model/fade'
 import { LADDERS, stepById } from '../../model/ladders'
-import { stepVideo } from '../../model/videos'
+import { stepSource, stepVideo } from '../../model/videos'
 import { LoopButtons } from '../../ui/loop'
 import { celebrate } from '../../app/celebrate'
 import { logTick } from '../../model/activity'
@@ -40,6 +40,9 @@ export const practiceScreen: Screen = (root, { params, query }) => {
   }
   const step = found
   const sid = section.id
+  // A rap step on a part with no lines (1.3): the listen-and-read video where the words would light up, her track for the rest.
+  const source = stepSource(step, section)
+  const wordsInVideo = step.ladder === 'rap' && !section.lines.length
   const item = sessionItem(query)
   const inSession = item?.kind === 'practice' && item.sectionId === section.id && item.stepId === found.id
   const prog = () => progressOf(save().progress, sid)
@@ -85,6 +88,8 @@ export const practiceScreen: Screen = (root, { params, query }) => {
     })
     const mode = step.words === 'fade' ? 'fade' : step.words === 'hidden' ? 'hidden' : 'show'
     lyrics.setMode(mode, prog().rap.fade)
+  } else if (wordsInVideo) {
+    if (source === 'listen') side.append(h('p', { class: 'note' }, P.wordsInVideo))
   } else if (wantsWords) {
     side.append(h('p', { class: 'note' }, P.noLines))
   }
@@ -157,14 +162,26 @@ export const practiceScreen: Screen = (root, { params, query }) => {
   async function setup(): Promise<void> {
     let from = 0
     let to = Infinity
-    if (step.source === 'track') {
+    if (source === 'track') {
       const src = await trackSource(playerArea, save())
       if (gone) return src?.player.destroy()
       if (!src) return disable(P.needsTrack)
       player = src.player
       if (src.standIn) note(P.standIn)
-      if (!trackSpan) return disable(P.needsTrackMarks)
-      if (step.link) {
+      if (wordsInVideo) {
+        // Her track with her own loop: from where this part starts (or the top), no marks needed.
+        ;({ from, to } = trackSpan ? playRange(trackSpan) : { from: 0, to: Infinity })
+        const p = player
+        loopBtns = new LoopButtons(
+          () => p.time(),
+          (_l, why) => {
+            if (why !== 'nudged') loop?.again()
+          },
+        )
+        controls.after(loopBtns.el)
+        toTrack = (t) => t
+      } else if (!trackSpan) return disable(P.needsTrackMarks)
+      else if (step.link) {
         const prev = previousSection(save().sections, sid)
         const prevStart = prev ? (spanOf(prev.track)?.start ?? trackSpan.start) : 0
         from = Math.max(0, Math.round((prevStart - PRE_ROLL) * 100) / 100)
@@ -175,7 +192,7 @@ export const practiceScreen: Screen = (root, { params, query }) => {
     } else {
       // Never blocked by marks: a marked video is cued to this section, any other plays from its
       // start (or a chapter time), and she can loop any bit of it herself.
-      const v = stepVideo(save(), section!, step.source)
+      const v = stepVideo(save(), section!, source)
       if (!v) return disable(P.videoMissing)
       player = referencePlayer(playerArea, v.ref)
       const refSpan = v.span

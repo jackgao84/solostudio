@@ -99,6 +99,12 @@ export function fixedCues(): string[] {
   ]
 }
 
+/** The practice room's hint on making a loop (version 1.3), read aloud when a dance block opens the room with no parts yet. */
+export function roomHint(): string[] {
+  const R = KID_COPY.room
+  return [R.hint1, R.hint2, R.hint3]
+}
+
 /** Everything the coach records, once each. */
 export function narrationLines(): NarrationLine[] {
   const out = new Map<string, NarrationLine>()
@@ -113,5 +119,6 @@ export function narrationLines(): NarrationLine[] {
   for (const name of STANDARD_SECTIONS) for (const t of sectionCues(name)) add({ text: t })
   for (const l of LESSONS) for (const t of lessonScript(l)) add({ text: t })
   for (const c of Object.values(SECTION_LESSON_COPY)) for (const t of c.intro) add({ text: t })
+  for (const t of roomHint()) add({ text: t })
   return [...out.values()]
 }

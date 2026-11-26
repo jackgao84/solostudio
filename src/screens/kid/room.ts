@@ -7,13 +7,19 @@
  * tick "I did it" on it at 50, 75 and 100% speed. Her parts are hers to rename or delete.
  *
  * Nothing here ever says a grown-up has to set something up first.
+ *
+ * From today's session (?session=1) it says the item's cue first: a part of hers loops by itself and
+ * "I did it" moves on; with no parts yet (?hint=1) the coach reads the hint on making a loop.
  */
 import { save, update } from '../../app/ctx'
 import type { Screen } from '../../app/router'
+import { sessionCue, sessionItem, sessionNext } from '../../app/session'
 import { lightOn } from '../../audio/sfx'
+import { say } from '../../audio/voice'
 import { KID_COPY } from '../../content/kid'
+import { roomHint } from '../../content/narration'
 import type { Player } from '../../media/player'
-import { RepLoop } from '../../media/reploop'
+import { RepLoop, cueTime } from '../../media/reploop'
 import { trackPlayer } from '../../media/track'
 import { cleanPartName, defaultPartName, defaultSource, nextPartSpeed, partFinished, roomSources, sourceById, tickPart, type RoomSource } from '../../model/room'
 import { PART_SPEEDS, type MyPart } from '../../storage/schema'
@@ -21,6 +27,7 @@ import { button } from '../../ui/components'
 import { CountInView } from '../../ui/countin'
 import { fill, h } from '../../ui/dom'
 import { LoopButtons } from '../../ui/loop'
+import { Narrator } from '../../ui/narrator'
 import { referencePlayer, trackArt } from '../../ui/video'
 import { blockTimer, kidScreen, topbar } from './common'
 
@@ -66,6 +73,11 @@ export const roomScreen: Screen = (root, { query }) => {
   let player: Player | null = null
   let rep: RepLoop | null = null
   let raf = 0
+  const item = sessionItem(query)
+  const inSession = item?.kind === 'room'
+  const wantsHint = query.get('hint') === '1'
+  // The session's cue: before her part's first go, or before the hint.
+  let cue: string | null = inSession ? sessionCue() : null
 
   const el = kidScreen(root, 'room', topbar(timer?.el ?? null))
 
@@ -74,7 +86,9 @@ export const roomScreen: Screen = (root, { query }) => {
   el.append(h('header', { class: 'room__head' }, h('h1', null, R.title), partHead))
 
   // ---- Her side: how to make a loop (until she has a part), the videos, her parts ------------
-  const hint = h('section', { class: 'room-hint card', role: 'note' }, ...[R.hint1, R.hint2, R.hint3].map((t) => h('p', { class: 'narrated' }, t)))
+  const hintLines = roomHint().map((t) => h('p', { class: 'narrated' }, t))
+  const narrator = wantsHint && d.narration.on ? new Narrator(hintLines, roomHint()) : null
+  const hint = h('section', { class: 'room-hint card', role: 'note' }, narrator?.el ?? null, ...hintLines)
   const sources = h('div', { role: 'radiogroup', 'aria-label': R.pick, class: 'chips room-sources' })
   const pick = h('section', { class: 'room-pick' }, h('h2', null, R.pick), sources)
   const partsList = h('section', { class: 'my-parts' })
@@ -84,7 +98,7 @@ export const roomScreen: Screen = (root, { query }) => {
   const countIn = new CountInView()
   const playBtn = button(P.play, () => togglePlay(), { class: 'btn--huge' })
   const didBtn = button(P.didIt, () => didIt(), { variant: 'primary', class: 'btn--huge' })
-  const main = h('div', { class: 'answer main-actions' }, playBtn, didBtn)
+  const main = h('div', { class: 'answer main-actions' }, playBtn, inSession ? button(KID_COPY.session.next, () => sessionNext(), { class: 'btn--huge' }) : null, didBtn)
   const speedEl = h('p', { class: 'speed' })
   const controls = h('div', { class: 'controls' }, countIn.el, button(P.slower, () => changeSpeed(-1), { variant: 'quiet' }), speedEl, button(P.faster, () => changeSpeed(1), { variant: 'quiet' }))
   const loopBtns = new LoopButtons(
@@ -253,7 +267,7 @@ export const roomScreen: Screen = (root, { query }) => {
   }
 
   function drawAll(): void {
-    hint.hidden = save().parts.length > 0 && !query.has('hint')
+    hint.hidden = save().parts.length > 0 && !wantsHint
     drawPart()
     drawSources()
     drawSave()
@@ -280,7 +294,16 @@ export const roomScreen: Screen = (root, { query }) => {
       playerArea.append(trackArt())
     } else player = referencePlayer(playerArea, src.ref!)
     speed = nearestStep(speed)
-    const r = new RepLoop(player, () => (loopBtns.loop ? { from: loopBtns.loop.from, to: loopBtns.loop.to, speed } : null), () => save().tempo.bpm)
+    const r = new RepLoop(
+      player,
+      () => {
+        if (!loopBtns.loop) return null
+        const c = cue
+        cue = null
+        return { from: loopBtns.loop.from, to: loopBtns.loop.to, speed, cue: c }
+      },
+      () => save().tempo.bpm,
+    )
     r.onCount = (w) => countIn.show(w)
     rep = r
   }
@@ -328,6 +351,7 @@ export const roomScreen: Screen = (root, { query }) => {
     if (next.done.length > before.done.length) lightOn()
     part = next
     rep?.stop()
+    if (inSession) return sessionNext()
     speed = partFinished(next) ? speed : nextPartSpeed(next)
     applySpeed()
     drawAll()
@@ -347,7 +371,20 @@ export const roomScreen: Screen = (root, { query }) => {
   applySpeed()
   drawAll()
 
+  // In the session: her part goes round by itself (the cue first); otherwise the cue, then the hint.
+  let hintTimer = 0
+  const loopNow = rep as RepLoop | null
+  if (inSession && part && loopNow) loopNow.play()
+  else {
+    const c = cue
+    cue = null
+    if (c) say(c)
+    if (narrator) hintTimer = window.setTimeout(() => narrator.start(), c ? cueTime(c) : 0)
+  }
+
   return () => {
+    window.clearTimeout(hintTimer)
+    narrator?.destroy()
     window.cancelAnimationFrame(raf)
     timer?.stop()
     rep?.destroy()

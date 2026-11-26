@@ -169,7 +169,7 @@ export const todayScreen: Screen = (root) => {
     const list = h('ol', { class: 'blocks' })
     const allDone = h('p', { class: 'note', hidden: true }, T.allDone)
     wrap.append(note, list, allDone)
-    const names = new Map(save().sections.map((s) => [s.id, s.name]))
+    const names = new Map([...save().sections.map((s) => [s.id, s.name] as const), ...save().parts.map((p) => [p.id, p.name] as const)])
     const draw = () => {
       const state = save().days[t] ?? { order: [], done: [] }
       const blocks = applyOrder(planned, state.order)
@@ -190,7 +190,7 @@ export const todayScreen: Screen = (root) => {
         {
           const done = state.done.includes(b.id)
           const title = blockCopy(b).title
-          const focus = b.sectionIds.map((id) => names.get(id)).filter(Boolean).join(', ')
+          const focus = [...b.sectionIds, ...(b.partIds ?? [])].map((id) => names.get(id)).filter(Boolean).join(', ')
           const actions = h('div', { class: 'block__actions' }, button(T.start, () => go(`/block/${b.id}`), { label: fill(T.startLabel, { title }) }))
           if (!PINNED_TYPES.includes(b.type)) {
             actions.append(button('▲', () => move(blocks, b.id, -1), { label: T.moveUp, class: 'move' }), button('▼', () => move(blocks, b.id, 1), { label: T.moveDown, class: 'move' }))

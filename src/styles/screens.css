@@ -2068,7 +2068,8 @@ html[data-theme='mint'] {
 
 .welcome__go {
   display: flex;
-  justify-content: center;
+  flex-direction: column;
+  gap: 14px;
   width: min(100%, 520px);
 }
 

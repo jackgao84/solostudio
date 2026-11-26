@@ -8,6 +8,7 @@ export const KID_COPY = {
   welcome: {
     title: 'Solo Studio',
     tagline: 'Your practice room for your solo.',
+    go: 'Let’s go',
     gate: 'Grown-ups: press and hold',
     gateHolding: 'Keep holding…',
   },
@@ -108,6 +109,7 @@ export const KID_COPY = {
     nextUp: 'Next up: {step}',
     backToSection: 'Back to {section}',
     noLines: 'A grown-up types the lines for this part on the iPad.',
+    wordsInVideo: 'The words are in the video. Rap along with it.',
     reviewNote: 'Quick check: do it once from memory.',
     teacherNote: 'From your teacher',
   },
@@ -309,6 +311,8 @@ export const KID_COPY = {
     needsLines: 'This lesson needs the words of this part.',
     needsStarts: 'This lesson needs to know where this part starts in your track.',
     askGrownUp: 'A grown-up can add it in a minute.',
+    wordsInVideo: 'The words are in the video, so you can start right away.',
+    wordsLater: 'A grown-up can add the words here too, so they light up.',
     openStep: 'Grown-ups: hold to open that step',
   },
   video: {

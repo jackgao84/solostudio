@@ -1507,6 +1507,27 @@
       "chars": 49,
       "bytes": 10466,
       "ms": 2586
+    },
+    {
+      "text": "Here’s how to make your own loop.",
+      "file": "04d3f71c915a9157.mp3",
+      "chars": 33,
+      "bytes": 6809,
+      "ms": 1672
+    },
+    {
+      "text": "Play the video. Tap Loop start where a move begins, and Loop end where it finishes.",
+      "file": "024702ddcdfc0c8e.mp3",
+      "chars": 83,
+      "bytes": 21437,
+      "ms": 5329
+    },
+    {
+      "text": "That bit plays again and again, with 5, 6, 7, 8 before each go. Then save it as one of your parts.",
+      "file": "f6c3e6f0d3f92af5.mp3",
+      "chars": 98,
+      "bytes": 28020,
+      "ms": 6975
     }
   ]
 }

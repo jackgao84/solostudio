@@ -21,7 +21,7 @@ export const welcomeScreen: Screen = (root) => {
       h('div', { class: 'mirror-art', 'aria-hidden': 'true' }, ...Array.from({ length: 5 }, () => h('span'))),
       h('h1', { class: 'welcome__title' }, W.title),
       h('p', null, W.tagline),
-      h('div', { class: 'welcome__go' }, button(KID_COPY.room.open, () => go('/room'), { variant: 'primary', class: 'btn--huge' })),
+      h('div', { class: 'welcome__go' }, button(KID_COPY.room.open, () => go('/room'), { variant: 'primary', class: 'btn--huge' }), button(W.go, () => go('/today'), { class: 'btn--huge' })),
       gateButton(),
     ),
   )

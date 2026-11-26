@@ -2,16 +2,17 @@
 
 Every piece of kid-facing text in the app, grouped by where it appears. Words in {curly brackets} are filled in on the iPad (her name, a section name, a number). The rap lines themselves are typed on the iPad by a grown-up and are never part of the app.
 
-- 499 lines in 27 groups
+- 503 lines in 27 groups
 
 **This file is generated from `src/content`. Don’t edit it by hand.** To change the words, edit the files in `src/content`, then run `npm run review` to rebuild this file. `npm test` fails while it is out of date.
 
-## 1. Welcome and the grown-ups’ button (4)
+## 1. Welcome and the grown-ups’ button (5)
 
 The first screen on a new iPad (the practice room needs no setup), and the press-and-hold button.
 
 - Solo Studio <sub>`kid.welcome.title`</sub>
 - Your practice room for your solo. <sub>`kid.welcome.tagline`</sub>
+- Let’s go <sub>`kid.welcome.go`</sub>
 - Grown-ups: press and hold <sub>`kid.welcome.gate`</sub>
 - Keep holding… <sub>`kid.welcome.gateHolding`</sub>
 
@@ -78,7 +79,7 @@ The top of the home page (Start, the D-day, today’s lessons) and her whole les
 - No show date yet, so today you do the next lessons on your path. <sub>`kid.home.noDates`</sub>
 - Start {title} <sub>`kid.home.openLesson`</sub>
 
-## 5. A section lesson (20)
+## 5. A section lesson (22)
 
 One of her sections on one ladder: its intro, its video, its steps, and what it says when setup hasn’t covered something yet.
 
@@ -92,6 +93,8 @@ One of her sections on one ladder: its intro, its video, its steps, and what it 
 - This lesson needs the words of this part. <sub>`kid.learn.needsLines`</sub>
 - This lesson needs to know where this part starts in your track. <sub>`kid.learn.needsStarts`</sub>
 - A grown-up can add it in a minute. <sub>`kid.learn.askGrownUp`</sub>
+- The words are in the video, so you can start right away. <sub>`kid.learn.wordsInVideo`</sub>
+- A grown-up can add the words here too, so they light up. <sub>`kid.learn.wordsLater`</sub>
 - Grown-ups: hold to open that step <sub>`kid.learn.openStep`</sub>
 
 ### Rap lessons
@@ -253,7 +256,7 @@ Each ladder and each rung, with the one-line how-to shown on the practice screen
 - Link it up <sub>`step.together-linked.name`</sub>
 - Start in the part before and flow straight into this one. <sub>`step.together-linked.how`</sub>
 
-## 10. Practising (38)
+## 10. Practising (39)
 
 The practice screen: buttons, notes, speeds and what she sees when a video won’t play.
 
@@ -293,6 +296,7 @@ The practice screen: buttons, notes, speeds and what she sees when a video won�
 - Next up: {step} <sub>`kid.practice.nextUp`</sub>
 - Back to {section} <sub>`kid.practice.backToSection`</sub>
 - A grown-up types the lines for this part on the iPad. <sub>`kid.practice.noLines`</sub>
+- The words are in the video. Rap along with it. <sub>`kid.practice.wordsInVideo`</sub>
 - Quick check: do it once from memory. <sub>`kid.practice.reviewNote`</sub>
 - From your teacher <sub>`kid.practice.teacherNote`</sub>
 

@@ -1,7 +1,9 @@
 /**
  * Her lesson path on the home page (version 1.2): every lesson in order, the next one marked, the
  * finished ones folded away at the top. Each section lesson shows its stage lights: one lamp per
- * rung, switched on as she ticks it (all on for show day stays on her stage screen).
+ * rung, switched on as she ticks it (all on for show day stays on her stage screen). Her own parts
+ * (version 1.3, no grown-up sections yet) show a lamp for each speed she ticks them at, and open in
+ * the practice room.
  */
 import { go } from '../app/ctx'
 import { KID_COPY } from '../content/kid'
@@ -10,13 +12,14 @@ import { LESSONS } from '../content/lessons'
 import { LADDERS } from '../model/ladders'
 import { isDone, lessonPath, pathKey, type PathItem } from '../model/path'
 import type { SaveData } from '../storage/schema'
+import { PART_SPEEDS } from '../storage/schema'
 import { button } from './components'
 import { fill, h } from './dom'
 
 const H = KID_COPY.home
 
 function route(i: PathItem): string {
-  return i.kind === 'skill' ? `/lesson/${i.id}` : i.kind === 'section' ? `/learn/${i.sectionId}/${i.ladder}` : '/showtime'
+  return i.kind === 'skill' ? `/lesson/${i.id}` : i.kind === 'section' ? `/learn/${i.sectionId}/${i.ladder}` : i.kind === 'part' ? `/room?part=${encodeURIComponent(i.partId)}` : '/showtime'
 }
 
 function itemView(save: SaveData, i: PathItem, next: boolean): HTMLElement {
@@ -32,6 +35,10 @@ function itemView(save: SaveData, i: PathItem, next: boolean): HTMLElement {
     title = fill(H.sectionLesson, { section: s?.name ?? '', ladder: LADDER_COPY[i.ladder].name })
     const ticked = save.progress[i.sectionId]?.[i.ladder]?.done ?? []
     lamps = h('span', { class: 'path-lamps', 'aria-hidden': 'true' }, ...LADDERS[i.ladder].map((st) => h('span', { class: `lamp lamp--${i.ladder}${ticked.includes(st.id) ? ' is-on is-lit' : ''}` })))
+  } else if (i.kind === 'part') {
+    const p = save.parts.find((x) => x.id === i.partId)
+    title = fill(H.sectionLesson, { section: p?.name ?? '', ladder: LADDER_COPY.dance.name })
+    lamps = h('span', { class: 'path-lamps', 'aria-hidden': 'true' }, ...PART_SPEEDS.map((sp) => h('span', { class: `lamp lamp--dance${p?.done.includes(sp) ? ' is-on is-lit' : ''}` })))
   }
   return h(
     'li',

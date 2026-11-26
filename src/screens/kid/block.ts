@@ -13,7 +13,7 @@ import { STEP_COPY } from '../../content/ladders'
 import { ROUTINES } from '../../content/routines'
 import { applyOrder, type Block } from '../../model/plan'
 import { todayPlan } from '../../model/today'
-import { practiceChoices } from '../../model/session'
+import { practiceChoices, roomItems, routeFor } from '../../model/session'
 import type { LadderId } from '../../storage/schema'
 import { button } from '../../ui/components'
 import { fill, h } from '../../ui/dom'
@@ -97,12 +97,17 @@ export const blockScreen: Screen = (root, { params, query }) => {
 
   function stepsFor(_ladder: LadderId, b: Block): HTMLElement {
     const wrap = h('div', { class: 'block-steps' })
-    const choices = practiceChoices(save(), b, t)
-    if (!choices.length) {
-      // No sections yet: the practice room needs none.
-      wrap.append(button(KID_COPY.room.open, () => go('/room'), { variant: 'primary', class: 'btn--huge' }))
+    if (!save().sections.length) {
+      // No grown-up sections yet (version 1.3): the practice room, on her parts or a video.
+      for (const r of roomItems(save(), b)) {
+        if (r.kind !== 'room') continue
+        const part = r.partId ? save().parts.find((p) => p.id === r.partId) : null
+        const to = routeFor(r).replace(/&session=1$/, '')
+        wrap.append(part ? button(part.name, () => go(to), { class: 'block-step' }) : button(KID_COPY.room.open, () => go(to), { variant: 'primary', class: 'btn--huge' }))
+      }
       return wrap
     }
+    const choices = practiceChoices(save(), b, t)
     wrap.append(h('p', null, B.pick))
     for (const c of choices) {
       const section = sectionById(c.sectionId)!
