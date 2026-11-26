@@ -97,7 +97,7 @@ make their audio on the spot (tones and clicks).
    `tests/fixtures/v4-save.ts`). Two fixes to my own new checks, no assertion changed: placeholder lines
    from `lyricLine()` (d131552), and section-start taps at least a second apart (MIN_SECTION).
    Code: `DEFAULT_REFS` gains "Voice guide (light)" (81BPeeksFqo, role `voiceGuide`) and "Karaoke
-   (no voice)" (d_-jC3519xI, role `karaoke`); save version 5 (migration 4 → 5 adds both after the
+   (no voice)" (a03UskoIMxw, role `karaoke`); save version 5 (migration 4 → 5 adds both after the
    videos already there, and an empty `guide`); `src/model/refs.ts` (add a YouTube video under a name,
    rename any, swap, remove an added or karaoke one); `videoName` in `src/model/room.ts` (every video
    by its name in the room); `rapMode`, `stepSource(step, section, save)`, `stepRoom`, `stepRoute` in
@@ -107,9 +107,10 @@ make their audio on the spot (tones and clicks).
    Back a step; Grown-ups → Videos (add, rename, remove, Tap section starts → `/grownups/taps/:ref`,
    the wizard's tapper moved to `src/screens/grownups/tapper.ts`). Narration: 3 new clips (the room's
    rung hint and the rap lesson's new second line), 226 characters.
-   - **Embedding:** YouTube's oEmbed answers 200 for 81BPeeksFqo and 401 ("Unauthorized") for
-     d_-jC3519xI: its owner has turned off playing inside other apps. On the iPad the app shows its
-     honest "won't play inside the app" panel with Open in YouTube. Put to the owner.
+   - **Embedding:** YouTube's oEmbed answers 200 for 81BPeeksFqo and 401 ("Unauthorized") for the
+     brief's karaoke id d_-jC3519xI: its owner has turned off playing inside other apps. The owner
+     chose an embeddable one instead: a03UskoIMxw ("Instrumental | Karaoke with Easy Lyrics", 2:09,
+     romanised words, oEmbed 200). My three new checks that named the old id name it instead.
 2. [x] A guide file in the app. Checks first (34a619f): `tests/unit/guide.test.ts`,
    `e2e/guide.spec.ts` (her track and the guide made on the spot: a 440 Hz tone with irregular
    clicks, a 660 Hz "voice", and a full mix 0.25 s late). Code: `src/model/guide.ts` (the voice

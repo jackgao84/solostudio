@@ -34,7 +34,7 @@ export const DEFAULT_REFS: readonly Reference[] = [
   yt('UI4-leflJ00', 'slow', 'Slow music', true),
   // Version 1.4: two karaoke videos under their own names, for the rap ladder's fading voice.
   yt('81BPeeksFqo', 'voiceGuide', KID_COPY.room.sourceVoiceGuide, true),
-  yt('d_-jC3519xI', 'karaoke', KID_COPY.room.sourceKaraoke, true),
+  yt('a03UskoIMxw', 'karaoke', KID_COPY.room.sourceKaraoke, true),
 ]
 
 /** The roles of the seven videos 1.0 to 1.3 started with: a grown-up can swap or rename them, not remove them. */

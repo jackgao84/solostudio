@@ -41,7 +41,7 @@ test('a save from version 1.3 carries over when the app updates', async ({ page 
   await expect(sources.getByRole('radio', { name: 'Karaoke (no voice)', exact: true })).toBeVisible()
   await expect(sources.getByRole('radio', { name: 'Teacher demo', exact: true })).toBeVisible()
   await tap(sources.getByRole('radio', { name: 'Karaoke (no voice)', exact: true }))
-  await expect.poll(async () => (await ytPlayers(page)).map((p) => p.videoId)).toEqual(['d_-jC3519xI'])
+  await expect.poll(async () => (await ytPlayers(page)).map((p) => p.videoId)).toEqual(['a03UskoIMxw'])
 
   await page.reload()
   expect(await page.evaluate((k) => localStorage.getItem(k), KEYS.backup)).toBe(text)

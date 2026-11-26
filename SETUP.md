@@ -239,9 +239,9 @@ These can't be checked anywhere else:
   music, then Light and Off (the music shouldn't move or click). Then in a rap lesson at 75%: the
   voice still in time, at its normal pitch. Check it with the ring/silent switch both ways. Loading a
   long guide takes a few seconds on the iPad; if it says it couldn't be stored, free some space.
-- **Voice guide (light)** plays inside the app. **Karaoke (no voice)** may not: its owner has turned
-  off playing in other apps, so she would see "This video won't play inside the app". Swap it in
-  **Videos** for one that plays.
+- **Voice guide (light)** and **Karaoke (no voice)** play inside the app, and Karaoke has no voice in
+  it (just the music and the words). If either ever says "This video won't play inside the app", swap
+  it in **Videos**.
 - **The screen stays awake** during practice (iPadOS 16.4 or later).
 - **Sound levels**: the coach, the stage-light sound, the crowd and the applause at a comfortable
   level from where she dances (Today → Sounds).

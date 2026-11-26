@@ -18,7 +18,7 @@ import { spoken, test } from './voice'
 
 const LISTEN = '6DBtz2enWSA'
 const VOICE_GUIDE = '81BPeeksFqo'
-const KARAOKE = 'd_-jC3519xI'
+const KARAOKE = 'a03UskoIMxw'
 const STAND_IN = 'JSFG-IE8n_c'
 const BIG_PX = 88
 

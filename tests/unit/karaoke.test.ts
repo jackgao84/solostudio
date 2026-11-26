@@ -1,7 +1,7 @@
 /**
  * Version 1.4, part 1: karaoke videos in the app.
  *  - Two more default videos under their own names: "Voice guide (light)" (81BPeeksFqo, the singer's
- *    voice turned down low) and "Karaoke (no voice)" (d_-jC3519xI). Both play in time with the music.
+ *    voice turned down low) and "Karaoke (no voice)" (a03UskoIMxw). Both play in time with the music.
  *  - A grown-up can add any YouTube video under a name they choose, and rename, swap or remove it.
  *    Every video appears in the practice room by its name.
  *  - With no guide file, the rap ladder fades the singer's voice: listen with the listen-and-read
@@ -42,7 +42,7 @@ describe('the two karaoke videos', () => {
     const guide = DEFAULT_REFS.find((r) => r.role === 'voiceGuide')!
     const karaoke = DEFAULT_REFS.find((r) => r.role === 'karaoke')!
     expect(guide).toMatchObject({ id: 'ref-voiceGuide', kind: 'youtube', youtubeId: '81BPeeksFqo', label: 'Voice guide (light)', synced: true, alreadyMirrored: false })
-    expect(karaoke).toMatchObject({ id: 'ref-karaoke', kind: 'youtube', youtubeId: 'd_-jC3519xI', label: 'Karaoke (no voice)', synced: true, alreadyMirrored: false })
+    expect(karaoke).toMatchObject({ id: 'ref-karaoke', kind: 'youtube', youtubeId: 'a03UskoIMxw', label: 'Karaoke (no voice)', synced: true, alreadyMirrored: false })
   })
 
   it('leave the seven earlier default videos as they were, first in the list', () => {
