@@ -7,8 +7,12 @@
 
 ## Status
 
-- **Version 1.2.1 in progress (2026-11-26):** Rap basics (see "Version 1.2.1" below); committed
-  locally, checks running.
+- **Version 1.2.1 done and live (2026-11-26), build 6a9e548:** Rap basics (see "Version 1.2.1"
+  below). Confirmed in WebKit against the live site at iPad portrait and landscape: "Version 1.2.1 ·
+  build 6a9e548"; one precache cache of 224 files (215 clips); 8 lesson cards; on the path Rap basics
+  sits after counting and the voice warm-up, just before her first rap lesson; its lesson plays the
+  listen-and-read video (6DBtz2enWSA); a 1.1 save carries over as before; no console errors. The
+  deploy workflow's unit checks passed (34 files, 304).
 - **Version 1.2.0 done and live (2026-11-26), build 619be58.** Confirmed in WebKit against the live
   site at iPad portrait and landscape: the version line reads "Version 1.2.0 · build 619be58"; the
   service worker controls `/solostudio/` with one `solostudio:precache:<hash>` cache of 214 files (205
@@ -60,7 +64,7 @@
     update specs seed no YouTube stand-in (routing can't reach a worker-controlled page).
   No assertion was changed anywhere.
 
-## Version 1.2.1 (in progress)
+## Version 1.2.1 (done)
 
 The owner's follow-up: one more skill lesson, **Rap basics**, just before her first Rap lesson, with
 the listen-and-read video (6DBtz2enWSA): riding the beat, crisp consonants, where to breathe, energy,
@@ -79,7 +83,7 @@ lesson: the first-run tour covers it.)
   ElevenLabs characters used in all of 1.2 and 1.2.1: 11,729.
 - [x] Full checks: typecheck clean; unit 304/304 in 34 files; Playwright WebKit 132/132 twice in a
   row on the same build (9.1 and 9.2 min), no retries; REVIEW.md current; privacy scan clean.
-- [ ] Version 1.2.1, push, deploy, live check.
+- [x] Version 1.2.1 (1b71730), pushed, deployed, live site checked (see Status).
 
 ## Version 1.2 (done)
 
