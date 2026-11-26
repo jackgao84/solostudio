@@ -25,8 +25,8 @@ function storageWith(doc: unknown): MemoryStorage {
 }
 
 describe('the save’s version', () => {
-  it('is 3, and a fresh save has every new part', () => {
-    expect(CURRENT_SCHEMA_VERSION).toBe(3)
+  it('is 4, and a fresh save has every new part', () => {
+    expect(CURRENT_SCHEMA_VERSION).toBe(4)
     const d = defaultSave() as unknown as Record<string, unknown>
     for (const k of NEW_KEYS) expect(d[k], k).toBeDefined()
   })

@@ -67,9 +67,9 @@ test('tutorials and listen-and-read play from the start with speed and her own l
   const tutorial = async () => (await ytPlayers(page)).find((p) => p.videoId === 'FIl3O1uBjQQ')
   await expect.poll(async () => (await tutorial())?.playing, { timeout: 15_000 }).toBe(true)
   await page.waitForTimeout(1200)
-  await tap(page.getByRole('button', { name: 'Loop from here' }))
+  await tap(page.getByRole('button', { name: 'Loop start' }))
   await page.waitForTimeout(1500)
-  await tap(page.getByRole('button', { name: 'Loop to here' }))
+  await tap(page.getByRole('button', { name: 'Loop end' }))
   await expect(page.locator('.loop-status')).toBeVisible()
   await checkScreen(page, 'kid', 'a tutorial with her own loop')
   const seeks = (await seeksOf(page, 'FIl3O1uBjQQ')).length

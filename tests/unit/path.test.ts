@@ -138,10 +138,13 @@ describe('today’s lessons', () => {
     expect(day.minutes).toBeLessThanOrEqual(50)
   })
 
-  it('with no sections yet, there is nothing to practise today', () => {
+  it('with no sections and no parts yet, today is a warm-up, a dance block in the practice room and a cool-down', () => {
     const d = save()
     d.sections = []
-    expect(todayPlan(d, T)).toBeNull()
+    const day = todayPlan(d, T)!
+    expect(day).not.toBeNull()
+    expect(day.blocks.map((b) => b.type)).toEqual(['warmup', 'dance', 'cooldown'])
+    expect(dayOk(day.blocks)).toBe(true)
   })
 })
 

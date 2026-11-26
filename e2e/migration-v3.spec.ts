@@ -24,7 +24,7 @@ test('a save from version 1.1 carries over when the app updates', async ({ page 
   await checkScreen(page, 'kid', 'home after the 1.2 update')
 
   const save = (await readSave(page)) as unknown as Record<string, unknown>
-  expect(save.schemaVersion).toBe(3)
+  expect(save.schemaVersion).toBe(4)
   for (const k of Object.keys(v2).filter((k) => k !== 'schemaVersion')) expect(save[k], k).toEqual(v2[k])
   expect(await page.evaluate((k) => localStorage.getItem(k), KEYS.backup)).toBe(text)
 

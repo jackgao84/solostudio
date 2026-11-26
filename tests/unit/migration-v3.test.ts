@@ -29,7 +29,7 @@ function storageWith(doc: unknown): MemoryStorage {
 
 describe('version 3 of the save', () => {
   it('is the current one, and a fresh save has every 1.2 part', () => {
-    expect(CURRENT_SCHEMA_VERSION).toBe(3)
+    expect(CURRENT_SCHEMA_VERSION).toBe(4)
     const d = defaultSave()
     expect(d.narration).toEqual({ on: true })
     expect(d.lessons).toEqual({ done: [], videos: {} })
@@ -51,7 +51,7 @@ describe('a version-2 (1.1) save carries over', () => {
     const v2 = v2Save()
     const { data, info } = loadSave(storageWith(v2))
     expect(info.kind).toBe('migrated')
-    expect(data.schemaVersion).toBe(3)
+    expect(data.schemaVersion).toBe(4)
     const got = data as unknown as Record<string, unknown>
     for (const k of V2_KEYS) expect(got[k], k).toEqual(v2[k])
     expect(data.showtime.walkOnSeconds).toBe(8)
@@ -82,7 +82,7 @@ describe('a version-2 (1.1) save carries over', () => {
     const store = new Store(storage, 0)
     expect(store.loadInfo.kind).toBe('migrated')
     expect(storage.getItem(KEYS.backup)).toBe(before)
-    expect(JSON.parse(storage.getItem(KEYS.save)!).schemaVersion).toBe(3)
+    expect(JSON.parse(storage.getItem(KEYS.save)!).schemaVersion).toBe(4)
     const saved = storage.getItem(KEYS.save)
     const again = new Store(storage, 0)
     expect(again.loadInfo.kind).toBe('loaded')
@@ -92,7 +92,7 @@ describe('a version-2 (1.1) save carries over', () => {
 
   it('is the same through migrate() on its own or the store', () => {
     const viaMigrate = migrate(v2Save()) as Record<string, unknown>
-    expect(viaMigrate.schemaVersion).toBe(3)
+    expect(viaMigrate.schemaVersion).toBe(4)
     expect(loadSave(storageWith(v2Save())).data).toEqual(loadSave(storageWith(viaMigrate)).data)
   })
 
@@ -105,7 +105,7 @@ describe('a version-2 (1.1) save carries over', () => {
 
   it('brings a 1.0 save all the way up, with its setup counted as done', () => {
     const { data } = loadSave(storageWith(v1Save()))
-    expect(data.schemaVersion).toBe(3)
+    expect(data.schemaVersion).toBe(4)
     expect(data.wizard.done).toEqual(expect.arrayContaining(['track', 'lines', 'starts', 'follow', 'timing', 'beat', 'dates']))
   })
 })
