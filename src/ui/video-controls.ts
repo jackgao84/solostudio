@@ -42,6 +42,6 @@ export function videoControls(player: Player): { el: HTMLElement; destroy: () =>
     raf = window.requestAnimationFrame(tick)
   }
   raf = window.requestAnimationFrame(tick)
-  const el = h('div', { class: 'video-controls stack' }, h('div', { class: 'row' }, playBtn, button(P.slower, () => change(-1), { variant: 'quiet' }), speedEl, button(P.faster, () => change(1), { variant: 'quiet' })), loop.el)
+  const el = h('div', { class: 'video-controls stack' }, h('div', { class: 'row' }, playBtn), h('div', { class: 'row video-controls__speed' }, button(P.slower, () => change(-1), { variant: 'quiet' }), speedEl, button(P.faster, () => change(1), { variant: 'quiet' })), loop.el)
   return { el, destroy: () => window.cancelAnimationFrame(raf) }
 }

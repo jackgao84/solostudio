@@ -244,7 +244,10 @@ export const setupWizard: Screen = (root, { query }) => {
 
   function startsBody(): HTMLElement {
     const d = save()
-    if (!d.track.mediaId) return h('p', { class: 'note' }, 'Load her track first (step 1).')
+    if (!d.track.mediaId) {
+      const marked = d.sections.length > 0 && d.sections.every((s) => !!spanOf(s.track))
+      return h('p', { class: 'note' }, marked ? 'Every section has its start. To change them, load her track on this iPad first (step 1).' : 'Load her track first (step 1).')
+    }
     const sections = sectionsInOrder()
     if (!sections.length) return h('p', { class: 'note' }, 'Add her lines first (step 2).')
     const box = h('div', { class: 'player-area' })

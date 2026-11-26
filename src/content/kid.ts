@@ -304,6 +304,7 @@ export const KID_COPY = {
   learn: {
     steps: 'The steps',
     practise: 'Practise: {step}',
+    practiseShort: 'Practise',
     again: 'Practise it again',
     finished: 'Every step ticked! You can practise it again any time.',
     video: 'The video for this part',

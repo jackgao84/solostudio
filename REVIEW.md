@@ -2,7 +2,7 @@
 
 Every piece of kid-facing text in the app, grouped by where it appears. Words in {curly brackets} are filled in on the iPad (her name, a section name, a number). The rap lines themselves are typed on the iPad by a grown-up and are never part of the app.
 
-- 454 lines in 26 groups
+- 455 lines in 26 groups
 
 **This file is generated from `src/content`. Don’t edit it by hand.** To change the words, edit the files in `src/content`, then run `npm run review` to rebuild this file. `npm test` fails while it is out of date.
 
@@ -81,12 +81,13 @@ The top of the home page (Start, the D-day, today’s lessons) and her whole les
 - No show date yet, so today you do the next lessons on your path. <sub>`kid.home.noDates`</sub>
 - Start {title} <sub>`kid.home.openLesson`</sub>
 
-## 5. A section lesson (19)
+## 5. A section lesson (20)
 
 One of her sections on one ladder: its intro, its video, its steps, and what it says when setup hasn’t covered something yet.
 
 - The steps <sub>`kid.learn.steps`</sub>
 - Practise: {step} <sub>`kid.learn.practise`</sub>
+- Practise <sub>`kid.learn.practiseShort`</sub>
 - Practise it again <sub>`kid.learn.again`</sub>
 - Every step ticked! You can practise it again any time. <sub>`kid.learn.finished`</sub>
 - The video for this part <sub>`kid.learn.video`</sub>

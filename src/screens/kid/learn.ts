@@ -73,7 +73,7 @@ export const learnScreen: Screen = (root, { params }) => {
         h('span', { class: `lamp lamp--${ladder}${ticked ? ' is-on' : ''}`, 'aria-hidden': 'true' }),
         h('span', { class: 'rung__name' }, STEP_COPY[st.id].name),
         ticked ? h('span', { class: 'rung__done' }, KID_COPY.sections.rungTicked) : null,
-        button(fill(L.practise, { step: STEP_COPY[st.id].name }), () => go(`/practice/${section.id}/${st.id}`), { variant: 'quiet', class: 'rung__go' }),
+        button(L.practiseShort, () => go(`/practice/${section.id}/${st.id}`), { variant: 'quiet', class: 'rung__go', label: fill(L.practise, { step: STEP_COPY[st.id].name }) }),
       )
     }),
   )
