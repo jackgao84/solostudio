@@ -8,6 +8,7 @@
  *  - a save from a newer version is never overwritten.
  */
 import { describe, expect, it } from 'vitest'
+import { DEFAULT_REFS } from '../../src/content/references'
 import { EXPORT_APP, parseImport } from '../../src/storage/backup'
 import { KEYS } from '../../src/storage/keys'
 import { migrate } from '../../src/storage/migrate'
@@ -18,6 +19,9 @@ import { v1Save } from '../fixtures/v1-save'
 const V1_KEYS = Object.keys(v1Save()).filter((k) => k !== 'schemaVersion')
 const NEW_KEYS = ['stage', 'sound', 'showtime', 'notes', 'activity', 'tour', 'celebrated'] as const
 
+/** Version 1.4 adds the two karaoke videos after the videos already there. */
+const KARAOKE_REFS = DEFAULT_REFS.filter((r) => r.role === 'voiceGuide' || r.role === 'karaoke')
+
 function storageWith(doc: unknown): MemoryStorage {
   const s = new MemoryStorage()
   s.setItem(KEYS.save, JSON.stringify(doc))
@@ -25,8 +29,8 @@ function storageWith(doc: unknown): MemoryStorage {
 }
 
 describe('the save’s version', () => {
-  it('is 4, and a fresh save has every new part', () => {
-    expect(CURRENT_SCHEMA_VERSION).toBe(4)
+  it('is 5, and a fresh save has every new part', () => {
+    expect(CURRENT_SCHEMA_VERSION).toBe(5)
     const d = defaultSave() as unknown as Record<string, unknown>
     for (const k of NEW_KEYS) expect(d[k], k).toBeDefined()
   })
@@ -39,7 +43,7 @@ describe('a version-1 save carries over', () => {
     expect(info.kind).toBe('migrated')
     expect(data.schemaVersion).toBe(CURRENT_SCHEMA_VERSION)
     const got = data as unknown as Record<string, unknown>
-    for (const k of V1_KEYS) expect(got[k], k).toEqual(v1[k])
+    for (const k of V1_KEYS) expect(got[k], k).toEqual(k === 'refs' ? [...(v1.refs as unknown[]), ...KARAOKE_REFS] : v1[k])
   })
 
   it('starts the new parts at their defaults', () => {

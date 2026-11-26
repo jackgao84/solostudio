@@ -83,7 +83,7 @@ test('"New version" appears on Today, never reloads mid-practice, and keeps ever
 
     // A second tab in the middle of practice.
     const practising = await context.newPage()
-    await practising.goto('./#/practice/sec-1/rap-say')
+    await practising.goto('./#/practice/sec-1/rap-memory-75')
     await expect(practising.locator('.lyric-line')).toHaveCount(4)
     await mark(practising)
     const before = await readSave(page)
@@ -105,7 +105,7 @@ test('"New version" appears on Today, never reloads mid-practice, and keeps ever
     await expect(page.locator('.update-banner')).toBeHidden()
     await practising.waitForTimeout(1500)
     expect(await marked(practising), 'practice was not reloaded').toBe(true)
-    await expectRoute(practising, '/practice/sec-1/rap-say')
+    await expectRoute(practising, '/practice/sec-1/rap-memory-75')
 
     expect(await ours(page)).toEqual([`${oldCache}next`])
     const all = await page.evaluate(async () => (await caches.keys()).sort())

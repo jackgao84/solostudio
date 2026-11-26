@@ -97,7 +97,7 @@ test('works offline after the first visit, and leaves the other apps alone', asy
     await page.reload()
     await expectRoute(page, '/today')
     await expect(page.locator('.block').first()).toBeVisible()
-    await page.goto('./?from=icon#/practice/sec-1/rap-say')
+    await page.goto('./?from=icon#/practice/sec-1/rap-memory-75')
     await expect(page.locator('.lyric-line')).toHaveCount(4)
     await page.goto('./index.html#/lessons')
     await expect(page.locator('.lesson-card')).toHaveCount(8)

@@ -143,7 +143,7 @@ test('a rap lesson on a part with no lines plays the listen-and-read video and h
 
   for (const [step, id] of [
     ['rap-listen', '6DBtz2enWSA'],
-    ['rap-say', '6DBtz2enWSA'],
+    ['rap-say', '81BPeeksFqo'],
     ['rap-memory-75', 'JSFG-IE8n_c'],
   ] as const) {
     await page.goto(`./#/practice/sec-1/${step}`)

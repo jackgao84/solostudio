@@ -31,7 +31,8 @@ test.beforeEach(async ({ page }) => {
 test('lines light up in time with the player at 75%', async ({ page }) => {
   const save = setUpSave()
   const section = save.sections[0]
-  await page.goto('./#/practice/sec-1/rap-say')
+  // Version 1.4: "Say it with the words" plays Voice guide; "From memory, slow" still plays the stand-in at 75%.
+  await page.goto('./#/practice/sec-1/rap-memory-75')
   await expect(page.locator('.lyric-line')).toHaveCount(4)
   await expect(page.locator('.speed')).toContainText('75%')
   const lyricPx = await page.locator('.lyric-line').first().evaluate((el) => parseFloat(getComputedStyle(el).fontSize))

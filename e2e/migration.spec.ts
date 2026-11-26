@@ -4,10 +4,14 @@
  * shaky sections, reflections, settings), the version-1 document is kept as the backup copy, and her
  * screens and the grown-ups' area work as before.
  */
+import { DEFAULT_REFS } from '../src/content/references'
 import { addDays } from '../src/model/dates'
 import { KEYS } from '../src/storage/keys'
 import { v1Save } from '../tests/fixtures/v1-save'
 import { checkScreen, expect, expectRoute, holdGate, readSave, tap, test, today } from './helpers'
+
+/** Version 1.4 adds the two karaoke videos after the videos already there. */
+const KARAOKE_REFS = DEFAULT_REFS.filter((r) => r.role === 'voiceGuide' || r.role === 'karaoke')
 
 test('a save from version 1.0 carries over when the app updates', async ({ page }) => {
   const v1 = v1Save({ showDate: addDays(today(), 20), startDate: addDays(today(), -5), trackMediaId: null })
@@ -22,10 +26,10 @@ test('a save from version 1.0 carries over when the app updates', async ({ page 
   await checkScreen(page, 'kid', 'today after the update')
 
   const save = (await readSave(page)) as unknown as Record<string, unknown>
-  expect(save.schemaVersion).toBe(4)
-  for (const k of Object.keys(v1).filter((k) => k !== 'schemaVersion')) expect(save[k], k).toEqual(v1[k])
+  expect(save.schemaVersion).toBe(5)
+  for (const k of Object.keys(v1).filter((k) => k !== 'schemaVersion')) expect(save[k], k).toEqual(k === 'refs' ? [...(v1.refs as unknown[]), ...KARAOKE_REFS] : v1[k])
   expect(await page.evaluate((k) => localStorage.getItem(k), KEYS.backup)).toBe(text)
-  expect(JSON.parse((await page.evaluate((k) => localStorage.getItem(k), KEYS.save))!).schemaVersion).toBe(4)
+  expect(JSON.parse((await page.evaluate((k) => localStorage.getItem(k), KEYS.save))!).schemaVersion).toBe(5)
 
   // Her ladders and her shaky section are as she left them.
   await page.goto('./#/section/v1')

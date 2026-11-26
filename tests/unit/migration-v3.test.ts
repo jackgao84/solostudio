@@ -10,6 +10,7 @@
  *  - a version-2 backup file still imports, and a 1.0 save still comes all the way up.
  */
 import { describe, expect, it } from 'vitest'
+import { DEFAULT_REFS } from '../../src/content/references'
 import { EXPORT_APP, parseImport } from '../../src/storage/backup'
 import { KEYS } from '../../src/storage/keys'
 import { migrate } from '../../src/storage/migrate'
@@ -21,6 +22,9 @@ import { v2Save } from '../fixtures/v2-save'
 const V2_KEYS = Object.keys(v2Save()).filter((k) => k !== 'schemaVersion')
 const NEW_KEYS = ['narration', 'lessons', 'wizard'] as const
 
+/** Version 1.4 adds the two karaoke videos after the videos already there. */
+const KARAOKE_REFS = DEFAULT_REFS.filter((r) => r.role === 'voiceGuide' || r.role === 'karaoke')
+
 function storageWith(doc: unknown): MemoryStorage {
   const s = new MemoryStorage()
   s.setItem(KEYS.save, JSON.stringify(doc))
@@ -29,7 +33,7 @@ function storageWith(doc: unknown): MemoryStorage {
 
 describe('version 3 of the save', () => {
   it('is the current one, and a fresh save has every 1.2 part', () => {
-    expect(CURRENT_SCHEMA_VERSION).toBe(4)
+    expect(CURRENT_SCHEMA_VERSION).toBe(5)
     const d = defaultSave()
     expect(d.narration).toEqual({ on: true })
     expect(d.lessons).toEqual({ done: [], videos: {} })
@@ -51,9 +55,9 @@ describe('a version-2 (1.1) save carries over', () => {
     const v2 = v2Save()
     const { data, info } = loadSave(storageWith(v2))
     expect(info.kind).toBe('migrated')
-    expect(data.schemaVersion).toBe(4)
+    expect(data.schemaVersion).toBe(5)
     const got = data as unknown as Record<string, unknown>
-    for (const k of V2_KEYS) expect(got[k], k).toEqual(v2[k])
+    for (const k of V2_KEYS) expect(got[k], k).toEqual(k === 'refs' ? [...(v2.refs as unknown[]), ...KARAOKE_REFS] : v2[k])
     expect(data.showtime.walkOnSeconds).toBe(8)
   })
 
@@ -82,7 +86,7 @@ describe('a version-2 (1.1) save carries over', () => {
     const store = new Store(storage, 0)
     expect(store.loadInfo.kind).toBe('migrated')
     expect(storage.getItem(KEYS.backup)).toBe(before)
-    expect(JSON.parse(storage.getItem(KEYS.save)!).schemaVersion).toBe(4)
+    expect(JSON.parse(storage.getItem(KEYS.save)!).schemaVersion).toBe(5)
     const saved = storage.getItem(KEYS.save)
     const again = new Store(storage, 0)
     expect(again.loadInfo.kind).toBe('loaded')
@@ -92,7 +96,7 @@ describe('a version-2 (1.1) save carries over', () => {
 
   it('is the same through migrate() on its own or the store', () => {
     const viaMigrate = migrate(v2Save()) as Record<string, unknown>
-    expect(viaMigrate.schemaVersion).toBe(4)
+    expect(viaMigrate.schemaVersion).toBe(5)
     expect(loadSave(storageWith(v2Save())).data).toEqual(loadSave(storageWith(viaMigrate)).data)
   })
 
@@ -105,7 +109,7 @@ describe('a version-2 (1.1) save carries over', () => {
 
   it('brings a 1.0 save all the way up, with its setup counted as done', () => {
     const { data } = loadSave(storageWith(v1Save()))
-    expect(data.schemaVersion).toBe(4)
+    expect(data.schemaVersion).toBe(5)
     expect(data.wizard.done).toEqual(expect.arrayContaining(['track', 'lines', 'starts', 'follow', 'timing', 'beat', 'dates']))
   })
 })

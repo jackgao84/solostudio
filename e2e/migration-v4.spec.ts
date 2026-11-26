@@ -4,10 +4,14 @@
  * was), the 1.2 document is kept as the backup copy, she has no parts of her own yet, and home has the
  * practice room next to Start today's practice.
  */
+import { DEFAULT_REFS } from '../src/content/references'
 import { addDays } from '../src/model/dates'
 import { KEYS } from '../src/storage/keys'
 import { v3Save } from '../tests/fixtures/v3-save'
 import { checkScreen, expect, expectRoute, holdGate, readSave, tap, test, today, ytPlayers } from './helpers'
+
+/** Version 1.4 adds the two karaoke videos after the videos already there. */
+const KARAOKE_REFS = DEFAULT_REFS.filter((r) => r.role === 'voiceGuide' || r.role === 'karaoke')
 
 test('a save from version 1.2 carries over when the app updates', async ({ page }) => {
   const v3 = v3Save({ showDate: addDays(today(), 20), startDate: addDays(today(), -5), trackMediaId: null })
@@ -24,8 +28,8 @@ test('a save from version 1.2 carries over when the app updates', async ({ page 
   await checkScreen(page, 'kid', 'home after the 1.3 update')
 
   const save = (await readSave(page)) as unknown as Record<string, unknown>
-  expect(save.schemaVersion).toBe(4)
-  for (const k of Object.keys(v3).filter((k) => k !== 'schemaVersion')) expect(save[k], k).toEqual(v3[k])
+  expect(save.schemaVersion).toBe(5)
+  for (const k of Object.keys(v3).filter((k) => k !== 'schemaVersion')) expect(save[k], k).toEqual(k === 'refs' ? [...(v3.refs as unknown[]), ...KARAOKE_REFS] : v3[k])
   expect(save.parts).toEqual([])
   expect(await page.evaluate((k) => localStorage.getItem(k), KEYS.backup)).toBe(text)
 

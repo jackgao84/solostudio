@@ -37,7 +37,7 @@ describe('what she can pick', () => {
   it('is every video on a fresh iPad, the dance videos first; her track only once it is loaded', () => {
     const d = defaultSave()
     const list = roomSources(d)
-    expect(list.map((s) => s.role)).toEqual(['mirrored', 'tutorialParts', 'tutorialFull', 'performance', 'original', 'listen', 'slow'])
+    expect(list.map((s) => s.role)).toEqual(['mirrored', 'tutorialParts', 'tutorialFull', 'performance', 'original', 'listen', 'voiceGuide', 'karaoke', 'slow'])
     expect(list.map((s) => s.id).sort()).toEqual(DEFAULT_REFS.map((r) => r.id).sort())
     expect(list.some((s) => s.id === TRACK_SOURCE)).toBe(false)
     d.track.mediaId = 'media-track'

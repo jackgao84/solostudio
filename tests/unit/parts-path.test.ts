@@ -166,11 +166,13 @@ describe('the hint on making a loop', () => {
 describe('rap lessons on a part with no lines', () => {
   it('play the listen-and-read video where the words would light up, and her track for the rest', () => {
     const empty = section('s1', 'Verse 1', 2, 0)
-    expect(LADDERS.rap.map((s) => stepSource(s, empty))).toEqual(['listen', 'listen', 'track', 'track', 'track'])
+    // Version 1.4: with no guide file the rap rungs fade the voice with videos, lines or none.
+    const d = defaultSave()
+    expect(LADDERS.rap.map((s) => stepSource(s, empty, d))).toEqual(['listen', 'voiceGuide', 'karaoke', 'track', 'track'])
     const typed = section('s1', 'Verse 1', 2, 2)
-    expect(LADDERS.rap.map((s) => stepSource(s, typed))).toEqual(LADDERS.rap.map((s) => s.source))
+    expect(LADDERS.rap.map((s) => stepSource(s, typed, d))).toEqual(['listen', 'voiceGuide', 'karaoke', 'track', 'track'])
     // Dance and together lessons are as before.
-    for (const l of ['dance', 'together'] as const) expect(LADDERS[l].map((s) => stepSource(s, empty))).toEqual(LADDERS[l].map((s) => s.source))
+    for (const l of ['dance', 'together'] as const) expect(LADDERS[l].map((s) => stepSource(s, empty, d))).toEqual(LADDERS[l].map((s) => s.source))
   })
 
   it('never say the lesson must wait for the words', () => {

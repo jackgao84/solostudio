@@ -222,11 +222,18 @@ test('from first launch to Showtime', async ({ page }) => {
   await checkScreen(page, 'kid', 'listen and read')
   expect((await wakeLock(page)).active).toBe(1)
   await tap(page.getByRole('button', { name: 'I did it' }))
-  await expectRoute(page, `/practice/${sectionId}/rap-say`)
+  // Version 1.4: "Say it with Voice guide" opens the practice room on Voice guide (no starts are tapped on it here).
+  await expectRoute(page, '/room')
+  await expect(page.locator('.room-sources [data-source="ref-voiceGuide"]')).toHaveAttribute('aria-checked', 'true')
   save = await readSave(page)
   expect(save.progress[sectionId].rap.done).toEqual(['rap-listen'])
 
-  // 12. "Say it with the words" over her own track at 75%, pitch kept, lines lighting up in turn.
+  // 12. "I did it" there and on Karaoke, then "From memory, slow" over her own track at 75%, pitch
+  // kept, lines lighting up in turn.
+  await tap(page.getByRole('button', { name: 'I did it' }))
+  await expect(page.locator('.room-sources [data-source="ref-karaoke"]')).toHaveAttribute('aria-checked', 'true')
+  await tap(page.getByRole('button', { name: 'I did it' }))
+  await expectRoute(page, `/practice/${sectionId}/rap-memory-75`)
   await tap(page.getByRole('button', { name: 'Play' }))
   await expect.poll(async () => (await trackAudio(page))?.paused).toBe(false)
   const audio = (await trackAudio(page))!
@@ -236,7 +243,7 @@ test('from first launch to Showtime', async ({ page }) => {
   // "Again" starts the section over and records nothing.
   const before = await readSave(page)
   await tap(page.getByRole('button', { name: 'Again' }))
-  await expectRoute(page, `/practice/${sectionId}/rap-say`)
+  await expectRoute(page, `/practice/${sectionId}/rap-memory-75`)
   expect((await readSave(page)).progress).toEqual(before.progress)
   await tap(page.getByRole('button', { name: 'Today' }))
   await expectRoute(page, '/today')

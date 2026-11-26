@@ -67,7 +67,7 @@ test('a fresh iPad opens on a welcome with the practice room, and nothing says t
   await expect(page.locator('[data-screen="room"]')).toBeVisible()
   // The mirrored follow-along is ready to play, and every video is there to pick.
   await expect.poll(async () => (await ytPlayers(page)).map((p) => p.videoId)).toEqual(['PBhzOdOIFEY'])
-  await expect(page.locator('.room-sources [role="radio"]')).toHaveCount(7)
+  await expect(page.locator('.room-sources [role="radio"]')).toHaveCount(9)
   await expect(page.locator('.room-sources [data-source="ref-mirrored"]')).toHaveAttribute('aria-checked', 'true')
   await expect(page.locator('.room-sources [data-source="track"]')).toHaveCount(0)
   await expect(page.locator('main')).not.toContainText(WAIT_FOR_GROWNUP)
