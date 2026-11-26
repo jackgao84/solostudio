@@ -7,10 +7,23 @@
 
 ## Status
 
-- **Version 1.2 in progress (2026-11-26).** All five parts are built and committed (checks first,
-  then code, a commit per part); the owner approved the batch of check fixes (11ca6af). Now: the
-  final full checks twice, every new screen in both orientations, 1.2.0, push and deploy. Characters used with ElevenLabs so far: 10,613 (402 for the three samples, 9,687 for the
-  first recording, 524 for the section-lesson intros).
+- **Version 1.2.1 in progress (2026-11-26):** Rap basics (see "Version 1.2.1" below); committed
+  locally, checks running.
+- **Version 1.2.0 done and live (2026-11-26), build 619be58.** Confirmed in WebKit against the live
+  site at iPad portrait and landscape: the version line reads "Version 1.2.0 · build 619be58"; the
+  service worker controls `/solostudio/` with one `solostudio:precache:<hash>` cache of 214 files (205
+  of them the coach's clips) and a clip loads from it (200, audio/mp3); a 1.1 save carries over (save
+  version 3, walk-on time 8 kept, the wizard counting all but her track as done, the 1.1 document
+  kept as the backup copy); home shows Start, the D-day and the path; 7 lesson cards; only
+  `solostudio:` keys; no console errors. The deploy workflow's unit checks passed (33 files, 301).
+- 1.2.0 final checks: typecheck clean; unit 301/301 in 33 files; Playwright WebKit 132/132 (66 tests
+  × iPad portrait and landscape), twice in a row on the same build (9.1 min each), no retries;
+  REVIEW.md current; privacy scan clean (every file, every commit message, author and committer).
+- Only the iPad can confirm (1.2): the coach's voice through the speaker (and after her first tap),
+  its volume against the music, the count-in clips landing on the beat of her real track, the beat
+  worked out from her real track, filming after "Get to your spot" and Film my Showtime with the real
+  camera, the lesson videos playing inside the app, and narration offline (Airplane Mode after the
+  first open). SETUP.md lists these with the 1.0 and 1.1 items.
 - **Version 1.1.0 done and live (2026-11-26), build dafb6ff.** Confirmed in WebKit against the live
   site at iPad portrait and landscape: the service worker controls `/solostudio/` with one
   `solostudio:precache:<hash>` cache; a 1.0 save carries over (schema 2, sections and progress
@@ -47,7 +60,28 @@
     update specs seed no YouTube stand-in (routing can't reach a worker-controlled page).
   No assertion was changed anywhere.
 
-## Version 1.2 (in progress)
+## Version 1.2.1 (in progress)
+
+The owner's follow-up: one more skill lesson, **Rap basics**, just before her first Rap lesson, with
+the listen-and-read video (6DBtz2enWSA): riding the beat, crisp consonants, where to breathe, energy,
+and learning the Korean lines slowly, sound by sound, one line at a time. (No "how the app works"
+lesson: the first-run tour covers it.)
+
+- [x] Check changes approved by the owner, committed on their own (e555853): the lesson list in
+  `tests/unit/copy.test.ts` (eight, Rap basics after the voice warm-up), the lesson-card count in
+  `e2e/offline.spec.ts` (8), and `tests/unit/path.test.ts` (Rap basics in the path order before her
+  first rap lesson, and in what a rap lesson needs).
+- [x] New check `tests/unit/rap-basics.test.ts` (d6db085); the lesson (94d33a9) in `src/content/lessons.ts`,
+  `SKILL_LESSON_IDS` and `SKILL_NEEDS.rap`; no save version change (the save keeps only known lesson
+  ids, and a 1.2 save simply has it still to do).
+- [x] Narration: 10 new clips (the title, seven paragraphs, the try-it and "Next: Rap basics"),
+  1,116 characters; read aloud in about 1 min 17 s. All clips: 215, 11,327 characters, 3.7 MB.
+  ElevenLabs characters used in all of 1.2 and 1.2.1: 11,729.
+- [x] Full checks: typecheck clean; unit 304/304 in 34 files; Playwright WebKit 132/132 twice in a
+  row on the same build (9.1 and 9.2 min), no retries; REVIEW.md current; privacy scan clean.
+- [ ] Version 1.2.1, push, deploy, live check.
+
+## Version 1.2 (done)
 
 The owner's 1.2 brief: she finds it easy and a grown-up finds setup quick. Five parts, each checks
 first, then code, a commit after each; a 1.1 save migrates through a tested migration.
@@ -85,7 +119,7 @@ first, then code, a commit after each; a 1.1 save migrates through a tested migr
    `tests/unit/beat.test.ts`, `e2e/wizard.spec.ts`). SETUP.md rewritten.
 5. [x] No step blocked by video marks (`src/model/videos.ts`, `src/ui/loop.ts`,
    `src/ui/video-controls.ts`; checks `tests/unit/videos.test.ts`, `e2e/videos.spec.ts`).
-6. [ ] Full checks, every new screen in both orientations, 1.2.0, push, deploy, live check.
+6. [x] Full checks, every new screen in both orientations, 1.2.0, push, deploy, live check.
    - Every new screen looked at in both orientations (home and path, a skill lesson, a section
      lesson and its setup gap, an unmarked tutorial, Showtime's start, recording, every wizard step,
      Lessons and narration). Fixed: a tutorial step in landscape now puts the video left and her
