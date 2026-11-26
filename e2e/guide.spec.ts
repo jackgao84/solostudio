@@ -89,15 +89,12 @@ interface VoiceState {
   channels: number
 }
 
-declare global {
-  interface Window {
-    __solostudio?: { voice?: () => VoiceState | null; hear?: (freqs: number[]) => number[] } & Record<string, unknown>
-  }
-}
+/** The debug hook's 1.4 additions (read-only). */
+type VoiceHook = { __solostudio: { voice(): VoiceState | null; hear(freqs: number[]): number[] } }
 
-const voice = (page: Page) => page.evaluate(() => window.__solostudio!.voice!())
+const voice = (page: Page) => page.evaluate(() => (window as unknown as VoiceHook).__solostudio.voice())
 /** How loud each tone is in what she hears right now. */
-const hear = (page: Page, freqs: number[]) => page.evaluate((f) => window.__solostudio!.hear!(f), freqs)
+const hear = (page: Page, freqs: number[]) => page.evaluate((f) => (window as unknown as VoiceHook).__solostudio.hear(f), freqs)
 const plainTrackPlaying = (page: Page) => page.evaluate(() => !!document.querySelector<HTMLAudioElement>('audio.track-audio') && !document.querySelector<HTMLAudioElement>('audio.track-audio')!.paused)
 
 /** In Grown-ups → Her track: load her track, then the guide, and confirm (or correct) what the app worked out. */
