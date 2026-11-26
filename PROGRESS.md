@@ -83,7 +83,7 @@
     update specs seed no YouTube stand-in (routing can't reach a worker-controlled page).
   No assertion was changed anywhere.
 
-## After 1.3.0: the flaky recording check (fixed, not yet pushed)
+## After 1.3.0: the flaky recording check (fixed, live 2026-11-27, build 18cb71e)
 
 `e2e/filming.spec.ts:14` failed now and then with "WebKitBlobResource error 3" (1 in 12 runs on 1.3.0,
 3 in 20 on 1.2.1). Two causes:
@@ -110,6 +110,10 @@
   tests × iPad portrait and landscape) twice in a row on the same build (9.5 min each), no retries.
   (A run before that was cut short when the Mac paused; its three failures each took about 10 minutes
   against a 90 s limit.)
+- Pushed and deployed (the workflow's unit checks: 39 files, 349). Confirmed in WebKit against the live
+  site at iPad portrait and landscape: "Version 1.3.0 · build 18cb71e"; one precache cache of 227 files
+  (218 clips); the practice room, a part on her path, Test YouTube and a 1.2 save as before; a quick
+  Stop records for a moment and keeps one clip with something in it.
 - Only the iPad can confirm: that a real recording is never empty (the note should never appear in
   normal use) and that a quick Stop simply records for a second.
 
