@@ -749,8 +749,75 @@
   min-height: 110px;
 }
 
-.lesson-body p {
+/* A lesson: the script on one side, its video and "I did it" on the other (landscape), or the
+   script then the video (portrait). The coach's bar stays at the top while she scrolls. */
+.lesson-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 18px;
+  align-items: start;
+}
+
+@media (orientation: landscape) and (min-width: 900px) {
+  .lesson-layout {
+    grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
+  }
+  .lesson-side {
+    position: sticky;
+    top: 12px;
+  }
+}
+
+.lesson-script p {
   max-width: 34em;
+}
+
+.lesson-side {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  min-width: 0;
+}
+
+@media (orientation: portrait) {
+  .lesson-side .yt-frame {
+    max-height: 34vh;
+  }
+}
+
+.lesson-video__label {
+  margin: 0;
+  color: var(--muted);
+}
+
+.narrated {
+  border-radius: 12px;
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.narrated.is-reading {
+  background: var(--panel-strong);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--cyan) 55%, transparent);
+}
+
+.narrator {
+  position: sticky;
+  top: 0;
+  z-index: 5;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  padding: 8px 0;
+  background: var(--bg);
+}
+
+.lesson-card.is-done {
+  opacity: 0.8;
+}
+
+.lesson-card__done {
+  color: var(--lime);
+  font-weight: 700;
 }
 
 .try-it {
@@ -1631,3 +1698,4 @@ html[data-theme='mint'] {
   max-height: 42vh;
   min-height: 220px;
 }
+

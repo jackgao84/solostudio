@@ -1,112 +1,152 @@
 /**
- * Six short reads (a minute or two each) for a young trainee. Each ends by putting her own teachers
- * first. Kept in plain, short sentences; tests/unit/copy.test.ts checks length and coverage.
+ * The seven skill lessons on her lesson path (version 1.2). Each is a script the coach reads aloud,
+ * word for word as it shows on screen: short sentences, a warm voice, a minute or two each. Each has
+ * a video (a grown-up can swap it) and ends by putting her own teachers first. No song or artist is
+ * named anywhere. tests/unit/copy.test.ts checks length, sentence length and what each one covers.
  */
+import type { LessonVideo, SkillLessonId } from '../storage/schema'
+
 export const TEACHERS_FIRST = 'Your own teachers come first. If they say something different, do it their way.'
 
 export type LessonLink = 'faceLab' | 'upAnyway'
 
 export interface Lesson {
-  id: string
+  id: SkillLessonId
   title: string
   minutes: 1 | 2
   paragraphs: string[]
   tryIt: string
   teachersFirst: string
   links: LessonLink[]
+  /** The lesson's video, played from `start` (seconds). */
+  video: LessonVideo
 }
 
 export const LESSONS: readonly Lesson[] = [
+  {
+    id: 'counting',
+    title: 'Counting the music',
+    minutes: 1,
+    paragraphs: [
+      'Hi! Let’s start with counting. Dancers count music in eights. 1, 2, 3, 4, 5, 6, 7, 8. Then it starts again from 1. That’s called an 8-count.',
+      'The beat is like a clock that never stops. Nod your head to it. Tap your foot. Each tap is one count.',
+      'Every move lands on a count. Every rap line sits on the beat too. So when you know the counts, you always know where you are.',
+      'In the video, two dancers show how to find the counts in any song. Listen for the strong beats. The 1 usually feels the strongest. That’s where an 8-count starts.',
+      'When you practise here, I count you in. 5, 6, 7, 8. Then the music comes in on the 1.',
+    ],
+    tryIt: 'Try it: play your track and count out loud. Clap on every 1.',
+    teachersFirst: TEACHERS_FIRST,
+    links: [],
+    video: { youtubeId: 'N6t8hwKp71g', start: 0 },
+  },
   {
     id: 'learning-a-dance',
     title: 'Learning a dance',
     minutes: 2,
     paragraphs: [
-      'Dancers count music in 8 counts. Count along: 1, 2, 3, 4, 5, 6, 7, 8. Then it starts again. Each move lands on a count. When you know the counts, you always know where you are.',
-      'A mirrored video helps you copy. It is flipped, so when the dancer moves to your left, you move to your left too. Just copy it like a mirror. No turning things around in your head!',
-      'Start slow. Learn the moves at half speed first. Your body remembers moves it does carefully. Then try them a bit faster, and then at full speed.',
-      'Chunk it. Don’t learn the whole dance at once. Learn one small part, like one or two 8 counts. Then chain it: join the new chunk to the chunk before. Chunk and chain, again and again, until the whole section flows.',
-      'Keep your moves clean and sharp. Hit each pose, then move on. Big, clear moves look great from the audience.',
+      'A new dance can feel like a lot. Here’s the secret. You never learn it all at once.',
+      'Start slow. Learn the moves at half speed first. Your body remembers moves it does carefully. Then go a bit faster. Then full speed.',
+      'Chunk it. Learn one small chunk, like one or two 8-counts. Then chain it. Join the new chunk to the one before. Chunk and chain, again and again, until the whole part flows.',
+      'Use the mirrored video. It’s flipped, so it’s like dancing in front of a mirror. When the dancer moves to your left, you move to your left too.',
+      'Keep your practice short and focused. A few careful goes help more than lots of rushed ones.',
+      'Test yourself. Try a chunk from memory before you peek. Getting stuck is fine. It means your brain is working. Then sleep on it. Your brain saves your moves while you sleep.',
+      'In the video, a teacher breaks a dance into small parts. Watch one part, then try it slowly.',
     ],
-    tryIt: 'Try it: pick one 8 count. Do it at half speed three times. Then join it to the 8 count before.',
+    tryIt: 'Try it: pick one 8-count. Do it slowly three times. Then chain it to the 8-count before.',
     teachersFirst: TEACHERS_FIRST,
     links: [],
+    video: { youtubeId: 'FIl3O1uBjQQ', start: 29 },
   },
   {
-    id: 'rap-basics',
-    title: 'Rap basics',
-    minutes: 2,
+    id: 'voice-warm-up',
+    title: 'Warming up your voice',
+    minutes: 1,
     paragraphs: [
-      'Rap is rhythm first. The beat is like a clock that never stops. Your words sit on the beat. Nod your head or tap your foot to feel it.',
-      'Make your consonants crisp. Consonants are sounds like t, k, p, s and d. Snap them out clearly, so people understand every word. Lazy consonants turn words into mush.',
-      'Plan your breaths. Rap lines can be long and fast. Find the gaps where you can take a quick breath. Mark them in your lines, so you breathe in the same place every time.',
-      'Bring the energy. Rap with your whole face and body. Smile with your voice. Even quiet lines need energy behind them.',
-      'Korean lines work the same way. Learn them slowly, sound by sound. Say them with your track at a slow speed first. Then speed up bit by bit.',
+      'Your voice is part of your body. So, just like your legs, it needs a warm-up before you rap.',
+      'Start with your breath. In the video, you blow, hiss and breathe out slowly. Copy along. It wakes up the muscles you rap with.',
+      'Then hum gently with your lips closed. Do some lip trills, like a little motorboat. Then say red leather, yellow leather, five times. Make every consonant crisp. Consonants are sounds like t, k, p and s.',
+      'Sip water before, during and after practice. Your voice works best when you’ve had enough to drink.',
+      'No shouting. Use big energy, not a big shout. Your headset mic makes you loud.',
+      'If your voice feels croaky or hoarse, or it hurts, rest it. Practise the dance quietly instead, and tell a grown-up.',
     ],
-    tryIt: 'Try it: say one line slowly with super crisp consonants. Then say it on the beat with your track.',
+    tryIt: 'Try it: sip some water, then hum gently for ten seconds.',
     teachersFirst: TEACHERS_FIRST,
     links: [],
+    video: { youtubeId: 'lNhnpCsoGdQ', start: 0 },
   },
   {
-    id: 'rapping-while-dancing',
-    title: 'Rapping while dancing',
+    id: 'breathing',
+    title: 'Breathing while you rap and dance',
     minutes: 2,
     paragraphs: [
-      'Rapping and dancing at the same time is hard for everyone at first. Your brain has two jobs. So you build it up step by step.',
-      'Start by marking. Marking means doing the moves small and soft, at half energy, while you rap out loud. Your words stay strong, and your body learns where the moves go.',
-      'Breathe on the easier moves. Some moves are big and some are small. Take your breaths during the small, easy moves. Never hold your breath through a hard move.',
-      'Build your stamina. Stamina means having enough energy to last the whole song. Full run-throughs build it. Each week it gets a bit easier.',
-      'Practise with your headset mic or a headband on, so it feels normal on the day. Keep the mic still near the corner of your mouth. Don’t touch it or fiddle with it while you dance.',
+      'Rapping and dancing at the same time takes lots of breath. So let’s plan your breaths.',
+      'Find the gaps. Rap lines can be long and fast. Look for the little gaps where you can take a quick breath. Mark them in your lines, so you breathe in the same place every time.',
+      'Breathe on the easier moves. Some moves are big and some are small. Take your breaths during the small, easy ones. Never hold your breath through a hard move.',
+      'Breathe low. Let your belly and your ribs open as you breathe in. Keep your shoulders down and relaxed.',
+      'Build your stamina. Stamina means having enough energy to last the whole song. Every run-through builds it. Each week it gets a bit easier.',
+      'In the video, a singing teacher shares her tips for singing while you dance. Rapping works the same way.',
     ],
-    tryIt: 'Try it: rap one section out loud while you mark the moves. Then try it again full out.',
+    tryIt: 'Try it: rap one line and tap where you breathe. Then do it again with the moves.',
     teachersFirst: TEACHERS_FIRST,
     links: [],
+    video: { youtubeId: '6YleE5e4dG8', start: 0 },
+  },
+  {
+    id: 'marking',
+    title: 'Marking and full out',
+    minutes: 1,
+    paragraphs: [
+      'Here are two words dancers use a lot. Marking, and full out.',
+      'Marking means doing the moves small and soft, at half energy. You still go through every step. You just save your energy.',
+      'When you rap and dance together, start by marking. Rap out loud, strong and clear. Mark the moves small. Your words stay strong, and your body learns where the moves go.',
+      'Full out means everything, like it’s the show. Big moves, big energy, big face. Go full out once marking feels easy.',
+      'Practise with your headset mic or a headband on. Then it feels normal on the day. Keep the mic still, near the corner of your mouth.',
+      'In the video, a dancer shows marking and full out, one after the other.',
+    ],
+    tryIt: 'Try it: mark one part while you rap it. Then do it again full out.',
+    teachersFirst: TEACHERS_FIRST,
+    links: [],
+    video: { youtubeId: 'NLzTkkqRn-s', start: 0 },
+  },
+  {
+    id: 'expressions',
+    title: 'Expressions',
+    minutes: 1,
+    paragraphs: [
+      'Your face is part of the dance. Your expressions tell the story of your song.',
+      'Think about how your song feels. Confident? Playful? Fierce? Let your face show it.',
+      'In the video, a dancer shares three tips for expressions. Try each one while you watch.',
+      'Practise in a mirror, or in Face Lab. Try a confident face, then a playful one. Notice how your eyes change too.',
+      'Keep your face moving with the music. A face that stays the same all song looks frozen. Small changes make a big difference.',
+      'Then watch yourself back. Record a part and look at your face. Pick one moment to make bigger next time.',
+    ],
+    tryIt: 'Try it: do one 8-count with a confident face. Then do it again with a big smile.',
+    teachersFirst: TEACHERS_FIRST,
+    links: ['faceLab'],
+    video: { youtubeId: 'JTqnJesex7I', start: 0 },
   },
   {
     id: 'performing',
     title: 'Performing',
     minutes: 2,
     paragraphs: [
-      'Performing means sharing your song with the people watching. You already know the words and moves. Now you show them what the song feels like.',
-      'Think about your eye line. Look up and out, not at the floor. Pick a few spots at the back of the room, a bit above people’s heads. Move your eyes between them.',
-      'Use your face. Your expressions tell the story. A confident song needs a confident face. Practise in a mirror, or try Face Lab for expression practice.',
+      'Performing means sharing your song with the people watching. You already know the words and the moves. Now you show them how the song feels.',
+      'Think about your eye line. Look up and out, not at the floor. Pick a few spots at the back of the room, just above people’s heads. Move your eyes between them.',
+      'Walk on calmly and hit your opening pose. At the end, hold your ending pose, then take a bow.',
       'If you slip, keep going. Nobody in the audience knows the plan. Carry on with the next move or the next line, and smile. Keeping going is what real performers do.',
       'Perform for your family before the show. It might feel a bit scary, and that’s good practice. Performing for someone is a brave thing. You can log it in Up Anyway.',
+      'In the video, watch how the performer uses her eyes and her face, and how she keeps going all the way through.',
     ],
-    tryIt: 'Try it: do one section for someone at home, with your eyes up and a big expression.',
+    tryIt: 'Try it: do one part for someone at home, with your eyes up and a big expression.',
     teachersFirst: TEACHERS_FIRST,
-    links: ['faceLab', 'upAnyway'],
-  },
-  {
-    id: 'voice-care',
-    title: 'Voice care',
-    minutes: 1,
-    paragraphs: [
-      'Your voice is part of your body, so look after it.',
-      'Drink water. Sip water before, during and after practice. Your voice works best when you have had enough to drink.',
-      'No shouting. Shouting and screaming strain your voice. Use big energy, not a big shout. Let your headset mic make you loud.',
-      'Rest when you are hoarse. If your voice sounds croaky or scratchy, or it hurts, rest it. Practise the dance quietly instead, and tell a grown-up.',
-      'Don’t rap for too long in a row. Your voice needs little rests. That’s why your plan puts dance or a water break between rap times.',
-    ],
-    tryIt: 'Try it: before you practise today, sip some water and hum gently for ten seconds.',
-    teachersFirst: TEACHERS_FIRST,
-    links: [],
-  },
-  {
-    id: 'practising-smart',
-    title: 'Practising smart',
-    minutes: 2,
-    paragraphs: [
-      'Smart practice works better than long practice. Here are some tricks that really help.',
-      'Keep reps short and focused. Pick one small part and practise it a few times with all your attention. Then take a break. Short, focused practice sticks better than going over and over without thinking.',
-      'Test yourself. Reading the words again feels easy, but it doesn’t help much. Trying to remember them helps a lot. That’s why the words fade away, and why there are quick tests. Getting stuck is fine. It means your brain is working.',
-      'Sleep on it. Your brain saves what you practised while you sleep. A good night’s sleep after practice really helps you remember.',
-      'Come back to it. Parts you learned a few days ago come back for a quick check. If a part feels shaky, mark it, and it comes back sooner.',
-    ],
-    tryIt: 'Try it: test yourself on one section from memory before you look at the words.',
-    teachersFirst: TEACHERS_FIRST,
-    links: [],
+    links: ['upAnyway'],
+    video: { youtubeId: 'XD00TJ-6WSw', start: 0 },
   },
 ]
 
-export const LESSON_IDS: readonly string[] = LESSONS.map((l) => l.id)
+export const LESSON_IDS: readonly SkillLessonId[] = LESSONS.map((l) => l.id)
+
+/** The video a lesson plays: a grown-up's swap if there is one, else the lesson's own. */
+export function lessonVideo(id: SkillLessonId, swaps: Partial<Record<SkillLessonId, LessonVideo>>): LessonVideo {
+  return swaps[id] ?? LESSONS.find((l) => l.id === id)!.video
+}

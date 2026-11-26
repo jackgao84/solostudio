@@ -34,14 +34,15 @@ export const KID_GROUPS: readonly { id: string; title: string; about: string }[]
   { id: 'session', title: 'The guided session', about: 'Start today’s practice: the buttons she taps between reps.' },
   { id: 'sounds', title: 'Sounds', about: 'Her volume and mute for the spoken cues and the sound effects.' },
   { id: 'tour', title: 'The first-run tour', about: 'Five short slides, about 30 seconds, offered on Today the first time.' },
-  { id: 'cues', title: 'Spoken cues', about: 'What the iPad says out loud in its English voice. Only between reps, never over a video or her track.' },
+  { id: 'cues', title: 'Spoken cues', about: 'What the coach says out loud (recorded; a custom section name is said in the iPad’s own voice). Only between reps, never over a video or her track.' },
   { id: 'sections', title: 'Her sections', about: 'The list of sections and each section’s page.' },
   { id: 'quiz', title: 'Quick tests', about: 'Missing words and counts from memory.' },
   { id: 'showtime', title: 'Showtime', about: 'The whole track from the top, with no stopping.' },
   { id: 'reflect', title: 'Looking back', about: 'After Showtime, a clip or performing for family: one thing that went well, one to work on.' },
   { id: 'record', title: 'Recording', about: 'The camera, recording beside the reference, and the note when an older clip is deleted.' },
   { id: 'clips', title: 'Her clips', about: 'The list of clips kept on the iPad.' },
-  { id: 'lessons', title: 'Lessons', about: 'The six short reads, in full, each with its “try it” and the line that puts her teachers first.' },
+  { id: 'narrator', title: 'The coach’s voice', about: 'The buttons for the coach reading a lesson aloud.' },
+  { id: 'lessons', title: 'Lessons', about: 'The seven skill lessons, in full, each read aloud by the coach word for word, with its “try it” and the line that puts her teachers first.' },
 ]
 
 const human = (key: string) => key.replace(/([A-Z])/g, ' $1').replace(/^./, (c) => c.toUpperCase())

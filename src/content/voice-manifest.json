@@ -1,0 +1,1379 @@
+{
+  "voice": "Jessica",
+  "model": "eleven_multilingual_v2",
+  "format": "mp3_22050_32",
+  "clips": [
+    {
+      "text": "5",
+      "file": "679a4a7586b85351.mp3",
+      "chars": 1,
+      "bytes": 2002,
+      "ms": 470
+    },
+    {
+      "text": "6",
+      "file": "35879e3d51c83efd.mp3",
+      "chars": 1,
+      "bytes": 1793,
+      "ms": 418
+    },
+    {
+      "text": "7",
+      "file": "9eddd2a0a4ea2f6e.mp3",
+      "chars": 1,
+      "bytes": 2002,
+      "ms": 470
+    },
+    {
+      "text": "8",
+      "file": "071443ed07865dab.mp3",
+      "chars": 1,
+      "bytes": 2943,
+      "ms": 705
+    },
+    {
+      "text": "5, 6, 7, 8",
+      "file": "c513cab413e830ed.mp3",
+      "chars": 10,
+      "bytes": 6809,
+      "ms": 1672
+    },
+    {
+      "text": "That’s today’s practice done. Have some water and rest your voice.",
+      "file": "398e14694dff0e4b.mp3",
+      "chars": 66,
+      "bytes": 15168,
+      "ms": 3762
+    },
+    {
+      "text": "Get to your spot",
+      "file": "e3e98a2a7a756a7e.mp3",
+      "chars": 16,
+      "bytes": 5137,
+      "ms": 1254
+    },
+    {
+      "text": "Again",
+      "file": "588d33bc12137b31.mp3",
+      "chars": 5,
+      "bytes": 3256,
+      "ms": 784
+    },
+    {
+      "text": "Next",
+      "file": "95dcedd82e826817.mp3",
+      "chars": 4,
+      "bytes": 3465,
+      "ms": 836
+    },
+    {
+      "text": "Rap, 75% speed",
+      "file": "4d983b827682aec6.mp3",
+      "chars": 14,
+      "bytes": 8063,
+      "ms": 1985
+    },
+    {
+      "text": "Rap, 100% speed",
+      "file": "fff13cfc919b127a.mp3",
+      "chars": 15,
+      "bytes": 8063,
+      "ms": 1985
+    },
+    {
+      "text": "Dance, 100% speed",
+      "file": "5650927d356f741f.mp3",
+      "chars": 17,
+      "bytes": 7018,
+      "ms": 1724
+    },
+    {
+      "text": "Dance, 50% speed",
+      "file": "e6ee60a46636a8d9.mp3",
+      "chars": 16,
+      "bytes": 7122,
+      "ms": 1750
+    },
+    {
+      "text": "Dance, 75% speed",
+      "file": "e731b0ee6171f3a8.mp3",
+      "chars": 16,
+      "bytes": 8481,
+      "ms": 2090
+    },
+    {
+      "text": "Rap and dance together, 75% speed",
+      "file": "40f6b93be54d7257.mp3",
+      "chars": 33,
+      "bytes": 13287,
+      "ms": 3291
+    },
+    {
+      "text": "Rap and dance together, 100% speed",
+      "file": "c209a77c3c9000a6.mp3",
+      "chars": 34,
+      "bytes": 11093,
+      "ms": 2743
+    },
+    {
+      "text": "Breathe in",
+      "file": "df67606d3621444e.mp3",
+      "chars": 10,
+      "bytes": 3779,
+      "ms": 914
+    },
+    {
+      "text": "Breathe out",
+      "file": "8b876320a15d6f12.mp3",
+      "chars": 11,
+      "bytes": 4197,
+      "ms": 1019
+    },
+    {
+      "text": "Say it out loud: I’m excited!",
+      "file": "a37e37279bf0271b.mp3",
+      "chars": 29,
+      "bytes": 8063,
+      "ms": 1985
+    },
+    {
+      "text": "Walk to your spot",
+      "file": "02667592376dea23.mp3",
+      "chars": 17,
+      "bytes": 4928,
+      "ms": 1202
+    },
+    {
+      "text": "Opening pose",
+      "file": "3dfdfd035a2774d0.mp3",
+      "chars": 12,
+      "bytes": 4406,
+      "ms": 1071
+    },
+    {
+      "text": "Ending pose. Hold it!",
+      "file": "cb930c89b1bafff1.mp3",
+      "chars": 21,
+      "bytes": 6600,
+      "ms": 1620
+    },
+    {
+      "text": "Take a bow",
+      "file": "e1db4b60e2578b38.mp3",
+      "chars": 10,
+      "bytes": 4197,
+      "ms": 1019
+    },
+    {
+      "text": "Walk off the stage",
+      "file": "d247820705c98346.mp3",
+      "chars": 18,
+      "bytes": 5659,
+      "ms": 1384
+    },
+    {
+      "text": "Close your eyes. Imagine you are on stage, performing your song.",
+      "file": "79a7a3c636995bad.mp3",
+      "chars": 64,
+      "bytes": 16108,
+      "ms": 3997
+    },
+    {
+      "text": "Open your eyes. That was your listening run.",
+      "file": "dd1252ca49b9d9e7.mp3",
+      "chars": 44,
+      "bytes": 10884,
+      "ms": 2691
+    },
+    {
+      "text": "Tap Start today’s practice. The iPad takes you through every part.",
+      "file": "e5773cecfaf4fdb5.mp3",
+      "chars": 66,
+      "bytes": 16317,
+      "ms": 4049
+    },
+    {
+      "text": "Before every go you hear 5, 6, 7, 8. That’s your time to get to your spot.",
+      "file": "41f6049f11868137.mp3",
+      "chars": 74,
+      "bytes": 20915,
+      "ms": 5198
+    },
+    {
+      "text": "The music keeps looping. Tap I did it, Next or Pause from where you stand.",
+      "file": "6eec3c17dbcec019.mp3",
+      "chars": 74,
+      "bytes": 20184,
+      "ms": 5016
+    },
+    {
+      "text": "Each step you tick switches on a light on your stage.",
+      "file": "e15f4b973e1bd09f.mp3",
+      "chars": 53,
+      "bytes": 11615,
+      "ms": 2873
+    },
+    {
+      "text": "Showtime is the whole show: breathe, walk on, perform and bow.",
+      "file": "6da6e714852dcbb3.mp3",
+      "chars": 62,
+      "bytes": 21855,
+      "ms": 5433
+    },
+    {
+      "text": "You’re ready. Have fun!",
+      "file": "201176b70880a054.mp3",
+      "chars": 23,
+      "bytes": 6391,
+      "ms": 1567
+    },
+    {
+      "text": "Next: Warm-up",
+      "file": "d5b1027ee1584c0d.mp3",
+      "chars": 13,
+      "bytes": 5659,
+      "ms": 1384
+    },
+    {
+      "text": "Next: Rap",
+      "file": "ccee48a38e06eda0.mp3",
+      "chars": 9,
+      "bytes": 4615,
+      "ms": 1123
+    },
+    {
+      "text": "Next: Dance",
+      "file": "39344d9063298b6a.mp3",
+      "chars": 11,
+      "bytes": 5659,
+      "ms": 1384
+    },
+    {
+      "text": "Next: Water break",
+      "file": "acc0dc1920bba052.mp3",
+      "chars": 17,
+      "bytes": 6286,
+      "ms": 1541
+    },
+    {
+      "text": "Next: Rap and dance together",
+      "file": "6862f9c5f934bd3c.mp3",
+      "chars": 28,
+      "bytes": 10362,
+      "ms": 2560
+    },
+    {
+      "text": "Next: Run-through",
+      "file": "aa4d6511d7f40097.mp3",
+      "chars": 17,
+      "bytes": 7122,
+      "ms": 1750
+    },
+    {
+      "text": "Next: Perform for your family",
+      "file": "3eb0fea824c4f304.mp3",
+      "chars": 29,
+      "bytes": 9212,
+      "ms": 2273
+    },
+    {
+      "text": "Next: Listening run",
+      "file": "76b8a01202c2482e.mp3",
+      "chars": 19,
+      "bytes": 6077,
+      "ms": 1489
+    },
+    {
+      "text": "Next: Cool-down",
+      "file": "6e3d2352b7f5bb80.mp3",
+      "chars": 15,
+      "bytes": 7958,
+      "ms": 1959
+    },
+    {
+      "text": "Next: Start anywhere",
+      "file": "2ff645dea0a65f82.mp3",
+      "chars": 20,
+      "bytes": 7958,
+      "ms": 1959
+    },
+    {
+      "text": "Next: Jump back in",
+      "file": "3e5c39aabdffcc11.mp3",
+      "chars": 18,
+      "bytes": 6391,
+      "ms": 1567
+    },
+    {
+      "text": "Next: Counting the music",
+      "file": "d1bacc7cc23513a2.mp3",
+      "chars": 24,
+      "bytes": 6600,
+      "ms": 1620
+    },
+    {
+      "text": "Next: Learning a dance",
+      "file": "af6a956ca99d2e2d.mp3",
+      "chars": 22,
+      "bytes": 9212,
+      "ms": 2273
+    },
+    {
+      "text": "Next: Warming up your voice",
+      "file": "0852e6318fe24c73.mp3",
+      "chars": 27,
+      "bytes": 8690,
+      "ms": 2142
+    },
+    {
+      "text": "Next: Breathing while you rap and dance",
+      "file": "1d37357cf8a0d35a.mp3",
+      "chars": 39,
+      "bytes": 11302,
+      "ms": 2795
+    },
+    {
+      "text": "Next: Marking and full out",
+      "file": "2f61bf42f72ed9a4.mp3",
+      "chars": 26,
+      "bytes": 9212,
+      "ms": 2273
+    },
+    {
+      "text": "Next: Expressions",
+      "file": "76571754ad95541e.mp3",
+      "chars": 17,
+      "bytes": 6077,
+      "ms": 1489
+    },
+    {
+      "text": "Next: Performing",
+      "file": "d7115eda3d591049.mp3",
+      "chars": 16,
+      "bytes": 6286,
+      "ms": 1541
+    },
+    {
+      "text": "Intro",
+      "file": "4c712871ea7dee73.mp3",
+      "chars": 5,
+      "bytes": 3674,
+      "ms": 888
+    },
+    {
+      "text": "Next: Intro",
+      "file": "dc291f6161ecfa57.mp3",
+      "chars": 11,
+      "bytes": 5659,
+      "ms": 1384
+    },
+    {
+      "text": "Next: Intro, Rap, 75% speed",
+      "file": "3960ad6cacaa1d6e.mp3",
+      "chars": 27,
+      "bytes": 18721,
+      "ms": 4650
+    },
+    {
+      "text": "Next: Intro, Rap, 100% speed",
+      "file": "69c378d711e0a1a8.mp3",
+      "chars": 28,
+      "bytes": 14646,
+      "ms": 3631
+    },
+    {
+      "text": "Next: Intro, Dance, 100% speed",
+      "file": "3f53f3c4b256af78.mp3",
+      "chars": 30,
+      "bytes": 18721,
+      "ms": 4650
+    },
+    {
+      "text": "Next: Intro, Dance, 50% speed",
+      "file": "c453c7d1cea90f57.mp3",
+      "chars": 29,
+      "bytes": 19034,
+      "ms": 4728
+    },
+    {
+      "text": "Next: Intro, Dance, 75% speed",
+      "file": "308f8dd9cb640cae.mp3",
+      "chars": 29,
+      "bytes": 19452,
+      "ms": 4833
+    },
+    {
+      "text": "Next: Intro, Rap and dance together, 75% speed",
+      "file": "953fe5412e0439f0.mp3",
+      "chars": 46,
+      "bytes": 26139,
+      "ms": 6504
+    },
+    {
+      "text": "Next: Intro, Rap and dance together, 100% speed",
+      "file": "93dee3ec4b4c7ba9.mp3",
+      "chars": 47,
+      "bytes": 21333,
+      "ms": 5303
+    },
+    {
+      "text": "Verse 1",
+      "file": "b81c63f999d5fb94.mp3",
+      "chars": 7,
+      "bytes": 4197,
+      "ms": 1019
+    },
+    {
+      "text": "Next: Verse 1",
+      "file": "4a0f35366092461a.mp3",
+      "chars": 13,
+      "bytes": 5137,
+      "ms": 1254
+    },
+    {
+      "text": "Next: Verse 1, Rap, 75% speed",
+      "file": "c219f9ed5d3099e0.mp3",
+      "chars": 29,
+      "bytes": 17571,
+      "ms": 4362
+    },
+    {
+      "text": "Next: Verse 1, Rap, 100% speed",
+      "file": "28d87a80597448ff.mp3",
+      "chars": 30,
+      "bytes": 16631,
+      "ms": 4127
+    },
+    {
+      "text": "Next: Verse 1, Dance, 100% speed",
+      "file": "bf9843dc30c74019.mp3",
+      "chars": 32,
+      "bytes": 16317,
+      "ms": 4049
+    },
+    {
+      "text": "Next: Verse 1, Dance, 50% speed",
+      "file": "92e7f7773738dc61.mp3",
+      "chars": 31,
+      "bytes": 18303,
+      "ms": 4545
+    },
+    {
+      "text": "Next: Verse 1, Dance, 75% speed",
+      "file": "ca6e09071495fcde.mp3",
+      "chars": 31,
+      "bytes": 21333,
+      "ms": 5303
+    },
+    {
+      "text": "Next: Verse 1, Rap and dance together, 75% speed",
+      "file": "546b32a19e2f2b31.mp3",
+      "chars": 48,
+      "bytes": 26453,
+      "ms": 6583
+    },
+    {
+      "text": "Next: Verse 1, Rap and dance together, 100% speed",
+      "file": "ce9edbdce3ea0686.mp3",
+      "chars": 49,
+      "bytes": 23109,
+      "ms": 5747
+    },
+    {
+      "text": "Verse 2",
+      "file": "6ec18f522bee02c6.mp3",
+      "chars": 7,
+      "bytes": 3988,
+      "ms": 967
+    },
+    {
+      "text": "Next: Verse 2",
+      "file": "b8a3d9d130f182ad.mp3",
+      "chars": 13,
+      "bytes": 5659,
+      "ms": 1384
+    },
+    {
+      "text": "Next: Verse 2, Rap, 75% speed",
+      "file": "c679461e467b44e1.mp3",
+      "chars": 29,
+      "bytes": 18303,
+      "ms": 4545
+    },
+    {
+      "text": "Next: Verse 2, Rap, 100% speed",
+      "file": "8ff9a6e9b9fa9de6.mp3",
+      "chars": 30,
+      "bytes": 17153,
+      "ms": 4258
+    },
+    {
+      "text": "Next: Verse 2, Dance, 100% speed",
+      "file": "e89384542973e5cc.mp3",
+      "chars": 32,
+      "bytes": 18825,
+      "ms": 4676
+    },
+    {
+      "text": "Next: Verse 2, Dance, 50% speed",
+      "file": "a05f43f00d1a6c46.mp3",
+      "chars": 31,
+      "bytes": 13810,
+      "ms": 3422
+    },
+    {
+      "text": "Next: Verse 2, Dance, 75% speed",
+      "file": "32a35254d7942127.mp3",
+      "chars": 31,
+      "bytes": 19661,
+      "ms": 4885
+    },
+    {
+      "text": "Next: Verse 2, Rap and dance together, 75% speed",
+      "file": "1c986151ed2866a9.mp3",
+      "chars": 48,
+      "bytes": 23318,
+      "ms": 5799
+    },
+    {
+      "text": "Next: Verse 2, Rap and dance together, 100% speed",
+      "file": "9a3aa83699e86a4f.mp3",
+      "chars": 49,
+      "bytes": 19661,
+      "ms": 4885
+    },
+    {
+      "text": "Pre-chorus",
+      "file": "7a944dfa3b0b115e.mp3",
+      "chars": 10,
+      "bytes": 4406,
+      "ms": 1071
+    },
+    {
+      "text": "Next: Pre-chorus",
+      "file": "d9d011fb8777c29c.mp3",
+      "chars": 16,
+      "bytes": 6391,
+      "ms": 1567
+    },
+    {
+      "text": "Next: Pre-chorus, Rap, 75% speed",
+      "file": "7d5f2d727343524c.mp3",
+      "chars": 32,
+      "bytes": 16422,
+      "ms": 4075
+    },
+    {
+      "text": "Next: Pre-chorus, Rap, 100% speed",
+      "file": "7a2467660ae1b427.mp3",
+      "chars": 33,
+      "bytes": 15690,
+      "ms": 3892
+    },
+    {
+      "text": "Next: Pre-chorus, Dance, 100% speed",
+      "file": "26ba4fad9c29d492.mp3",
+      "chars": 35,
+      "bytes": 16422,
+      "ms": 4075
+    },
+    {
+      "text": "Next: Pre-chorus, Dance, 50% speed",
+      "file": "78b50ed52822dee5.mp3",
+      "chars": 34,
+      "bytes": 18094,
+      "ms": 4493
+    },
+    {
+      "text": "Next: Pre-chorus, Dance, 75% speed",
+      "file": "531c272594157be5.mp3",
+      "chars": 34,
+      "bytes": 20915,
+      "ms": 5198
+    },
+    {
+      "text": "Next: Pre-chorus, Rap and dance together, 75% speed",
+      "file": "b2044798c80391a9.mp3",
+      "chars": 51,
+      "bytes": 23318,
+      "ms": 5799
+    },
+    {
+      "text": "Next: Pre-chorus, Rap and dance together, 100% speed",
+      "file": "4a7024cd68de8ac4.mp3",
+      "chars": 52,
+      "bytes": 19034,
+      "ms": 4728
+    },
+    {
+      "text": "Chorus",
+      "file": "79764698b324381a.mp3",
+      "chars": 6,
+      "bytes": 3988,
+      "ms": 967
+    },
+    {
+      "text": "Next: Chorus",
+      "file": "ef436fe7c38ef9de.mp3",
+      "chars": 12,
+      "bytes": 5346,
+      "ms": 1306
+    },
+    {
+      "text": "Next: Chorus, Rap, 75% speed",
+      "file": "f339b00d493e1a9a.mp3",
+      "chars": 28,
+      "bytes": 19243,
+      "ms": 4780
+    },
+    {
+      "text": "Next: Chorus, Rap, 100% speed",
+      "file": "02cad9a7a12973c8.mp3",
+      "chars": 29,
+      "bytes": 18094,
+      "ms": 4493
+    },
+    {
+      "text": "Next: Chorus, Dance, 100% speed",
+      "file": "47c1a1f5f2c07085.mp3",
+      "chars": 31,
+      "bytes": 17153,
+      "ms": 4258
+    },
+    {
+      "text": "Next: Chorus, Dance, 50% speed",
+      "file": "cac00757d71cdad4.mp3",
+      "chars": 30,
+      "bytes": 16840,
+      "ms": 4180
+    },
+    {
+      "text": "Next: Chorus, Dance, 75% speed",
+      "file": "287ac868ac291be4.mp3",
+      "chars": 30,
+      "bytes": 19766,
+      "ms": 4911
+    },
+    {
+      "text": "Next: Chorus, Rap and dance together, 75% speed",
+      "file": "6928d86fa25fd988.mp3",
+      "chars": 47,
+      "bytes": 20497,
+      "ms": 5094
+    },
+    {
+      "text": "Next: Chorus, Rap and dance together, 100% speed",
+      "file": "039731850b75b54c.mp3",
+      "chars": 48,
+      "bytes": 21646,
+      "ms": 5381
+    },
+    {
+      "text": "Post-chorus",
+      "file": "f0cf4ae679a895c3.mp3",
+      "chars": 11,
+      "bytes": 5346,
+      "ms": 1306
+    },
+    {
+      "text": "Next: Post-chorus",
+      "file": "d80df5e7a1952de8.mp3",
+      "chars": 17,
+      "bytes": 7749,
+      "ms": 1907
+    },
+    {
+      "text": "Next: Post-chorus, Rap, 75% speed",
+      "file": "65f5f6ba8a9cd455.mp3",
+      "chars": 33,
+      "bytes": 21333,
+      "ms": 5303
+    },
+    {
+      "text": "Next: Post-chorus, Rap, 100% speed",
+      "file": "f5914d66205fa38d.mp3",
+      "chars": 34,
+      "bytes": 19243,
+      "ms": 4780
+    },
+    {
+      "text": "Next: Post-chorus, Dance, 100% speed",
+      "file": "d687b98ddcaea10a.mp3",
+      "chars": 36,
+      "bytes": 16108,
+      "ms": 3997
+    },
+    {
+      "text": "Next: Post-chorus, Dance, 50% speed",
+      "file": "d3658ce32dd34401.mp3",
+      "chars": 35,
+      "bytes": 14959,
+      "ms": 3709
+    },
+    {
+      "text": "Next: Post-chorus, Dance, 75% speed",
+      "file": "08e5ff8e2c5ed374.mp3",
+      "chars": 35,
+      "bytes": 21124,
+      "ms": 5251
+    },
+    {
+      "text": "Next: Post-chorus, Rap and dance together, 75% speed",
+      "file": "d3c02a2ddbc6d77d.mp3",
+      "chars": 52,
+      "bytes": 23318,
+      "ms": 5799
+    },
+    {
+      "text": "Next: Post-chorus, Rap and dance together, 100% speed",
+      "file": "a2f58980cb3b0d5a.mp3",
+      "chars": 53,
+      "bytes": 21437,
+      "ms": 5329
+    },
+    {
+      "text": "Rap",
+      "file": "8c811ee0dd8cbaa3.mp3",
+      "chars": 3,
+      "bytes": 3047,
+      "ms": 731
+    },
+    {
+      "text": "Next: Rap, Rap, 75% speed",
+      "file": "0f3fe9e2c341d1a2.mp3",
+      "chars": 25,
+      "bytes": 17780,
+      "ms": 4415
+    },
+    {
+      "text": "Next: Rap, Rap, 100% speed",
+      "file": "3728774a59b68be0.mp3",
+      "chars": 26,
+      "bytes": 16422,
+      "ms": 4075
+    },
+    {
+      "text": "Next: Rap, Dance, 100% speed",
+      "file": "6a36694e6d5974a3.mp3",
+      "chars": 28,
+      "bytes": 15899,
+      "ms": 3944
+    },
+    {
+      "text": "Next: Rap, Dance, 50% speed",
+      "file": "2419cad7dfa3163e.mp3",
+      "chars": 27,
+      "bytes": 13810,
+      "ms": 3422
+    },
+    {
+      "text": "Next: Rap, Dance, 75% speed",
+      "file": "fcd97096681eebfe.mp3",
+      "chars": 27,
+      "bytes": 18512,
+      "ms": 4598
+    },
+    {
+      "text": "Next: Rap, Rap and dance together, 75% speed",
+      "file": "6e913275f879aabe.mp3",
+      "chars": 44,
+      "bytes": 21855,
+      "ms": 5433
+    },
+    {
+      "text": "Next: Rap, Rap and dance together, 100% speed",
+      "file": "b5bca107e1d76a5b.mp3",
+      "chars": 45,
+      "bytes": 20915,
+      "ms": 5198
+    },
+    {
+      "text": "Bridge",
+      "file": "1ab5cb0c2b52208c.mp3",
+      "chars": 6,
+      "bytes": 2316,
+      "ms": 549
+    },
+    {
+      "text": "Next: Bridge",
+      "file": "4c26d2f8f084a606.mp3",
+      "chars": 12,
+      "bytes": 4719,
+      "ms": 1149
+    },
+    {
+      "text": "Next: Bridge, Rap, 75% speed",
+      "file": "96d71be5522157bd.mp3",
+      "chars": 28,
+      "bytes": 18825,
+      "ms": 4676
+    },
+    {
+      "text": "Next: Bridge, Rap, 100% speed",
+      "file": "a5fe0ef189aea849.mp3",
+      "chars": 29,
+      "bytes": 15690,
+      "ms": 3892
+    },
+    {
+      "text": "Next: Bridge, Dance, 100% speed",
+      "file": "bbdc84c092202b10.mp3",
+      "chars": 31,
+      "bytes": 21437,
+      "ms": 5329
+    },
+    {
+      "text": "Next: Bridge, Dance, 50% speed",
+      "file": "e420e2fe53a82246.mp3",
+      "chars": 30,
+      "bytes": 19034,
+      "ms": 4728
+    },
+    {
+      "text": "Next: Bridge, Dance, 75% speed",
+      "file": "4b8ed592625abc62.mp3",
+      "chars": 30,
+      "bytes": 21646,
+      "ms": 5381
+    },
+    {
+      "text": "Next: Bridge, Rap and dance together, 75% speed",
+      "file": "2e073ba53939d818.mp3",
+      "chars": 47,
+      "bytes": 23736,
+      "ms": 5904
+    },
+    {
+      "text": "Next: Bridge, Rap and dance together, 100% speed",
+      "file": "7fbcbbd06ebaadeb.mp3",
+      "chars": 48,
+      "bytes": 20706,
+      "ms": 5146
+    },
+    {
+      "text": "Dance break",
+      "file": "37bf275ddd735dd4.mp3",
+      "chars": 11,
+      "bytes": 4406,
+      "ms": 1071
+    },
+    {
+      "text": "Next: Dance break",
+      "file": "9fb9c7ef43bf8e23.mp3",
+      "chars": 17,
+      "bytes": 6600,
+      "ms": 1620
+    },
+    {
+      "text": "Next: Dance break, Rap, 75% speed",
+      "file": "7191d2241c0a9c89.mp3",
+      "chars": 33,
+      "bytes": 16631,
+      "ms": 4127
+    },
+    {
+      "text": "Next: Dance break, Rap, 100% speed",
+      "file": "49628f523fb6b74f.mp3",
+      "chars": 34,
+      "bytes": 17571,
+      "ms": 4362
+    },
+    {
+      "text": "Next: Dance break, Dance, 100% speed",
+      "file": "63847edaff1a5597.mp3",
+      "chars": 36,
+      "bytes": 20184,
+      "ms": 5016
+    },
+    {
+      "text": "Next: Dance break, Dance, 50% speed",
+      "file": "c716f09eb03baf02.mp3",
+      "chars": 35,
+      "bytes": 15168,
+      "ms": 3762
+    },
+    {
+      "text": "Next: Dance break, Dance, 75% speed",
+      "file": "ac432a849bb4c837.mp3",
+      "chars": 35,
+      "bytes": 19243,
+      "ms": 4780
+    },
+    {
+      "text": "Next: Dance break, Rap and dance together, 75% speed",
+      "file": "72e578c7f1d98ab6.mp3",
+      "chars": 52,
+      "bytes": 20915,
+      "ms": 5198
+    },
+    {
+      "text": "Next: Dance break, Rap and dance together, 100% speed",
+      "file": "9b9219b02c6e50a4.mp3",
+      "chars": 53,
+      "bytes": 20393,
+      "ms": 5068
+    },
+    {
+      "text": "Outro",
+      "file": "2c3ef14abf2db6c6.mp3",
+      "chars": 5,
+      "bytes": 3465,
+      "ms": 836
+    },
+    {
+      "text": "Next: Outro",
+      "file": "354d1dc7a2d23810.mp3",
+      "chars": 11,
+      "bytes": 5868,
+      "ms": 1437
+    },
+    {
+      "text": "Next: Outro, Rap, 75% speed",
+      "file": "6205cce42738c16e.mp3",
+      "chars": 27,
+      "bytes": 19766,
+      "ms": 4911
+    },
+    {
+      "text": "Next: Outro, Rap, 100% speed",
+      "file": "8bf2eca35d428f3a.mp3",
+      "chars": 28,
+      "bytes": 17571,
+      "ms": 4362
+    },
+    {
+      "text": "Next: Outro, Dance, 100% speed",
+      "file": "a376550f1d60c171.mp3",
+      "chars": 30,
+      "bytes": 18512,
+      "ms": 4598
+    },
+    {
+      "text": "Next: Outro, Dance, 50% speed",
+      "file": "9d193572a28c1e01.mp3",
+      "chars": 29,
+      "bytes": 18303,
+      "ms": 4545
+    },
+    {
+      "text": "Next: Outro, Dance, 75% speed",
+      "file": "3c31d0f238fc0d84.mp3",
+      "chars": 29,
+      "bytes": 19661,
+      "ms": 4885
+    },
+    {
+      "text": "Next: Outro, Rap and dance together, 75% speed",
+      "file": "2206a8a3fa4faa58.mp3",
+      "chars": 46,
+      "bytes": 25199,
+      "ms": 6269
+    },
+    {
+      "text": "Next: Outro, Rap and dance together, 100% speed",
+      "file": "71ef0352e43a3c3f.mp3",
+      "chars": 47,
+      "bytes": 23109,
+      "ms": 5747
+    },
+    {
+      "text": "Counting the music",
+      "file": "fa6401bfb897744d.mp3",
+      "chars": 18,
+      "bytes": 5659,
+      "ms": 1384
+    },
+    {
+      "text": "Hi! Let’s start with counting. Dancers count music in eights. 1, 2, 3, 4, 5, 6, 7, 8. Then it starts again from 1. That’s called an 8-count.",
+      "file": "d7347f10af45ccba.mp3",
+      "chars": 140,
+      "bytes": 52680,
+      "ms": 13140
+    },
+    {
+      "text": "The beat is like a clock that never stops. Nod your head to it. Tap your foot. Each tap is one count.",
+      "file": "79055696e24847ad.mp3",
+      "chars": 101,
+      "bytes": 28856,
+      "ms": 7184
+    },
+    {
+      "text": "Every move lands on a count. Every rap line sits on the beat too. So when you know the counts, you always know where you are.",
+      "file": "4a47f0661a6935bc.mp3",
+      "chars": 125,
+      "bytes": 31364,
+      "ms": 7811
+    },
+    {
+      "text": "In the video, two dancers show how to find the counts in any song. Listen for the strong beats. The 1 usually feels the strongest. That’s where an 8-count starts.",
+      "file": "8ff898a33f06f307.mp3",
+      "chars": 162,
+      "bytes": 40246,
+      "ms": 10031
+    },
+    {
+      "text": "When you practise here, I count you in. 5, 6, 7, 8. Then the music comes in on the 1.",
+      "file": "27c58b394270bb90.mp3",
+      "chars": 85,
+      "bytes": 24990,
+      "ms": 6217
+    },
+    {
+      "text": "Try it: play your track and count out loud. Clap on every 1.",
+      "file": "66a845bb8a2db5ce.mp3",
+      "chars": 60,
+      "bytes": 20184,
+      "ms": 5016
+    },
+    {
+      "text": "Your own teachers come first. If they say something different, do it their way.",
+      "file": "1498b8f623195177.mp3",
+      "chars": 79,
+      "bytes": 17362,
+      "ms": 4310
+    },
+    {
+      "text": "Learning a dance",
+      "file": "fd30179010aa938e.mp3",
+      "chars": 16,
+      "bytes": 5137,
+      "ms": 1254
+    },
+    {
+      "text": "A new dance can feel like a lot. Here’s the secret. You never learn it all at once.",
+      "file": "e2248499dc12eaa1.mp3",
+      "chars": 83,
+      "bytes": 20184,
+      "ms": 5016
+    },
+    {
+      "text": "Start slow. Learn the moves at half speed first. Your body remembers moves it does carefully. Then go a bit faster. Then full speed.",
+      "file": "0c27fa36f9436db4.mp3",
+      "chars": 132,
+      "bytes": 38365,
+      "ms": 9561
+    },
+    {
+      "text": "Chunk it. Learn one small chunk, like one or two 8-counts. Then chain it. Join the new chunk to the one before. Chunk and chain, again and again, until the whole part flows.",
+      "file": "f4205c8516c1cad3.mp3",
+      "chars": 173,
+      "bytes": 51426,
+      "ms": 12826
+    },
+    {
+      "text": "Use the mirrored video. It’s flipped, so it’s like dancing in front of a mirror. When the dancer moves to your left, you move to your left too.",
+      "file": "fef3d502765fdfa4.mp3",
+      "chars": 143,
+      "bytes": 32409,
+      "ms": 8072
+    },
+    {
+      "text": "Keep your practice short and focused. A few careful goes help more than lots of rushed ones.",
+      "file": "605df385cd5612dc.mp3",
+      "chars": 92,
+      "bytes": 21855,
+      "ms": 5433
+    },
+    {
+      "text": "Test yourself. Try a chunk from memory before you peek. Getting stuck is fine. It means your brain is working. Then sleep on it. Your brain saves your moves while you sleep.",
+      "file": "a11b2876c9d9f568.mp3",
+      "chars": 173,
+      "bytes": 45261,
+      "ms": 11285
+    },
+    {
+      "text": "In the video, a teacher breaks a dance into small parts. Watch one part, then try it slowly.",
+      "file": "a4a98ccc87ad2916.mp3",
+      "chars": 92,
+      "bytes": 23527,
+      "ms": 5851
+    },
+    {
+      "text": "Try it: pick one 8-count. Do it slowly three times. Then chain it to the 8-count before.",
+      "file": "27e14582ba7b5ff3.mp3",
+      "chars": 88,
+      "bytes": 23527,
+      "ms": 5851
+    },
+    {
+      "text": "Warming up your voice",
+      "file": "5afa41c906dd9e26.mp3",
+      "chars": 21,
+      "bytes": 6391,
+      "ms": 1567
+    },
+    {
+      "text": "Your voice is part of your body. So, just like your legs, it needs a warm-up before you rap.",
+      "file": "def3e2cbe106a0a6.mp3",
+      "chars": 92,
+      "bytes": 23841,
+      "ms": 5930
+    },
+    {
+      "text": "Start with your breath. In the video, you blow, hiss and breathe out slowly. Copy along. It wakes up the muscles you rap with.",
+      "file": "42032693885af66d.mp3",
+      "chars": 126,
+      "bytes": 36484,
+      "ms": 9091
+    },
+    {
+      "text": "Then hum gently with your lips closed. Do some lip trills, like a little motorboat. Then say red leather, yellow leather, five times. Make every consonant crisp. Consonants are sounds like t, k, p and s.",
+      "file": "53a7d77f6d50b84e.mp3",
+      "chars": 203,
+      "bytes": 69921,
+      "ms": 17450
+    },
+    {
+      "text": "Sip water before, during and after practice. Your voice works best when you’ve had enough to drink.",
+      "file": "7e9d0c532c6a9327.mp3",
+      "chars": 99,
+      "bytes": 24259,
+      "ms": 6034
+    },
+    {
+      "text": "No shouting. Use big energy, not a big shout. Your headset mic makes you loud.",
+      "file": "7b60e2ae222a94dd.mp3",
+      "chars": 78,
+      "bytes": 21333,
+      "ms": 5303
+    },
+    {
+      "text": "If your voice feels croaky or hoarse, or it hurts, rest it. Practise the dance quietly instead, and tell a grown-up.",
+      "file": "9e742a4f03bf49ad.mp3",
+      "chars": 116,
+      "bytes": 32409,
+      "ms": 8072
+    },
+    {
+      "text": "Try it: sip some water, then hum gently for ten seconds.",
+      "file": "6cdcf57c63fdf8e9.mp3",
+      "chars": 56,
+      "bytes": 15377,
+      "ms": 3814
+    },
+    {
+      "text": "Breathing while you rap and dance",
+      "file": "15590bdd4a7bf604.mp3",
+      "chars": 33,
+      "bytes": 7749,
+      "ms": 1907
+    },
+    {
+      "text": "Rapping and dancing at the same time takes lots of breath. So let’s plan your breaths.",
+      "file": "46231abe3783d1ef.mp3",
+      "chars": 86,
+      "bytes": 19243,
+      "ms": 4780
+    },
+    {
+      "text": "Find the gaps. Rap lines can be long and fast. Look for the little gaps where you can take a quick breath. Mark them in your lines, so you breathe in the same place every time.",
+      "file": "1855d9cabfce4acc.mp3",
+      "chars": 176,
+      "bytes": 40977,
+      "ms": 10214
+    },
+    {
+      "text": "Breathe on the easier moves. Some moves are big and some are small. Take your breaths during the small, easy ones. Never hold your breath through a hard move.",
+      "file": "7f1820ce5b579b3c.mp3",
+      "chars": 158,
+      "bytes": 37424,
+      "ms": 9326
+    },
+    {
+      "text": "Breathe low. Let your belly and your ribs open as you breathe in. Keep your shoulders down and relaxed.",
+      "file": "55bf763d0964f318.mp3",
+      "chars": 103,
+      "bytes": 24259,
+      "ms": 6034
+    },
+    {
+      "text": "Build your stamina. Stamina means having enough energy to last the whole song. Every run-through builds it. Each week it gets a bit easier.",
+      "file": "9450641551fea752.mp3",
+      "chars": 139,
+      "bytes": 34812,
+      "ms": 8673
+    },
+    {
+      "text": "In the video, a singing teacher shares her tips for singing while you dance. Rapping works the same way.",
+      "file": "0c4e81ed21dedfbd.mp3",
+      "chars": 104,
+      "bytes": 23109,
+      "ms": 5747
+    },
+    {
+      "text": "Try it: rap one line and tap where you breathe. Then do it again with the moves.",
+      "file": "51506f8ee0c0fc73.mp3",
+      "chars": 80,
+      "bytes": 19975,
+      "ms": 4963
+    },
+    {
+      "text": "Marking and full out",
+      "file": "e6418a621239ca36.mp3",
+      "chars": 20,
+      "bytes": 5450,
+      "ms": 1332
+    },
+    {
+      "text": "Here are two words dancers use a lot. Marking, and full out.",
+      "file": "23255f8247112ad6.mp3",
+      "chars": 60,
+      "bytes": 15690,
+      "ms": 3892
+    },
+    {
+      "text": "Marking means doing the moves small and soft, at half energy. You still go through every step. You just save your energy.",
+      "file": "3f101687ffd3a7e1.mp3",
+      "chars": 121,
+      "bytes": 32095,
+      "ms": 7993
+    },
+    {
+      "text": "When you rap and dance together, start by marking. Rap out loud, strong and clear. Mark the moves small. Your words stay strong, and your body learns where the moves go.",
+      "file": "446e022be1cb6e29.mp3",
+      "chars": 169,
+      "bytes": 42231,
+      "ms": 10527
+    },
+    {
+      "text": "Full out means everything, like it’s the show. Big moves, big energy, big face. Go full out once marking feels easy.",
+      "file": "975d6e3f26cc21ca.mp3",
+      "chars": 116,
+      "bytes": 33872,
+      "ms": 8438
+    },
+    {
+      "text": "Practise with your headset mic or a headband on. Then it feels normal on the day. Keep the mic still, near the corner of your mouth.",
+      "file": "9dbae6c7c2c45bc5.mp3",
+      "chars": 132,
+      "bytes": 34290,
+      "ms": 8542
+    },
+    {
+      "text": "In the video, a dancer shows marking and full out, one after the other.",
+      "file": "ead43ae92b3e2602.mp3",
+      "chars": 71,
+      "bytes": 16631,
+      "ms": 4127
+    },
+    {
+      "text": "Try it: mark one part while you rap it. Then do it again full out.",
+      "file": "7636ff1a4d49ad5c.mp3",
+      "chars": 66,
+      "bytes": 20706,
+      "ms": 5146
+    },
+    {
+      "text": "Expressions",
+      "file": "b88dc2bb4c947e88.mp3",
+      "chars": 11,
+      "bytes": 3779,
+      "ms": 914
+    },
+    {
+      "text": "Your face is part of the dance. Your expressions tell the story of your song.",
+      "file": "1c0270677852240a.mp3",
+      "chars": 77,
+      "bytes": 18512,
+      "ms": 4598
+    },
+    {
+      "text": "Think about how your song feels. Confident? Playful? Fierce? Let your face show it.",
+      "file": "bf1507c967029269.mp3",
+      "chars": 83,
+      "bytes": 20184,
+      "ms": 5016
+    },
+    {
+      "text": "In the video, a dancer shares three tips for expressions. Try each one while you watch.",
+      "file": "43ba82c8b274325a.mp3",
+      "chars": 87,
+      "bytes": 22378,
+      "ms": 5564
+    },
+    {
+      "text": "Practise in a mirror, or in Face Lab. Try a confident face, then a playful one. Notice how your eyes change too.",
+      "file": "e572929e2b3853bc.mp3",
+      "chars": 112,
+      "bytes": 29483,
+      "ms": 7340
+    },
+    {
+      "text": "Keep your face moving with the music. A face that stays the same all song looks frozen. Small changes make a big difference.",
+      "file": "160a03ba715dd39b.mp3",
+      "chars": 124,
+      "bytes": 30946,
+      "ms": 7706
+    },
+    {
+      "text": "Then watch yourself back. Record a part and look at your face. Pick one moment to make bigger next time.",
+      "file": "e972674e4b43d97c.mp3",
+      "chars": 104,
+      "bytes": 25199,
+      "ms": 6269
+    },
+    {
+      "text": "Try it: do one 8-count with a confident face. Then do it again with a big smile.",
+      "file": "184b7bf046a4100a.mp3",
+      "chars": 80,
+      "bytes": 24050,
+      "ms": 5982
+    },
+    {
+      "text": "Performing",
+      "file": "fe0845cfa560b494.mp3",
+      "chars": 10,
+      "bytes": 4197,
+      "ms": 1019
+    },
+    {
+      "text": "Performing means sharing your song with the people watching. You already know the words and the moves. Now you show them how the song feels.",
+      "file": "cfa6233381605a0d.mp3",
+      "chars": 140,
+      "bytes": 29797,
+      "ms": 7419
+    },
+    {
+      "text": "Think about your eye line. Look up and out, not at the floor. Pick a few spots at the back of the room, just above people’s heads. Move your eyes between them.",
+      "file": "2226e260767265f1.mp3",
+      "chars": 159,
+      "bytes": 36902,
+      "ms": 9195
+    },
+    {
+      "text": "Walk on calmly and hit your opening pose. At the end, hold your ending pose, then take a bow.",
+      "file": "01edc6233ec8e8eb.mp3",
+      "chars": 93,
+      "bytes": 28543,
+      "ms": 7105
+    },
+    {
+      "text": "If you slip, keep going. Nobody in the audience knows the plan. Carry on with the next move or the next line, and smile. Keeping going is what real performers do.",
+      "file": "7c1f1da7a0a4209c.mp3",
+      "chars": 162,
+      "bytes": 46724,
+      "ms": 11651
+    },
+    {
+      "text": "Perform for your family before the show. It might feel a bit scary, and that’s good practice. Performing for someone is a brave thing. You can log it in Up Anyway.",
+      "file": "07c046803fa49d9b.mp3",
+      "chars": 163,
+      "bytes": 40455,
+      "ms": 10083
+    },
+    {
+      "text": "In the video, watch how the performer uses her eyes and her face, and how she keeps going all the way through.",
+      "file": "1aba9bc47edffbea.mp3",
+      "chars": 110,
+      "bytes": 23109,
+      "ms": 5747
+    },
+    {
+      "text": "Try it: do one part for someone at home, with your eyes up and a big expression.",
+      "file": "1a743dcb786a127e.mp3",
+      "chars": 80,
+      "bytes": 21437,
+      "ms": 5329
+    }
+  ]
+}

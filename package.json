@@ -7,7 +7,7 @@
   "license": "MIT",
   "scripts": {
     "dev": "vite",
-    "build": "npm run typecheck && vite build",
+    "build": "npm run typecheck && node scripts/voice.mjs --check && vite build",
     "preview": "vite preview --port 4174 --strictPort",
     "typecheck": "tsc --noEmit -p tsconfig.json && tsc --noEmit -p tsconfig.node.json",
     "test": "vitest run",
@@ -15,7 +15,8 @@
     "e2e": "playwright test",
     "icons": "node scripts/make-icons.mjs",
     "review": "UPDATE_REVIEW=1 vitest run tests/unit/review-md.test.ts",
-    "privacy": "node scripts/privacy-scan.mjs"
+    "privacy": "node scripts/privacy-scan.mjs",
+    "voice": "node scripts/voice.mjs"
   },
   "devDependencies": {
     "@playwright/test": "1.63.0",

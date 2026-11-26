@@ -17,6 +17,11 @@ export interface PlayedSound {
 let ctx: AudioContext | null = null
 const played: PlayedSound[] = []
 
+/** The one audio context (sound effects and the coach's narration share it). */
+export function audioContext(): AudioContext | null {
+  return context()
+}
+
 function context(): AudioContext | null {
   if (ctx) return ctx
   const AC = typeof window !== 'undefined' ? (window.AudioContext ?? (window as unknown as { webkitAudioContext?: typeof AudioContext }).webkitAudioContext) : undefined

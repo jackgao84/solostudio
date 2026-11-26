@@ -68,6 +68,8 @@ export function loadYouTubeApi(): Promise<YTNamespace> {
 export interface YouTubeOptions {
   /** The video can't play here (blocked, missing, offline…). The player has been removed. */
   onError?: (kind: ErrorKind | 'offline') => void
+  /** Start here (seconds) the first time it plays. */
+  start?: number
 }
 
 export function youTubePlayer(container: HTMLElement, videoId: string, opts: YouTubeOptions = {}): Player {
@@ -106,7 +108,7 @@ export function youTubePlayer(container: HTMLElement, videoId: string, opts: You
           videoId,
           width: '100%',
           height: '100%',
-          playerVars: playerVars(window.location.origin),
+          playerVars: opts.start ? { ...playerVars(window.location.origin), start: Math.floor(opts.start) } : playerVars(window.location.origin),
           events: {
             onReady: () => resolve(),
             onStateChange: (e: { data: number }) => {

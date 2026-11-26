@@ -18,7 +18,7 @@ import { quizScreen } from './screens/kid/quiz'
 import { showtimeScreen } from './screens/kid/showtime'
 import { drillScreen } from './screens/kid/drill'
 import { unlockEffects } from './audio/sfx'
-import { unlockSpeech } from './audio/voice'
+import { preloadCues, unlockSpeech } from './audio/voice'
 import { startActivityLog } from './app/activity'
 import { weekScreen } from './screens/grownups/week'
 import { notesScreen } from './screens/grownups/notes'
@@ -38,6 +38,8 @@ import { tempoScreen } from './screens/grownups/tempo'
 import { backupScreen } from './screens/grownups/backup'
 import { linksScreen } from './screens/grownups/links'
 import { showtimeSettingsScreen } from './screens/grownups/showtime'
+import { lessonsAdmin } from './screens/grownups/lessons'
+import { KID_COPY } from './content/kid'
 
 function pickStorage(): StorageLike {
   try {
@@ -66,6 +68,7 @@ registerServiceWorker()
 const unlock = () => {
   unlockSpeech()
   unlockEffects()
+  preloadCues(KID_COPY.cues.getToSpot, KID_COPY.cues.again)
   document.removeEventListener('pointerdown', unlock, true)
 }
 document.addEventListener('pointerdown', unlock, true)
@@ -100,6 +103,7 @@ const routes: [string, Screen][] = [
   ['/grownups/showtime', showtimeSettingsScreen],
   ['/grownups/week', weekScreen],
   ['/grownups/notes', notesScreen],
+  ['/grownups/lessons', lessonsAdmin],
 ]
 
 const app = document.getElementById('app')

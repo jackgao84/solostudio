@@ -2,7 +2,7 @@
 
 Every piece of kid-facing text in the app, grouped by where it appears. Words in {curly brackets} are filled in on the iPad (her name, a section name, a number). The rap lines themselves are typed on the iPad by a grown-up and are never part of the app.
 
-- 398 lines in 22 groups
+- 421 lines in 23 groups
 
 **This file is generated from `src/content`. Don’t edit it by hand.** To change the words, edit the files in `src/content`, then run `npm run review` to rebuild this file. `npm test` fails while it is out of date.
 
@@ -331,15 +331,17 @@ Five short slides, about 30 seconds, offered on Today the first time.
 - Let’s go <sub>`kid.tour.go`</sub>
 - Skip the tour <sub>`kid.tour.skip`</sub>
 
-## 15. Spoken cues (5)
+## 15. Spoken cues (7)
 
-What the iPad says out loud in its English voice. Only between reps, never over a video or her track.
+What the coach says out loud (recorded; a custom section name is said in the iPad’s own voice). Only between reps, never over a video or her track.
 
 - 5, 6, 7, 8 <sub>`kid.cues.countIn`</sub>
 - Next: {section} <sub>`kid.cues.nextSection`</sub>
 - Next: {section}, {ladder}, {speed}% speed <sub>`kid.cues.nextStep`</sub>
 - Next: {block} <sub>`kid.cues.nextBlock`</sub>
 - That’s today’s practice done. Have some water and rest your voice. <sub>`kid.cues.sessionDone`</sub>
+- Get to your spot <sub>`kid.cues.getToSpot`</sub>
+- Again <sub>`kid.cues.again`</sub>
 
 ## 16. Her sections (18)
 
@@ -487,77 +489,106 @@ The list of clips kept on the iPad.
 - You keep the newest 3 of each. <sub>`kid.clips.keepNote`</sub>
 - Close <sub>`kid.clips.close`</sub>
 
-## 22. Lessons (52)
+## 22. The coach’s voice (4)
 
-The six short reads, in full, each with its “try it” and the line that puts her teachers first.
+The buttons for the coach reading a lesson aloud.
+
+- Pause <sub>`kid.narrator.pause`</sub>
+- Play <sub>`kid.narrator.play`</sub>
+- Replay <sub>`kid.narrator.replay`</sub>
+- Skip <sub>`kid.narrator.skip`</sub>
+
+## 23. Lessons (69)
+
+The seven skill lessons, in full, each read aloud by the coach word for word, with its “try it” and the line that puts her teachers first.
 
 - Lessons <sub>`kid.lessons.title`</sub>
-- {n} min read <sub>`kid.lessons.minutes`</sub>
+- {n} min <sub>`kid.lessons.minutes`</sub>
+- I did it <sub>`kid.lessons.didIt`</sub>
+- The video <sub>`kid.lessons.video`</sub>
 - Practise expressions in Face Lab <sub>`kid.lessons.faceLab`</sub>
 - Log a brave thing in Up Anyway <sub>`kid.lessons.upAnyway`</sub>
+
+### Counting the music
+
+- Counting the music <sub>`lesson.counting.title`</sub>
+- Hi! Let’s start with counting. Dancers count music in eights. 1, 2, 3, 4, 5, 6, 7, 8. Then it starts again from 1. That’s called an 8-count. <sub>`lesson.counting.1`</sub>
+- The beat is like a clock that never stops. Nod your head to it. Tap your foot. Each tap is one count. <sub>`lesson.counting.2`</sub>
+- Every move lands on a count. Every rap line sits on the beat too. So when you know the counts, you always know where you are. <sub>`lesson.counting.3`</sub>
+- In the video, two dancers show how to find the counts in any song. Listen for the strong beats. The 1 usually feels the strongest. That’s where an 8-count starts. <sub>`lesson.counting.4`</sub>
+- When you practise here, I count you in. 5, 6, 7, 8. Then the music comes in on the 1. <sub>`lesson.counting.5`</sub>
+- Try it: play your track and count out loud. Clap on every 1. <sub>`lesson.counting.tryIt`</sub>
+- Your own teachers come first. If they say something different, do it their way. <sub>`lesson.counting.teachersFirst`</sub>
 
 ### Learning a dance
 
 - Learning a dance <sub>`lesson.learning-a-dance.title`</sub>
-- Dancers count music in 8 counts. Count along: 1, 2, 3, 4, 5, 6, 7, 8. Then it starts again. Each move lands on a count. When you know the counts, you always know where you are. <sub>`lesson.learning-a-dance.1`</sub>
-- A mirrored video helps you copy. It is flipped, so when the dancer moves to your left, you move to your left too. Just copy it like a mirror. No turning things around in your head! <sub>`lesson.learning-a-dance.2`</sub>
-- Start slow. Learn the moves at half speed first. Your body remembers moves it does carefully. Then try them a bit faster, and then at full speed. <sub>`lesson.learning-a-dance.3`</sub>
-- Chunk it. Don’t learn the whole dance at once. Learn one small part, like one or two 8 counts. Then chain it: join the new chunk to the chunk before. Chunk and chain, again and again, until the whole section flows. <sub>`lesson.learning-a-dance.4`</sub>
-- Keep your moves clean and sharp. Hit each pose, then move on. Big, clear moves look great from the audience. <sub>`lesson.learning-a-dance.5`</sub>
-- Try it: pick one 8 count. Do it at half speed three times. Then join it to the 8 count before. <sub>`lesson.learning-a-dance.tryIt`</sub>
+- A new dance can feel like a lot. Here’s the secret. You never learn it all at once. <sub>`lesson.learning-a-dance.1`</sub>
+- Start slow. Learn the moves at half speed first. Your body remembers moves it does carefully. Then go a bit faster. Then full speed. <sub>`lesson.learning-a-dance.2`</sub>
+- Chunk it. Learn one small chunk, like one or two 8-counts. Then chain it. Join the new chunk to the one before. Chunk and chain, again and again, until the whole part flows. <sub>`lesson.learning-a-dance.3`</sub>
+- Use the mirrored video. It’s flipped, so it’s like dancing in front of a mirror. When the dancer moves to your left, you move to your left too. <sub>`lesson.learning-a-dance.4`</sub>
+- Keep your practice short and focused. A few careful goes help more than lots of rushed ones. <sub>`lesson.learning-a-dance.5`</sub>
+- Test yourself. Try a chunk from memory before you peek. Getting stuck is fine. It means your brain is working. Then sleep on it. Your brain saves your moves while you sleep. <sub>`lesson.learning-a-dance.6`</sub>
+- In the video, a teacher breaks a dance into small parts. Watch one part, then try it slowly. <sub>`lesson.learning-a-dance.7`</sub>
+- Try it: pick one 8-count. Do it slowly three times. Then chain it to the 8-count before. <sub>`lesson.learning-a-dance.tryIt`</sub>
 - Your own teachers come first. If they say something different, do it their way. <sub>`lesson.learning-a-dance.teachersFirst`</sub>
 
-### Rap basics
+### Warming up your voice
 
-- Rap basics <sub>`lesson.rap-basics.title`</sub>
-- Rap is rhythm first. The beat is like a clock that never stops. Your words sit on the beat. Nod your head or tap your foot to feel it. <sub>`lesson.rap-basics.1`</sub>
-- Make your consonants crisp. Consonants are sounds like t, k, p, s and d. Snap them out clearly, so people understand every word. Lazy consonants turn words into mush. <sub>`lesson.rap-basics.2`</sub>
-- Plan your breaths. Rap lines can be long and fast. Find the gaps where you can take a quick breath. Mark them in your lines, so you breathe in the same place every time. <sub>`lesson.rap-basics.3`</sub>
-- Bring the energy. Rap with your whole face and body. Smile with your voice. Even quiet lines need energy behind them. <sub>`lesson.rap-basics.4`</sub>
-- Korean lines work the same way. Learn them slowly, sound by sound. Say them with your track at a slow speed first. Then speed up bit by bit. <sub>`lesson.rap-basics.5`</sub>
-- Try it: say one line slowly with super crisp consonants. Then say it on the beat with your track. <sub>`lesson.rap-basics.tryIt`</sub>
-- Your own teachers come first. If they say something different, do it their way. <sub>`lesson.rap-basics.teachersFirst`</sub>
+- Warming up your voice <sub>`lesson.voice-warm-up.title`</sub>
+- Your voice is part of your body. So, just like your legs, it needs a warm-up before you rap. <sub>`lesson.voice-warm-up.1`</sub>
+- Start with your breath. In the video, you blow, hiss and breathe out slowly. Copy along. It wakes up the muscles you rap with. <sub>`lesson.voice-warm-up.2`</sub>
+- Then hum gently with your lips closed. Do some lip trills, like a little motorboat. Then say red leather, yellow leather, five times. Make every consonant crisp. Consonants are sounds like t, k, p and s. <sub>`lesson.voice-warm-up.3`</sub>
+- Sip water before, during and after practice. Your voice works best when you’ve had enough to drink. <sub>`lesson.voice-warm-up.4`</sub>
+- No shouting. Use big energy, not a big shout. Your headset mic makes you loud. <sub>`lesson.voice-warm-up.5`</sub>
+- If your voice feels croaky or hoarse, or it hurts, rest it. Practise the dance quietly instead, and tell a grown-up. <sub>`lesson.voice-warm-up.6`</sub>
+- Try it: sip some water, then hum gently for ten seconds. <sub>`lesson.voice-warm-up.tryIt`</sub>
+- Your own teachers come first. If they say something different, do it their way. <sub>`lesson.voice-warm-up.teachersFirst`</sub>
 
-### Rapping while dancing
+### Breathing while you rap and dance
 
-- Rapping while dancing <sub>`lesson.rapping-while-dancing.title`</sub>
-- Rapping and dancing at the same time is hard for everyone at first. Your brain has two jobs. So you build it up step by step. <sub>`lesson.rapping-while-dancing.1`</sub>
-- Start by marking. Marking means doing the moves small and soft, at half energy, while you rap out loud. Your words stay strong, and your body learns where the moves go. <sub>`lesson.rapping-while-dancing.2`</sub>
-- Breathe on the easier moves. Some moves are big and some are small. Take your breaths during the small, easy moves. Never hold your breath through a hard move. <sub>`lesson.rapping-while-dancing.3`</sub>
-- Build your stamina. Stamina means having enough energy to last the whole song. Full run-throughs build it. Each week it gets a bit easier. <sub>`lesson.rapping-while-dancing.4`</sub>
-- Practise with your headset mic or a headband on, so it feels normal on the day. Keep the mic still near the corner of your mouth. Don’t touch it or fiddle with it while you dance. <sub>`lesson.rapping-while-dancing.5`</sub>
-- Try it: rap one section out loud while you mark the moves. Then try it again full out. <sub>`lesson.rapping-while-dancing.tryIt`</sub>
-- Your own teachers come first. If they say something different, do it their way. <sub>`lesson.rapping-while-dancing.teachersFirst`</sub>
+- Breathing while you rap and dance <sub>`lesson.breathing.title`</sub>
+- Rapping and dancing at the same time takes lots of breath. So let’s plan your breaths. <sub>`lesson.breathing.1`</sub>
+- Find the gaps. Rap lines can be long and fast. Look for the little gaps where you can take a quick breath. Mark them in your lines, so you breathe in the same place every time. <sub>`lesson.breathing.2`</sub>
+- Breathe on the easier moves. Some moves are big and some are small. Take your breaths during the small, easy ones. Never hold your breath through a hard move. <sub>`lesson.breathing.3`</sub>
+- Breathe low. Let your belly and your ribs open as you breathe in. Keep your shoulders down and relaxed. <sub>`lesson.breathing.4`</sub>
+- Build your stamina. Stamina means having enough energy to last the whole song. Every run-through builds it. Each week it gets a bit easier. <sub>`lesson.breathing.5`</sub>
+- In the video, a singing teacher shares her tips for singing while you dance. Rapping works the same way. <sub>`lesson.breathing.6`</sub>
+- Try it: rap one line and tap where you breathe. Then do it again with the moves. <sub>`lesson.breathing.tryIt`</sub>
+- Your own teachers come first. If they say something different, do it their way. <sub>`lesson.breathing.teachersFirst`</sub>
+
+### Marking and full out
+
+- Marking and full out <sub>`lesson.marking.title`</sub>
+- Here are two words dancers use a lot. Marking, and full out. <sub>`lesson.marking.1`</sub>
+- Marking means doing the moves small and soft, at half energy. You still go through every step. You just save your energy. <sub>`lesson.marking.2`</sub>
+- When you rap and dance together, start by marking. Rap out loud, strong and clear. Mark the moves small. Your words stay strong, and your body learns where the moves go. <sub>`lesson.marking.3`</sub>
+- Full out means everything, like it’s the show. Big moves, big energy, big face. Go full out once marking feels easy. <sub>`lesson.marking.4`</sub>
+- Practise with your headset mic or a headband on. Then it feels normal on the day. Keep the mic still, near the corner of your mouth. <sub>`lesson.marking.5`</sub>
+- In the video, a dancer shows marking and full out, one after the other. <sub>`lesson.marking.6`</sub>
+- Try it: mark one part while you rap it. Then do it again full out. <sub>`lesson.marking.tryIt`</sub>
+- Your own teachers come first. If they say something different, do it their way. <sub>`lesson.marking.teachersFirst`</sub>
+
+### Expressions
+
+- Expressions <sub>`lesson.expressions.title`</sub>
+- Your face is part of the dance. Your expressions tell the story of your song. <sub>`lesson.expressions.1`</sub>
+- Think about how your song feels. Confident? Playful? Fierce? Let your face show it. <sub>`lesson.expressions.2`</sub>
+- In the video, a dancer shares three tips for expressions. Try each one while you watch. <sub>`lesson.expressions.3`</sub>
+- Practise in a mirror, or in Face Lab. Try a confident face, then a playful one. Notice how your eyes change too. <sub>`lesson.expressions.4`</sub>
+- Keep your face moving with the music. A face that stays the same all song looks frozen. Small changes make a big difference. <sub>`lesson.expressions.5`</sub>
+- Then watch yourself back. Record a part and look at your face. Pick one moment to make bigger next time. <sub>`lesson.expressions.6`</sub>
+- Try it: do one 8-count with a confident face. Then do it again with a big smile. <sub>`lesson.expressions.tryIt`</sub>
+- Your own teachers come first. If they say something different, do it their way. <sub>`lesson.expressions.teachersFirst`</sub>
 
 ### Performing
 
 - Performing <sub>`lesson.performing.title`</sub>
-- Performing means sharing your song with the people watching. You already know the words and moves. Now you show them what the song feels like. <sub>`lesson.performing.1`</sub>
-- Think about your eye line. Look up and out, not at the floor. Pick a few spots at the back of the room, a bit above people’s heads. Move your eyes between them. <sub>`lesson.performing.2`</sub>
-- Use your face. Your expressions tell the story. A confident song needs a confident face. Practise in a mirror, or try Face Lab for expression practice. <sub>`lesson.performing.3`</sub>
+- Performing means sharing your song with the people watching. You already know the words and the moves. Now you show them how the song feels. <sub>`lesson.performing.1`</sub>
+- Think about your eye line. Look up and out, not at the floor. Pick a few spots at the back of the room, just above people’s heads. Move your eyes between them. <sub>`lesson.performing.2`</sub>
+- Walk on calmly and hit your opening pose. At the end, hold your ending pose, then take a bow. <sub>`lesson.performing.3`</sub>
 - If you slip, keep going. Nobody in the audience knows the plan. Carry on with the next move or the next line, and smile. Keeping going is what real performers do. <sub>`lesson.performing.4`</sub>
 - Perform for your family before the show. It might feel a bit scary, and that’s good practice. Performing for someone is a brave thing. You can log it in Up Anyway. <sub>`lesson.performing.5`</sub>
-- Try it: do one section for someone at home, with your eyes up and a big expression. <sub>`lesson.performing.tryIt`</sub>
+- In the video, watch how the performer uses her eyes and her face, and how she keeps going all the way through. <sub>`lesson.performing.6`</sub>
+- Try it: do one part for someone at home, with your eyes up and a big expression. <sub>`lesson.performing.tryIt`</sub>
 - Your own teachers come first. If they say something different, do it their way. <sub>`lesson.performing.teachersFirst`</sub>
-
-### Voice care
-
-- Voice care <sub>`lesson.voice-care.title`</sub>
-- Your voice is part of your body, so look after it. <sub>`lesson.voice-care.1`</sub>
-- Drink water. Sip water before, during and after practice. Your voice works best when you have had enough to drink. <sub>`lesson.voice-care.2`</sub>
-- No shouting. Shouting and screaming strain your voice. Use big energy, not a big shout. Let your headset mic make you loud. <sub>`lesson.voice-care.3`</sub>
-- Rest when you are hoarse. If your voice sounds croaky or scratchy, or it hurts, rest it. Practise the dance quietly instead, and tell a grown-up. <sub>`lesson.voice-care.4`</sub>
-- Don’t rap for too long in a row. Your voice needs little rests. That’s why your plan puts dance or a water break between rap times. <sub>`lesson.voice-care.5`</sub>
-- Try it: before you practise today, sip some water and hum gently for ten seconds. <sub>`lesson.voice-care.tryIt`</sub>
-- Your own teachers come first. If they say something different, do it their way. <sub>`lesson.voice-care.teachersFirst`</sub>
-
-### Practising smart
-
-- Practising smart <sub>`lesson.practising-smart.title`</sub>
-- Smart practice works better than long practice. Here are some tricks that really help. <sub>`lesson.practising-smart.1`</sub>
-- Keep reps short and focused. Pick one small part and practise it a few times with all your attention. Then take a break. Short, focused practice sticks better than going over and over without thinking. <sub>`lesson.practising-smart.2`</sub>
-- Test yourself. Reading the words again feels easy, but it doesn’t help much. Trying to remember them helps a lot. That’s why the words fade away, and why there are quick tests. Getting stuck is fine. It means your brain is working. <sub>`lesson.practising-smart.3`</sub>
-- Sleep on it. Your brain saves what you practised while you sleep. A good night’s sleep after practice really helps you remember. <sub>`lesson.practising-smart.4`</sub>
-- Come back to it. Parts you learned a few days ago come back for a quick check. If a part feels shaky, mark it, and it comes back sooner. <sub>`lesson.practising-smart.5`</sub>
-- Try it: test yourself on one section from memory before you look at the words. <sub>`lesson.practising-smart.tryIt`</sub>
-- Your own teachers come first. If they say something different, do it their way. <sub>`lesson.practising-smart.teachersFirst`</sub>

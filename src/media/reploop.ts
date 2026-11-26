@@ -5,6 +5,7 @@
  * which the screen handles). Cues and counts are only ever spoken while nothing is playing: the music
  * comes in after the last count, and speech is hushed first.
  */
+import { sayMs } from '../audio/speech-plan'
 import { hush, say } from '../audio/voice'
 import { COUNT_IN_WORDS, countInSchedule } from '../model/countin'
 import { RangePlayer, type Player } from './player'
@@ -26,9 +27,9 @@ export const REST_MS = 1500
 /** Time for a cue to be said before the count-in starts: at least this, longer for a longer cue. */
 export const CUE_MS = 1400
 
-/** About how long the iPad takes to say a cue. */
+/** Time to allow for a cue before the count-in: how long it takes to say, plus a breath. */
 export function cueTime(text: string): number {
-  return Math.max(CUE_MS, Math.round(text.length * 65))
+  return Math.max(CUE_MS, sayMs(text) + 300)
 }
 
 export class RepLoop {

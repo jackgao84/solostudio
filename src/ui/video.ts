@@ -26,8 +26,9 @@ export function videoErrorPanel(kind: ErrorKind | 'offline', videoId: string): H
 }
 
 /** A YouTube player in `box`, swapped for the error panel if it can't play. */
-export function youTubeIn(box: HTMLElement, videoId: string, onFail?: () => void): Player {
+export function youTubeIn(box: HTMLElement, videoId: string, onFail?: () => void, start?: number): Player {
   return youTubePlayer(box, videoId, {
+    start,
     onError: (kind) => {
       box.append(videoErrorPanel(kind, videoId))
       onFail?.()

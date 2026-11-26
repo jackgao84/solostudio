@@ -8,7 +8,8 @@
 import { BLOCK_COPY, DRILL_COPY } from '../content/blocks'
 import { KID_COPY } from '../content/kid'
 import { LADDER_COPY } from '../content/ladders'
-import type { LadderId, SaveData } from '../storage/schema'
+import { LESSONS } from '../content/lessons'
+import type { LadderId, SaveData, SkillLessonId } from '../storage/schema'
 import { fill } from '../ui/dom'
 import { LADDERS, stepById } from './ladders'
 import { applyOrder, type Block, type BlockType, type Drill, type PlanDay } from './plan'
@@ -21,6 +22,8 @@ export type SessionItem =
   | { kind: 'showtime'; blockId: string; family: boolean }
   | { kind: 'listen'; blockId: string }
   | { kind: 'empty'; blockId: string; type: BlockType }
+  /** A skill lesson due before this block's practice (version 1.2). */
+  | { kind: 'lesson'; blockId: string; lessonId: SkillLessonId }
 
 export const LADDER_OF: Partial<Record<BlockType, LadderId>> = { rap: 'rap', dance: 'dance', together: 'together' }
 
@@ -81,6 +84,8 @@ export function cueFor(item: SessionItem, save: SaveData): string {
       return fill(C.nextBlock, { block: BLOCK_COPY[item.family ? 'family' : 'runthrough'].title })
     case 'listen':
       return fill(C.nextBlock, { block: BLOCK_COPY.listen.title })
+    case 'lesson':
+      return fill(C.nextBlock, { block: LESSONS.find((l) => l.id === item.lessonId)?.title ?? '' })
   }
 }
 
@@ -93,6 +98,8 @@ export function routeFor(item: SessionItem): string {
       return `/drill/${item.drill}?block=${encodeURIComponent(item.blockId)}&session=1`
     case 'showtime':
       return `/showtime?block=${encodeURIComponent(item.blockId)}${item.family ? '&family=1' : ''}&session=1`
+    case 'lesson':
+      return `/lesson/${item.lessonId}?session=1`
     default:
       return `/block/${encodeURIComponent(item.blockId)}?session=1`
   }

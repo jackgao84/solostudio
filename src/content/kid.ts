@@ -158,6 +158,8 @@ export const KID_COPY = {
     nextStep: 'Next: {section}, {ladder}, {speed}% speed',
     nextBlock: 'Next: {block}',
     sessionDone: 'That’s today’s practice done. Have some water and rest your voice.',
+    getToSpot: 'Get to your spot',
+    again: 'Again',
   },
   sounds: {
     title: 'Sounds',
@@ -288,9 +290,17 @@ export const KID_COPY = {
     keepNote: 'You keep the newest 3 of each.',
     close: 'Close',
   },
+  narrator: {
+    pause: 'Pause',
+    play: 'Play',
+    replay: 'Replay',
+    skip: 'Skip',
+  },
   lessons: {
     title: 'Lessons',
-    minutes: '{n} min read',
+    minutes: '{n} min',
+    didIt: 'I did it',
+    video: 'The video',
     faceLab: 'Practise expressions in Face Lab',
     upAnyway: 'Log a brave thing in Up Anyway',
   },
