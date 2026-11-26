@@ -63,6 +63,27 @@ first, then code, a commit after each; a 1.1 save migrates through a tested migr
    - [ ] MP3 narration (small mono) for every lesson script, fixed cue and standard section name,
      made by a voice script with a content-hash cache; precached; pause, replay, skip; a grown-up
      can turn narration off; lesson scripts rewritten for listening.
+   **Blocked (2026-11-26):** `ELEVENLABS_API_KEY` is not visible to the build shell (not in this
+   session's environment or any zsh startup file). The owner was asked to make it available.
+   The sample script is ready (one-off, outside the repo): it lists the account's voices, then makes
+   one ~10 s sample per chosen voice in the app's own format (mp3_22050_32, mono).
+   **Check changes proposed to the owner (not yet approved; nothing changed):**
+   - `e2e/voice.ts`: also record each narration clip the app plays (the MP3 cues) in the same log
+     (wrap `AudioBufferSourceNode.prototype.start`, log nodes the app labels with their words).
+     No assertion changes.
+   - `tests/unit/copy.test.ts` (lessons) and `e2e/layout.spec.ts` (lessons test): the six reads
+     become the brief's seven skill lessons; same limits; every required topic kept, moved to the
+     lesson that holds it; Face Lab link on expressions, Up Anyway on performing.
+   - `tests/unit/showtime-routine.test.ts:48`: walk-on default at least 5 (was 6), one walk-on time
+     for Showtime and filming, default 5 as the brief says.
+   - `tests/unit/migration.test.ts:29`, `e2e/migration.spec.ts:25,28`: save version 2 becomes 3.
+   - `e2e/helpers.ts` `setUpSave()`: the seeded save has heard the skill lessons, so 1.1's session
+     check still meets warm-up then practice; new 1.2 checks cover skill lessons in the session.
+   Design notes so far: cues and lessons play as MP3 clips through Web Audio (a gain node, so the
+   cue volume works on iPad; clips start when they should be heard, never pre-scheduled); one clip
+   per full cue sentence and per lesson paragraph; the old grown-up screens stay as editors behind
+   the new wizard (the journey check still drives them); a follow step prefers a video marked on
+   that section, else the mirrored follow-along from the start.
 2. [ ] Lessons become the home page (skill lessons with videos, section lessons from her sections).
 3. [ ] "Get to your spot" with a visible walk-on countdown before every recording; Film my Showtime.
 4. [ ] Setup as a pausable wizard: track, lines (one box), section starts; the rest optional.
