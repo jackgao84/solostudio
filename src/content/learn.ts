@@ -1,13 +1,12 @@
 /**
  * Section lessons (version 1.2): one Rap, one Dance and one Together lesson for each of her sections,
  * each holding that ladder's rungs. The short intro is read aloud by the coach, so it never names a
- * section (a custom name would need the iPad's voice); the section's name is the lesson's title.
+ * section (a custom name would need the iPad's voice); the lesson's title is the section and ladder.
  */
 import type { LadderId } from '../storage/schema'
 
-export const SECTION_LESSON_COPY: Record<LadderId, { title: string; intro: string[] }> = {
+export const SECTION_LESSON_COPY: Record<LadderId, { intro: string[] }> = {
   rap: {
-    title: '{section}: Rap',
     intro: [
       'This is a rap lesson. First, listen and read along as the words light up.',
       'Then rap with the words, and watch them fade away a few at a time.',
@@ -15,7 +14,6 @@ export const SECTION_LESSON_COPY: Record<LadderId, { title: string; intro: strin
     ],
   },
   dance: {
-    title: '{section}: Dance',
     intro: [
       'This is a dance lesson. Watch the tutorial first, and try the moves slowly.',
       'Then follow the mirrored video, at half speed, then faster.',
@@ -23,7 +21,6 @@ export const SECTION_LESSON_COPY: Record<LadderId, { title: string; intro: strin
     ],
   },
   together: {
-    title: '{section}: Together',
     intro: [
       'Now you put the words and the moves together.',
       'Start by marking the moves small while you rap out loud.',

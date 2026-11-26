@@ -85,7 +85,9 @@ const VIDEO_ROLES: Record<LadderId, (s: Section) => RefRole[]> = {
 export function sectionLessonVideo(save: Pick<SaveData, 'refs'>, section: Section, ladder: LadderId): { ref: Reference; start: number } | null {
   const roles = VIDEO_ROLES[ladder](section)
   const candidates = roles.flatMap((role) => save.refs.filter((r) => r.role === role && usable(r)))
-  const marked = candidates.find((r) => section.refs[r.id]?.start != null)
+  // Marked (or given a chapter time) on this section: the usual order of preference, as in 1.1.
+  const preferred = (ladder === 'dance' ? (['tutorialParts', 'tutorialFull'] as RefRole[]) : roles).flatMap((role) => save.refs.filter((r) => r.role === role && usable(r)))
+  const marked = preferred.find((r) => section.refs[r.id]?.start != null)
   if (marked) return { ref: marked, start: section.refs[marked.id]!.start! }
   const first = candidates[0]
   return first ? { ref: first, start: 0 } : null

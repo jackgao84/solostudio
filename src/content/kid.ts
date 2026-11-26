@@ -298,7 +298,7 @@ export const KID_COPY = {
     lessonTag: 'Lesson',
     showtimeItem: 'The whole show, start to finish',
     sectionLesson: '{section}: {ladder}',
-    noDates: 'No show date yet, so today is your next lessons on the path.',
+    noDates: 'No show date yet, so today you do the next lessons on your path.',
     openLesson: 'Start {title}',
   },
   learn: {

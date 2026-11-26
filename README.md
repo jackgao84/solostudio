@@ -20,7 +20,7 @@ headset mic while dancing, at a showcase and again at a talent show.
   went well, one to work on, and Up Anyway if someone watched. Optional **recording** with a
   mirrored front camera, played back beside the reference.
 - **Start today’s practice** (1.1): one big button walks through the day, saying what’s next in the
-  iPad’s English voice and counting her in (5, 6, 7, 8) before every rep. Reps loop until she taps
+  coach’s voice (1.2; the iPad’s own voice in 1.1) and counting her in (5, 6, 7, 8) before every rep. Reps loop until she taps
   I did it, Next or Pause, with buttons big enough to hit from a step away. Cues are never spoken
   over her music; cues and sound effects each have a volume and mute.
 - **Drills** from the together phase on: start anywhere (a random section, shaky ones more often)
@@ -29,10 +29,25 @@ headset mic while dancing, at a showcase and again at a talent show.
 - **Her stage**: each section a lighting rig that lights up as she ticks steps (all lit on show
   day), a light stick in her colour beside the 8-count, a D-day countdown, Build the line, and a
   name and colours for her stage. Celebrations are only ever for doing things.
-- **Lessons**: six short reads, each putting her own teachers first.
-- **Grown-ups' area** behind a press-and-hold: her week (the last 7 days), notes (a teacher’s note
-  per section, a note for her on Today), the show and plan, her track, reference videos, sections
-  with typed lines, marks and tap-along, tempo, the Showtime routine, backup.
+- **Lessons are the home page** (1.2): the top shows only Start today's practice, the D-day and
+  today's lessons; below, her lesson path mixes seven skill lessons (counting, learning a dance, a
+  voice warm-up, breathing while she raps and dances, marking and full out, expressions, performing),
+  each just before the first lesson that needs it, with a Rap, a Dance and a Together lesson for every
+  section, each holding that ladder's rungs and its stage lights. Each puts her own teachers first.
+- **A coach's voice** (1.2): every lesson, cue and count-in is said in one warm recorded voice
+  (ElevenLabs, recorded once by `npm run voice` and kept in the repo as small MP3s that work
+  offline), word for word what's on screen; she can pause, replay or skip, and a grown-up can turn
+  the reading off. Only a custom section name is said in the iPad's own voice.
+- **Filming with time to get ready** (1.2): "Get to your spot" with a countdown of her walk-on time,
+  then the count-in, then recording; Film my Showtime.
+- **Videos with no marking** (1.2): tutorials and the listen-and-read video play from the start (or a
+  chapter time), with speed and her own "loop this bit"; marks only cue a video to a section.
+- **Grown-ups' area** behind a press-and-hold: **Set up**, a wizard of about 10 minutes that can be
+  paused (1.2: her track, all her lines in one box, a tap as each section starts on one play of her
+  track; then optionally the follow-along taps, line timing, the beat worked out from her track and
+  checked against a click, and the dates, minutes and her walk-on time); her week, notes, lessons
+  and narration, and the detailed screens (show and plan, her track, videos, sections, tempo, the
+  Showtime routine, backup).
 
 No lyrics, photos or logos are in this repo: a grown-up types the lines on the iPad and they stay
 there. YouTube videos play only through YouTube's own player (youtube-nocookie.com). Her track,
@@ -40,7 +55,7 @@ videos and clips stay on the iPad; nothing is uploaded and there are no accounts
 
 ## Put it on an iPad
 
-See **[SETUP.md](SETUP.md)** (about 30 minutes, once).
+See **[SETUP.md](SETUP.md)** (about 10 minutes; she can start after the first three steps).
 
 ## Work on it
 
@@ -51,6 +66,7 @@ npm run typecheck
 npm test             # unit checks
 npm run e2e          # Playwright WebKit at iPad portrait and landscape, against a production build
 npm run review       # rebuild REVIEW.md after changing any kid-facing words in src/content
+npm run voice        # record the coach's narration for new or changed lines (needs ELEVENLABS_API_KEY)
 npm run privacy      # privacy scan of every file and commit (private words in .private/terms.txt)
 npm run build        # dist/ for GitHub Pages
 ```

@@ -81,7 +81,6 @@ export function kidStrings(): KidString[] {
     }
   }
   for (const [ladder, c] of Object.entries(SECTION_LESSON_COPY)) {
-    out.push({ group: 'learn', sub: `${human(ladder)} lessons`, where: `learn.${ladder}.title`, text: c.title })
     c.intro.forEach((t, i) => out.push({ group: 'learn', sub: `${human(ladder)} lessons`, where: `learn.${ladder}.${i + 1}`, text: t }))
   }
   WENT_WELL.forEach((t, i) => out.push({ group: 'reflect', sub: 'One thing that went well', where: `reflect.wentWell.${i + 1}`, text: t }))

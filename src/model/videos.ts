@@ -29,13 +29,16 @@ function roles(source: Exclude<Source, 'track'>, section: Section): RefRole[] {
 
 export function stepVideo(save: Pick<SaveData, 'refs'>, section: Section, source: Source): StepVideo | null {
   if (source === 'track') return null
-  const candidates = roles(source, section).flatMap((role) => save.refs.filter((r) => r.role === role && usable(r)))
-  if (source === 'mirrored') candidates.push(...save.refs.filter((r) => r.kind === 'local' && r.mirror && usable(r)))
-  const marked = candidates.find((r) => spanOf(section.refs[r.id]))
+  const ofRoles = (rs: readonly RefRole[]) => rs.flatMap((role) => save.refs.filter((r) => r.role === role && usable(r)))
+  const localMirror = source === 'mirrored' ? save.refs.filter((r) => r.kind === 'local' && r.mirror && usable(r)) : []
+  // Marked on this section: the step's usual order of preference (as in 1.1).
+  const marked = [...ofRoles(REF_PREFERENCE[source]), ...localMirror].find((r) => spanOf(section.refs[r.id]))
   if (marked) {
     const span = spanOf(section.refs[marked.id])!
     return { ref: marked, from: playRange(span).from, span }
   }
+  // Not marked: the video that covers this part, from a chapter time or its start.
+  const candidates = [...ofRoles(roles(source, section)), ...localMirror]
   const chapter = candidates.find((r) => section.refs[r.id]?.start != null)
   if (chapter) return { ref: chapter, from: section.refs[chapter.id]!.start!, span: null }
   const first = candidates.find((r) => r.kind === 'youtube') ?? candidates[0]

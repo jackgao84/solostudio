@@ -2,7 +2,7 @@
 
 Every piece of kid-facing text in the app, grouped by where it appears. Words in {curly brackets} are filled in on the iPad (her name, a section name, a number). The rap lines themselves are typed on the iPad by a grown-up and are never part of the app.
 
-- 457 lines in 26 groups
+- 454 lines in 26 groups
 
 **This file is generated from `src/content`. Don’t edit it by hand.** To change the words, edit the files in `src/content`, then run `npm run review` to rebuild this file. `npm test` fails while it is out of date.
 
@@ -78,10 +78,10 @@ The top of the home page (Start, the D-day, today’s lessons) and her whole les
 - Lesson <sub>`kid.home.lessonTag`</sub>
 - The whole show, start to finish <sub>`kid.home.showtimeItem`</sub>
 - {section}: {ladder} <sub>`kid.home.sectionLesson`</sub>
-- No show date yet, so today is your next lessons on the path. <sub>`kid.home.noDates`</sub>
+- No show date yet, so today you do the next lessons on your path. <sub>`kid.home.noDates`</sub>
 - Start {title} <sub>`kid.home.openLesson`</sub>
 
-## 5. A section lesson (22)
+## 5. A section lesson (19)
 
 One of her sections on one ladder: its intro, its video, its steps, and what it says when setup hasn’t covered something yet.
 
@@ -98,21 +98,18 @@ One of her sections on one ladder: its intro, its video, its steps, and what it 
 
 ### Rap lessons
 
-- {section}: Rap <sub>`learn.rap.title`</sub>
 - This is a rap lesson. First, listen and read along as the words light up. <sub>`learn.rap.1`</sub>
 - Then rap with the words, and watch them fade away a few at a time. <sub>`learn.rap.2`</sub>
 - Last, rap it from memory. I count you in every time. <sub>`learn.rap.3`</sub>
 
 ### Dance lessons
 
-- {section}: Dance <sub>`learn.dance.title`</sub>
 - This is a dance lesson. Watch the tutorial first, and try the moves slowly. <sub>`learn.dance.1`</sub>
 - Then follow the mirrored video, at half speed, then faster. <sub>`learn.dance.2`</sub>
 - Last, dance it from memory, with just your track. <sub>`learn.dance.3`</sub>
 
 ### Together lessons
 
-- {section}: Together <sub>`learn.together.title`</sub>
 - Now you put the words and the moves together. <sub>`learn.together.1`</sub>
 - Start by marking the moves small while you rap out loud. <sub>`learn.together.2`</sub>
 - Then go full out, and link it to the part before. <sub>`learn.together.3`</sub>
