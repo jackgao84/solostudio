@@ -8,7 +8,7 @@ import { expect, seedSave, setUpSave, test } from './helpers'
 
 /** Height of a button she taps from a step away. */
 const BIG_PX = 88
-const BIG = new Set(['Play', 'Pause', 'Next', 'I did it', 'Start', 'Start today’s practice', 'Play your track', 'Start the drill'])
+const BIG = new Set(['Play', 'Pause', 'Next', 'I did it', 'Start', 'Start today’s practice', 'Play your track', 'Start the drill', 'Start a run-through', 'Start performing'])
 
 async function onScreen(page: Page, label: string, names: string[]): Promise<void> {
   const vh = page.viewportSize()!.height
@@ -58,7 +58,7 @@ test('the main buttons are on screen without scrolling, and big', async ({ page 
   for (const [id, type, drill] of ids) {
     await page.goto(`./#/block/${id}`)
     await expect(page.locator('[data-screen="block"]')).toBeVisible()
-    const names = drill ? ['Start the drill'] : type === 'runthrough' || type === 'family' ? [] : ['All done']
+    const names = drill ? ['Start the drill'] : type === 'runthrough' ? ['Start a run-through'] : type === 'family' ? ['Start performing'] : ['All done']
     await onScreen(page, `block ${id}`, names)
   }
 })
