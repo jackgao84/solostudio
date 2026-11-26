@@ -7,9 +7,11 @@
 
 ## Status
 
-- **Version 1.2 in progress (2026-11-26).** Part 1 (narration) has started: the privacy scan now
-  catches API keys, and three voice samples are in `.private/voice-samples/`. Waiting on the owner
-  to choose a voice and to approve five check changes. See "Version 1.2" below.
+- **Version 1.2 in progress (2026-11-26).** All five parts are built and committed (checks first,
+  then code, a commit per part). Waiting on the owner's answer to a batch of check fixes (listed
+  under "Check changes waiting on the owner" below), then the final full checks, 1.2.0, push and
+  deploy. Characters used with ElevenLabs so far: 10,613 (402 for the three samples, 9,687 for the
+  first recording, 524 for the section-lesson intros).
 - **Version 1.1.0 done and live (2026-11-26), build dafb6ff.** Confirmed in WebKit against the live
   site at iPad portrait and landscape: the service worker controls `/solostudio/` with one
   `solostudio:precache:<hash>` cache; a 1.0 save carries over (schema 2, sections and progress
@@ -51,47 +53,92 @@
 The owner's 1.2 brief: she finds it easy and a grown-up finds setup quick. Five parts, each checks
 first, then code, a commit after each; a 1.1 save migrates through a tested migration.
 
-1. [ ] Narration with ElevenLabs (the key is read from `ELEVENLABS_API_KEY` at build time only and
-   is never written to any file, log, commit or test).
-   - [x] Privacy scan: anything shaped like a secret key (`sk_` and 20+ letters or digits) and the
-     exact value of `ELEVENLABS_API_KEY` when set, in every file and commit; it reports where,
-     never the text. `PRIVACY_ROOT` points it at another folder. Check:
-     `tests/unit/privacy-scan.test.ts` (runs the scan on a throwaway git folder; fake keys are
-     built at run time, so nothing key-shaped sits in the repo).
-   - [x] Three warm, clear English voices, a ~10-second sample of each in `.private/voice-samples/`
-     (mp3_22050_32, mono, model eleven_multilingual_v2, the same line for each): 1 Jessica (bright,
-     warm, young American woman), 2 Alice (clear, friendly British educator), 3 Chris (warm,
-     down-to-earth American man). 402 characters billed (134 each).
-   - [ ] The owner picks one.
-   - [ ] MP3 narration (small mono) for every lesson script, fixed cue and standard section name,
-     made by a voice script with a content-hash cache; precached; pause, replay, skip; a grown-up
-     can turn narration off; lesson scripts rewritten for listening.
-   The key lives in the owner's `~/.zshenv`; build commands that need it run through `zsh -c` (the
-   session shell started before it was added). The key is scoped: it can read voices and make
-   speech, but not the account's usage (`user_read`) or the model list (`models_read`), so the
-   characters used are counted from each response's `character-cost` header.
-   **Check changes proposed to the owner (not yet approved; nothing changed):**
-   - `e2e/voice.ts`: also record each narration clip the app plays (the MP3 cues) in the same log
-     (wrap `AudioBufferSourceNode.prototype.start`, log nodes the app labels with their words).
-     No assertion changes.
-   - `tests/unit/copy.test.ts` (lessons) and `e2e/layout.spec.ts` (lessons test): the six reads
-     become the brief's seven skill lessons; same limits; every required topic kept, moved to the
-     lesson that holds it; Face Lab link on expressions, Up Anyway on performing.
-   - `tests/unit/showtime-routine.test.ts:48`: walk-on default at least 5 (was 6), one walk-on time
-     for Showtime and filming, default 5 as the brief says.
-   - `tests/unit/migration.test.ts:29`, `e2e/migration.spec.ts:25,28`: save version 2 becomes 3.
-   - `e2e/helpers.ts` `setUpSave()`: the seeded save has heard the skill lessons, so 1.1's session
-     check still meets warm-up then practice; new 1.2 checks cover skill lessons in the session.
-   Design notes so far: cues and lessons play as MP3 clips through Web Audio (a gain node, so the
-   cue volume works on iPad; clips start when they should be heard, never pre-scheduled); one clip
-   per full cue sentence and per lesson paragraph; the old grown-up screens stay as editors behind
-   the new wizard (the journey check still drives them); a follow step prefers a video marked on
-   that section, else the mirrored follow-along from the start.
-2. [ ] Lessons become the home page (skill lessons with videos, section lessons from her sections).
-3. [ ] "Get to your spot" with a visible walk-on countdown before every recording; Film my Showtime.
-4. [ ] Setup as a pausable wizard: track, lines (one box), section starts; the rest optional.
-5. [ ] No step blocked by missing video marks (tutorials play from the start or chapters, with
-   her own loop buttons).
+0. [x] Save version 3 (`src/storage/migrate.ts` step 2 → 3; checks `tests/unit/migration-v3.test.ts`,
+   `e2e/migration-v3.spec.ts`, fixture `tests/fixtures/v2-save.ts`): narration on, no skill lesson
+   finished, the wizard counting what 1.1 had as done; everything else unchanged (her walk-on time
+   included); the 1.1 document kept as the backup copy.
+1. [x] Narration with ElevenLabs. The key is read from `ELEVENLABS_API_KEY` only (the owner's
+   `~/.zshenv`; commands that need it run through `zsh -c`), never printed or written. The key is
+   scoped: voices and speech, not account usage or models.
+   - Privacy scan: key-shaped text and the key's exact value (`tests/unit/privacy-scan.test.ts`).
+   - Voice: Jessica (cgSgspJ2msm6clMCkdW9), chosen from three samples (Jessica, Alice, Chris) in
+     `.private/voice-samples/`; eleven_multilingual_v2, mp3_22050_32 (mono), stability 0.5,
+     similarity 0.75, style 0.2, speaker boost.
+   - `npm run voice` (`scripts/voice.mjs`, `scripts/voice-lib.mjs`): records every line in
+     `src/content/narration.ts` into `public/voice/<hash>.mp3` (precached), listed in
+     `src/content/voice-manifest.json`; the file name is a hash of words, context, voice, model,
+     format and settings, so only changed lines are recorded; reports characters. The build runs
+     `--check` (no key, no network). 205 clips, 10,211 characters, 3.4 MB.
+   - Playback (`src/audio/narration.ts`, `speech-plan.ts`, `voice.ts`): Web Audio, labelled for the
+     WebKit recorder; only a custom section name falls back to the iPad's voice.
+   - The lessons are the brief's seven skill lessons, rewritten for listening; the coach reads them
+     line by line (`src/ui/narrator.ts`) with Pause, Replay, Skip; Grown-ups → Lessons and narration
+     turns reading off and swaps any lesson's video.
+   - Checks: `tests/unit/narration.test.ts`, `e2e/narration.spec.ts`.
+2. [x] Lessons become the home page (`src/model/path.ts`, `src/model/today.ts`, `src/ui/path.ts`,
+   `src/screens/kid/today.ts`, `src/screens/kid/learn.ts`, `src/content/learn.ts`; checks
+   `tests/unit/path.test.ts`, `e2e/home.spec.ts`).
+3. [x] Filming with time to get ready (`getReadySchedule` in `src/model/countin.ts`, `runGetReady`,
+   `src/media/clip-store.ts`, record and Showtime screens; checks `tests/unit/filming.test.ts`,
+   `e2e/filming.spec.ts`).
+4. [x] Setup as a pausable wizard (`src/screens/grownups/setup.ts`, `src/model/setup.ts`,
+   `src/model/beat.ts` + `src/media/beat-run.ts`; checks `tests/unit/wizard.test.ts`,
+   `tests/unit/beat.test.ts`, `e2e/wizard.spec.ts`). SETUP.md rewritten.
+5. [x] No step blocked by video marks (`src/model/videos.ts`, `src/ui/loop.ts`,
+   `src/ui/video-controls.ts`; checks `tests/unit/videos.test.ts`, `e2e/videos.spec.ts`).
+6. [ ] Full checks, every new screen in both orientations, 1.2.0, push, deploy, live check.
+
+**Check changes approved by the owner (1.2), committed on their own:** save version 3 and a 5 s
+walk-on default (6a16905); cues recorded from clips in `e2e/voice.ts`, the seven skill lessons in
+`copy.test.ts`/`layout.spec.ts`, and the seeded save having heard the skill lessons (42da448).
+
+**Check changes waiting on the owner (nothing changed yet):**
+- `tests/unit/narration.test.ts` (new): the MP3 check reads the Info frame at the start of each file
+  (its bitrate field says 56 kbps); it should skip an Info/Xing frame and read the first audio frame
+  (all clips are 32 kbps mono, confirmed with afinfo and by reading every frame).
+- `tests/unit/lyrics.test.ts` (1.0): bans any `fetch(` in the app; loading the app's own precached
+  clips needs one. Proposed: allow it in `src/audio/narration.ts` only, for URLs under the app's own
+  `voice/` folder.
+- `e2e/offline.spec.ts:103` (1.0): expects 6 lesson cards; there are now 7 (LESSON_IDS.length).
+- `scripts/privacy-scan.mjs`: reads MP3s as text and 6 random audio bytes ("i@Y.Ue") fit the email
+  pattern; proposed: skip .mp3 like the images and fonts it already skips.
+- `tests/unit/session.test.ts` (1.1): its own `save()` builds a save with no skill lesson heard, so
+  two checks meet skill lessons in the session; proposed: mark them heard there too, as approved
+  for `setUpSave()`.
+- `tests/unit/path.test.ts` (new): its line text isn't a repo placeholder; use `lyricLine()`.
+- `e2e/home.spec.ts` (new): asserts the path's exact order on the page and a single "Finished" fold,
+  which can't both hold when finished lessons aren't all at the start; proposed: check the open
+  lessons and the folded ones each in path order.
+- `e2e/videos.spec.ts` (new): reads the fake player's `seeks`, which the `FakePlayer` type doesn't
+  declare (a typecheck error); proposed: read it through `page.evaluate` as `session.spec.ts` does.
+
+Decisions (1.2):
+
+- D20. Narration is Web Audio, not media elements: iPadOS ignores a media element's volume, and a
+  count word must start on its beat. One clip per full cue (every standard section name × every
+  rung's ladder and speed), so the WebKit checks see the same words as before; a custom section name
+  is the coach's "Next", the iPad's voice for the name, then the coach's "Rap, 75% speed".
+- D21. Lesson reading is a grown-up switch (on by default) and uses her cue volume; her Sounds mute
+  turns cues off, not lesson reading. Reading pauses itself when a video starts.
+- D22. The path: each section's Rap then Dance in song order, then each Together, then Showtime;
+  counting and the voice warm-up before the first rap lesson, learning a dance before the first dance
+  lesson, marking and breathing before the first together lesson, expressions and performing before
+  Showtime. In the session a skill lesson she hasn't done comes once, as a part of its own, just
+  before the first practice that needs it. The session goes straight to practice; a section lesson's
+  intro is on its own screen (from the path or today's lessons).
+- D23. With no dates, today is a free day from the path: warm-up 5, about 8 minutes per lesson, water
+  where the voice or water rule needs it, cool-down 5 (about 44 minutes).
+- D24. One walk-on time (Showtime's walk and the countdown before filming), 5 s for a new save; a 1.1
+  save keeps its value. Film my Showtime starts the camera at Start, films from her track to the end
+  of the bow and keeps the clip with her run-throughs.
+- D25. The wizard's required steps are worked out from what's there (track, lines, starts); the
+  optional ones count only when a grown-up did them. The lines box: `[Name]` headers, `= meaning`
+  under a line (marking it Korean said by sound); saving keeps sections with the same name (ids,
+  marks, progress, breaths, timing). The beat guess is stored as the tempo until a grown-up checks it.
+- D26. A practice video: one marked on the section wins and is cued to it; otherwise the step's video
+  from a chapter time or its start (the tutorial with counts for Chorus and Dance break, the full one
+  otherwise). Her loop on a practice screen counts in each time round, like every rep; on a lesson
+  video it simply loops. The drill only offers "Show the video" when the follow-along is marked.
 
 ## Version 1.1 (done)
 
