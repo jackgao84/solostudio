@@ -7,6 +7,9 @@
 
 ## Status
 
+- **Version 1.2 in progress (2026-11-26).** Part 1 (narration) has started: the privacy scan now
+  catches API keys. Waiting on the ElevenLabs key being visible to the build shell, then on the
+  owner choosing one of three voice samples (`.private/voice-samples/`). See "Version 1.2" below.
 - **Version 1.1.0 done and live (2026-11-26), build dafb6ff.** Confirmed in WebKit against the live
   site at iPad portrait and landscape: the service worker controls `/solostudio/` with one
   `solostudio:precache:<hash>` cache; a 1.0 save carries over (schema 2, sections and progress
@@ -42,6 +45,29 @@
     (Playwright's WebKit drops overrides on the navigator objects ~2 s after load); the offline and
     update specs seed no YouTube stand-in (routing can't reach a worker-controlled page).
   No assertion was changed anywhere.
+
+## Version 1.2 (in progress)
+
+The owner's 1.2 brief: she finds it easy and a grown-up finds setup quick. Five parts, each checks
+first, then code, a commit after each; a 1.1 save migrates through a tested migration.
+
+1. [ ] Narration with ElevenLabs (the key is read from `ELEVENLABS_API_KEY` at build time only and
+   is never written to any file, log, commit or test).
+   - [x] Privacy scan: anything shaped like a secret key (`sk_` and 20+ letters or digits) and the
+     exact value of `ELEVENLABS_API_KEY` when set, in every file and commit; it reports where,
+     never the text. `PRIVACY_ROOT` points it at another folder. Check:
+     `tests/unit/privacy-scan.test.ts` (runs the scan on a throwaway git folder; fake keys are
+     built at run time, so nothing key-shaped sits in the repo).
+   - [ ] Three warm, clear English voices, a 10-second sample of each in `.private/voice-samples/`;
+     the owner picks one.
+   - [ ] MP3 narration (small mono) for every lesson script, fixed cue and standard section name,
+     made by a voice script with a content-hash cache; precached; pause, replay, skip; a grown-up
+     can turn narration off; lesson scripts rewritten for listening.
+2. [ ] Lessons become the home page (skill lessons with videos, section lessons from her sections).
+3. [ ] "Get to your spot" with a visible walk-on countdown before every recording; Film my Showtime.
+4. [ ] Setup as a pausable wizard: track, lines (one box), section starts; the rest optional.
+5. [ ] No step blocked by missing video marks (tutorials play from the start or chapters, with
+   her own loop buttons).
 
 ## Version 1.1 (done)
 

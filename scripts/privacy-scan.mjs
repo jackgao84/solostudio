@@ -2,16 +2,19 @@
  * Privacy scan: every file in the repo (tracked, or new and not ignored) and every commit's message,
  * author and committer, searched for private words. The words come from .private/terms.txt (one per
  * line, never committed) and/or PRIVACY_TERMS (comma-separated), so this script itself names nothing.
- * Also flags email addresses other than GitHub noreply ones, and ages written out.
+ * Also flags email addresses other than GitHub noreply ones, ages written out, anything shaped like a
+ * secret API key ("sk_" and a long run of letters and digits), and the exact value of
+ * ELEVENLABS_API_KEY when it is set (1.2). It reports where, never the matching text.
+ * PRIVACY_ROOT points it at another folder (the unit check uses a throwaway one).
  *
  *   npm run privacy
  */
 import { execSync } from 'node:child_process'
 import { existsSync, readFileSync } from 'node:fs'
-import { join } from 'node:path'
+import { join, resolve } from 'node:path'
 import { fileURLToPath } from 'node:url'
 
-const ROOT = fileURLToPath(new URL('..', import.meta.url))
+const ROOT = process.env.PRIVACY_ROOT ? resolve(process.env.PRIVACY_ROOT) : fileURLToPath(new URL('..', import.meta.url))
 const termsFile = join(ROOT, '.private', 'terms.txt')
 const terms = [
   ...(existsSync(termsFile) ? readFileSync(termsFile, 'utf8').split('\n') : []),
@@ -33,7 +36,10 @@ const patterns = terms.map((t) => {
 const generic = [
   { term: 'email address', re: /[A-Za-z0-9._%+-]+@(?!users\.noreply\.github\.com\b|anthropic\.com\b)[A-Za-z0-9.-]+\.[A-Za-z]{2,}/ },
   { term: 'an age', re: /\b\d{1,2}[- ]years?[- ]old\b|\baged? \d{1,2}\b/i },
+  { term: 'an API key', re: /\bsk_[A-Za-z0-9]{20,}/ },
 ]
+const elevenKey = (process.env.ELEVENLABS_API_KEY ?? '').trim()
+if (elevenKey.length >= 8) generic.push({ term: 'the ElevenLabs key', re: new RegExp(esc(elevenKey)) })
 
 const hits = []
 const scan = (where, text) => {
