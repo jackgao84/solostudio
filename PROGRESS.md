@@ -7,6 +7,22 @@
 
 ## Status
 
+- **Version 1.1.0 done and live (2026-11-26), build dafb6ff.** Confirmed in WebKit against the live
+  site at iPad portrait and landscape: the service worker controls `/solostudio/` with one
+  `solostudio:precache:<hash>` cache; a 1.0 save carries over (schema 2, sections and progress
+  unchanged, the 1.0 document kept as the backup copy); only `solostudio:` keys; Today (D-day,
+  Start today's practice, the tour card), her stage, Sounds, Showtime and Her week load; the version
+  line reads "Version 1.1.0 · build dafb6ff"; no console errors. The deploy workflow's unit checks
+  passed (25 files).
+- 1.1 final checks: typecheck clean; unit 221/221 in 25 files; Playwright WebKit 100/100 (50 tests ×
+  iPad portrait and landscape), twice in a row, no retries; REVIEW.md current; privacy scan clean.
+- Only the iPad can confirm (1.1): the spoken cues in the iPad's English voice (and that speech
+  works after her first tap), the count-in landing on the beat of her real track, sound levels
+  (cues, stage-light sound, cheer, crowd, applause) from where she dances, and the camera recording
+  after the count-in. SETUP.md lists these with the 1.0 items.
+
+### 1.0
+
 - **Done and live (2026-11-26): https://jackgao84.github.io/solostudio/** (public repo
   jackgao84/solostudio, Pages from GitHub Actions; the workflow runs the unit checks before building).
   Confirmed in WebKit against the live site: the service worker takes control at `/solostudio/`,
@@ -27,7 +43,7 @@
     update specs seed no YouTube stand-in (routing can't reach a worker-controlled page).
   No assertion was changed anywhere.
 
-## Version 1.1 (in progress)
+## Version 1.1 (done)
 
 The owner's update brief for 1.1 (start anywhere, rejoin, the Showtime routine, the grown-ups'
 week, the listening run, a guided session with spoken cues, and the stage lights) is worked through
