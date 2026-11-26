@@ -17,6 +17,7 @@ import { addDays, dayKey, weekdayOf } from '../src/model/dates'
 import { KEYS } from '../src/storage/keys'
 import { SKILL_LESSON_IDS, defaultSave, type Line, type SaveData, type Section } from '../src/storage/schema'
 import { isPlaceholder, lyricLine, meaningLine } from '../tests/fixtures/placeholders'
+import { TEST_CLIP_MP4_BASE64 } from '../tests/fixtures/test-clip'
 
 export { expect }
 
@@ -215,8 +216,41 @@ const INIT_STANDINS = () => {
 /** Hosts the stand-ins answer for (never reached for real). */
 const STANDIN_HOSTS = new Set(['www.youtube.com', 'www.youtube-nocookie.com'])
 
+/**
+ * The recorder: WebKit's own, except that when it hands back nothing at all (it sometimes does with the
+ * stand-in camera, whatever the app does), a short test clip stands in for what it would have recorded.
+ * How often that happened is in window.__recorder.filled.
+ */
+const RECORDER_STANDIN = (clipBase64: string) => {
+  if (typeof MediaRecorder === 'undefined') return
+  const bytes = Uint8Array.from(atob(clipBase64), (c) => c.charCodeAt(0))
+  const rec = { filled: 0 }
+  ;(window as unknown as { __recorder: typeof rec }).__recorder = rec
+  type R = MediaRecorder & { __handler?: ((e: BlobEvent) => void) | null; __wired?: boolean }
+  // On the prototype: Playwright's WebKit drops overrides on instance objects.
+  Object.defineProperty(MediaRecorder.prototype, 'ondataavailable', {
+    configurable: true,
+    get(this: R) {
+      return this.__handler ?? null
+    },
+    set(this: R, fn: ((e: BlobEvent) => void) | null) {
+      this.__handler = fn
+      if (this.__wired) return
+      this.__wired = true
+      this.addEventListener('dataavailable', (e) => {
+        const handler = this.__handler
+        if (!handler) return
+        if (e.data && e.data.size) return handler.call(this, e)
+        rec.filled++
+        handler.call(this, { data: new Blob([bytes], { type: 'video/mp4' }) } as BlobEvent)
+      })
+    },
+  })
+}
+
 export async function installStandIns(context: BrowserContext): Promise<void> {
   await context.addInitScript(INIT_STANDINS)
+  await context.addInitScript(RECORDER_STANDIN, TEST_CLIP_MP4_BASE64)
   await context.route('https://www.youtube.com/iframe_api', (route) => route.fulfill({ status: 200, contentType: 'application/javascript', body: YT_API_STUB }))
   await context.route('https://www.youtube-nocookie.com/**', (route) =>
     route.fulfill({ status: 200, contentType: 'text/html', body: '<!doctype html><html><body style="margin:0;background:#202030"></body></html>' }),
