@@ -239,8 +239,9 @@ test('a grown-up taps where each section starts on a karaoke video in one pass; 
   await checkScreen(page, 'grownup', 'tapping section starts on Karaoke')
   await tap(page.getByRole('button', { name: 'Play the video' }))
   await expect.poll(async () => (await ytPlayers(page)).find((p) => p.videoId === KARAOKE)?.playing, { timeout: 15_000 }).toBe(true)
+  // At least a second apart: a section is never shorter than that.
   for (const name of ['Verse 1', 'Chorus', 'Dance Break']) {
-    await page.waitForTimeout(900)
+    await page.waitForTimeout(1500)
     await tap(page.getByRole('button', { name: `${name} starts now` }))
   }
   await expect.poll(async () => (await readSave(page)).sections.every((s) => s.refs['ref-karaoke']?.start != null)).toBe(true)
