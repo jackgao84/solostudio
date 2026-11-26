@@ -74,7 +74,7 @@ export const todayScreen: Screen = (root) => {
   const showName = d.show?.name || T.showFallback
   const day = todayPlan(d, t)
   if (d.show && t > d.show.date) {
-    top.append(head)
+    top.append(h('div', { class: 'today__start' }, button(KID_COPY.room.open, () => go('/room'), { class: 'btn--huge room-go' })), head)
     below.append(h('p', { class: 'show-over' }, T.showOver))
   } else {
     if (d.show) {
@@ -84,15 +84,21 @@ export const todayScreen: Screen = (root) => {
     } else if (day) headText.append(h('p', { class: 'note' }, H.noDates))
     if (day && d.show) headText.append(h('p', { class: 'phase' }, PHASE_COPY[day.phase].name))
     // One main action: the guided session through today's lessons.
+    // Beside it (version 1.3), the practice room: any video or her track, her own loops and parts.
     const items = todaysItems()
-    if (items.length) top.append(h('div', { class: 'today__start' }, button(T.startPractice, () => startSession(), { variant: 'primary', class: 'btn--huge' })))
+    top.append(
+      h(
+        'div',
+        { class: 'today__start' },
+        items.length ? button(T.startPractice, () => startSession(), { variant: 'primary', class: 'btn--huge' }) : null,
+        button(KID_COPY.room.open, () => go('/room'), { class: 'btn--huge room-go' }),
+      ),
+    )
     top.append(head)
     if (day) top.append(blocksList(day.blocks, items))
-    else if (!d.show) below.append(h('p', { class: 'note' }, T.noPlan))
     if (!d.tour.seen && day) below.append(tourCard())
     if (day?.light && day.phase !== 'showDay') below.append(h('p', { class: 'light-day' }, T.lightDay))
     if (day && d.show) below.append(h('p', { class: 'note' }, PHASE_COPY[day.phase].about))
-    if (d.sections.length === 0) below.append(h('p', { class: 'note' }, T.noSections))
     const checks = checksList()
     if (checks) below.append(checks)
   }

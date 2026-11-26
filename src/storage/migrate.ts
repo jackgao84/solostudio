@@ -27,6 +27,8 @@ const STEPS: Record<number, (doc: Obj) => Obj> = {
    * set up again. Nothing already there changes, the walk-on time included.
    */
   2: (doc) => ({ ...doc, schemaVersion: 3, wizard: { at: null, done: setupAlreadyDone(doc) } }),
+  /** 3 → 4 (version 1.3): she has no parts of her own yet. Nothing already there changes. */
+  3: (doc) => ({ ...doc, schemaVersion: 4, parts: [] }),
 }
 
 const num = (v: unknown) => typeof v === 'number' && Number.isFinite(v)

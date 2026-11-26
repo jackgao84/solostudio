@@ -21,7 +21,7 @@ export interface KidString {
 }
 
 export const KID_GROUPS: readonly { id: string; title: string; about: string }[] = [
-  { id: 'welcome', title: 'Welcome and the grown-ups’ button', about: 'The first screen, before a grown-up has set things up, and the press-and-hold button.' },
+  { id: 'welcome', title: 'Welcome and the grown-ups’ button', about: 'The first screen on a new iPad (the practice room needs no setup), and the press-and-hold button.' },
   { id: 'nav', title: 'Buttons that appear everywhere', about: 'The buttons for getting around, and the "new version" button on Today.' },
   { id: 'today', title: 'Today', about: 'Her day: the countdown, the phase, the blocks, moving blocks, checks that are due.' },
   { id: 'home', title: 'Home: today’s lessons and her lesson path', about: 'The top of the home page (Start, the D-day, today’s lessons) and her whole lesson path below it.' },
@@ -45,7 +45,8 @@ export const KID_GROUPS: readonly { id: string; title: string; about: string }[]
   { id: 'record', title: 'Recording', about: 'The camera, recording beside the reference, and the note when an older clip is deleted.' },
   { id: 'clips', title: 'Her clips', about: 'The list of clips kept on the iPad.' },
   { id: 'narrator', title: 'The coach’s voice', about: 'The buttons for the coach reading a lesson aloud.' },
-  { id: 'video', title: 'Her own loop', about: 'Looping any bit of a video herself: tap where it starts and ends while it plays.' },
+  { id: 'video', title: 'Her own loop', about: 'Looping any bit of a video or her track herself: tap Loop start and Loop end while it plays, then nudge either end.' },
+  { id: 'room', title: 'The practice room', about: 'Practice that needs no setup: any video or her track, her own loop with the count-in, and her parts (saved loops she names, ticks at 50, 75 and 100% speed, renames or deletes).' },
   { id: 'lessons', title: 'Lessons', about: 'The eight skill lessons, in full, each read aloud by the coach word for word, with its “try it” and the line that puts her teachers first.' },
 ]
 

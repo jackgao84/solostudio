@@ -99,7 +99,8 @@ export const blockScreen: Screen = (root, { params, query }) => {
     const wrap = h('div', { class: 'block-steps' })
     const choices = practiceChoices(save(), b, t)
     if (!choices.length) {
-      wrap.append(h('p', { class: 'note' }, KID_COPY.today.noSections))
+      // No sections yet: the practice room needs none.
+      wrap.append(button(KID_COPY.room.open, () => go('/room'), { variant: 'primary', class: 'btn--huge' }))
       return wrap
     }
     wrap.append(h('p', null, B.pick))

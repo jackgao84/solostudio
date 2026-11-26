@@ -2,17 +2,16 @@
 
 Every piece of kid-facing text in the app, grouped by where it appears. Words in {curly brackets} are filled in on the iPad (her name, a section name, a number). The rap lines themselves are typed on the iPad by a grown-up and are never part of the app.
 
-- 465 lines in 26 groups
+- 499 lines in 27 groups
 
 **This file is generated from `src/content`. Don’t edit it by hand.** To change the words, edit the files in `src/content`, then run `npm run review` to rebuild this file. `npm test` fails while it is out of date.
 
-## 1. Welcome and the grown-ups’ button (5)
+## 1. Welcome and the grown-ups’ button (4)
 
-The first screen, before a grown-up has set things up, and the press-and-hold button.
+The first screen on a new iPad (the practice room needs no setup), and the press-and-hold button.
 
 - Solo Studio <sub>`kid.welcome.title`</sub>
 - Your practice room for your solo. <sub>`kid.welcome.tagline`</sub>
-- A grown-up sets things up first. Then it’s all yours. <sub>`kid.welcome.needsGrownUp`</sub>
 - Grown-ups: press and hold <sub>`kid.welcome.gate`</sub>
 - Keep holding… <sub>`kid.welcome.gateHolding`</sub>
 
@@ -28,7 +27,7 @@ The buttons for getting around, and the "new version" button on Today.
 - New version: tap to update <sub>`kid.nav.newVersion`</sub>
 - Sounds <sub>`kid.nav.sounds`</sub>
 
-## 3. Today (34)
+## 3. Today (32)
 
 Her day: the countdown, the phase, the blocks, moving blocks, checks that are due.
 
@@ -51,8 +50,6 @@ Her day: the countdown, the phase, the blocks, moving blocks, checks that are du
 - Headset mic or headband on <sub>`kid.today.headset`</sub>
 - That’s today’s practice done. Have some water and rest your voice. <sub>`kid.today.allDone`</sub>
 - The show has happened! When there’s a next one, a grown-up can set it up. <sub>`kid.today.showOver`</sub>
-- A grown-up needs to set the show date first. <sub>`kid.today.noPlan`</sub>
-- A grown-up adds the parts of your song first. You can read the lessons while you wait. <sub>`kid.today.noSections`</sub>
 - Back for a quick check today <sub>`kid.today.checksTitle`</sub>
 - {section}: {ladder} <sub>`kid.today.checkLine`</sub>
 - shaky <sub>`kid.today.shakyTag`</sub>
@@ -546,17 +543,59 @@ The buttons for the coach reading a lesson aloud.
 - Replay <sub>`kid.narrator.replay`</sub>
 - Skip <sub>`kid.narrator.skip`</sub>
 
-## 25. Her own loop (5)
+## 25. Her own loop (9)
 
-Looping any bit of a video herself: tap where it starts and ends while it plays.
+Looping any bit of a video or her track herself: tap Loop start and Loop end while it plays, then nudge either end.
 
-- Loop from here <sub>`kid.video.loopFrom`</sub>
-- Loop to here <sub>`kid.video.loopTo`</sub>
+- Loop start <sub>`kid.video.loopStart`</sub>
+- Loop end <sub>`kid.video.loopEnd`</sub>
 - Stop the loop <sub>`kid.video.loopClear`</sub>
-- Loop from {from}. Now tap Loop to here. <sub>`kid.video.loopStarted`</sub>
+- Your loop starts at {from}. Now tap Loop end. <sub>`kid.video.loopStarted`</sub>
 - Looping {from} to {to} <sub>`kid.video.looping`</sub>
+- Loop start earlier <sub>`kid.video.startEarlier`</sub>
+- Loop start later <sub>`kid.video.startLater`</sub>
+- Loop end earlier <sub>`kid.video.endEarlier`</sub>
+- Loop end later <sub>`kid.video.endLater`</sub>
 
-## 26. Lessons (79)
+## 26. The practice room (33)
+
+Practice that needs no setup: any video or her track, her own loop with the count-in, and her parts (saved loops she names, ticks at 50, 75 and 100% speed, renames or deletes).
+
+- Practice room <sub>`kid.room.title`</sub>
+- Practice room <sub>`kid.room.open`</sub>
+- Pick a video <sub>`kid.room.pick`</sub>
+- Mirrored follow-along <sub>`kid.room.sourceMirrored`</sub>
+- Tutorial with counts <sub>`kid.room.sourceTutorialParts`</sub>
+- Tutorial <sub>`kid.room.sourceTutorialFull`</sub>
+- Performance <sub>`kid.room.sourcePerformance`</sub>
+- Original <sub>`kid.room.sourceOriginal`</sub>
+- Listen and read <sub>`kid.room.sourceListen`</sub>
+- Slow music <sub>`kid.room.sourceSlow`</sub>
+- My track <sub>`kid.room.sourceTrack`</sub>
+- Video <sub>`kid.room.sourceLocal`</sub>
+- Here’s how to make your own loop. <sub>`kid.room.hint1`</sub>
+- Play the video. Tap Loop start where a move begins, and Loop end where it finishes. <sub>`kid.room.hint2`</sub>
+- That bit plays again and again, with 5, 6, 7, 8 before each go. Then save it as one of your parts. <sub>`kid.room.hint3`</sub>
+- Save as my part <sub>`kid.room.savePart`</sub>
+- Name your part <sub>`kid.room.nameIt`</sub>
+- My part {n} <sub>`kid.room.partName`</sub>
+- Save my part <sub>`kid.room.saveIt`</sub>
+- Cancel <sub>`kid.room.cancel`</sub>
+- My parts <sub>`kid.room.myParts`</sub>
+- No parts yet. Make a loop, then save it here. <sub>`kid.room.noParts`</sub>
+- On {video} <sub>`kid.room.onVideo`</sub>
+- Practise <sub>`kid.room.practise`</sub>
+- Practise {part} <sub>`kid.room.practiseLabel`</sub>
+- Rename <sub>`kid.room.rename`</sub>
+- Rename {part} <sub>`kid.room.renameLabel`</sub>
+- Save <sub>`kid.room.renameSave`</sub>
+- Delete <sub>`kid.room.delete`</sub>
+- Delete {part} <sub>`kid.room.deleteLabel`</sub>
+- Yes, delete it <sub>`kid.room.deleteSure`</sub>
+- Every speed ticked! Practise it again any time. <sub>`kid.room.allTicked`</sub>
+- This video isn’t on the iPad any more. You can rename or delete this part. <sub>`kid.room.gone`</sub>
+
+## 27. Lessons (79)
 
 The eight skill lessons, in full, each read aloud by the coach word for word, with its “try it” and the line that puts her teachers first.
 

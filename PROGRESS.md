@@ -7,6 +7,7 @@
 
 ## Status
 
+- **Version 1.3 in progress (2026-11-26): practice that needs no setup.** See "Version 1.3" below.
 - **Version 1.2.1 done and live (2026-11-26), build 6a9e548:** Rap basics (see "Version 1.2.1"
   below). Confirmed in WebKit against the live site at iPad portrait and landscape: "Version 1.2.1 ·
   build 6a9e548"; one precache cache of 224 files (215 clips); 8 lesson cards; on the path Rap basics
@@ -63,6 +64,45 @@
     (Playwright's WebKit drops overrides on the navigator objects ~2 s after load); the offline and
     update specs seed no YouTube stand-in (routing can't reach a worker-controlled page).
   No assertion was changed anywhere.
+
+## Version 1.3 (in progress)
+
+The owner's 1.3 brief: practice that needs no setup. Three parts, each checks first, then code, a
+commit after each; a 1.2 save migrates through a tested migration (save version 4).
+
+**Check changes approved by the owner (1.3), committed on their own (d18793b):** the save's version
+is 4 (was 3) in `tests/unit/migration.test.ts`, `tests/unit/migration-v3.test.ts`,
+`e2e/migration.spec.ts`, `e2e/migration-v3.spec.ts`; `tests/unit/path.test.ts`: with no sections and
+no parts, today is a warm-up, one dance block (it opens the practice room) and a cool-down (was:
+nothing to practise); `e2e/videos.spec.ts`: her loop buttons are "Loop start" / "Loop end" (were
+"Loop from here" / "Loop to here"), one set everywhere. No other assertion changed.
+
+1. [x] The practice room and save version 4. Checks first (2013507): `tests/unit/migration-v4.test.ts`,
+   `tests/unit/room.test.ts`, `e2e/room.spec.ts`, `e2e/migration-v4.spec.ts` (fixture
+   `tests/fixtures/v3-save.ts`, `tests/fixtures/grownup-words.ts`). Code: `src/model/room.ts`,
+   `src/screens/kid/room.ts` (`/room`), `src/ui/loop.ts` (Loop start / Loop end with nudges, one set
+   everywhere), save version 4 (`parts`, migration step 3 → 4), the welcome's Practice room button,
+   home's Practice room button beside Start today's practice, `/room` open before setup and busy (no
+   update mid-practice, screen awake). The welcome no longer says a grown-up sets things up first;
+   home's "a grown-up needs to set the show date / add the parts first" lines are gone.
+2. [ ] Her parts feed the path.
+3. [ ] Honest video messages, and Test YouTube in the grown-ups' area.
+4. [ ] Narration for new lines; full checks; every new screen in both orientations; 1.3.0; deploy.
+
+Decisions (1.3):
+
+- D28. Save version 4 adds `parts` (her saved loops: id, name, source, from, to, the speeds ticked,
+  createdAt). A newer version keeps an older copy of the app from writing over her parts.
+- D29. The practice room lists every usable video, dance videos first (mirrored follow-along,
+  tutorial with counts, tutorial, performance, original, listen-and-read, slow music, then any video
+  from the iPad), and "My track" only once her track is loaded (no message when it isn't). It opens on
+  the mirrored follow-along. Play with no loop simply plays; once she taps Loop end the loop goes
+  round through RepLoop (a count-in at her tempo, the loop, a rest, again). Nudges move an end by
+  0.2 s (never below 0, never under 1 s) and take effect next time round; nudging a picked part
+  changes that part.
+- D30. A part is ticked at 50, 75 and 100% speed: "I did it" ticks the highest of those at or below
+  the speed it plays at, then moves to the next speed. Picking a part opens it at its next speed.
+  Rename and Delete (with "Yes, delete it") are on every part.
 
 ## Version 1.2.1 (done)
 

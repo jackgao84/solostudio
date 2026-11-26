@@ -26,8 +26,8 @@ export function videoControls(player: Player): { el: HTMLElement; destroy: () =>
   }
   const loop = new LoopButtons(
     () => player.time(),
-    (l) => {
-      if (l) {
+    (l, why) => {
+      if (l && why === 'made') {
         player.seek(l.from)
         player.play()
       }

@@ -1,6 +1,7 @@
 /**
  * Hash router. Each screen draws into the root and may return a cleanup. Guards: before setup only
- * the welcome screen, the lessons and the (unlocked) grown-ups' area are open; the grown-ups' area
+ * the welcome screen, the practice room (1.3: it needs no setup), the lessons and the (unlocked)
+ * grown-ups' area are open; the grown-ups' area
  * needs the press-and-hold; leaving it locks it again. Practice screens keep the screen awake.
  */
 import { busyRoute } from './sw-register'
@@ -51,7 +52,7 @@ export class Router {
     const d = save()
     const grown = path === '/grownups' || path.startsWith('/grownups/')
     if (grown) return grownupsUnlocked() ? null : d.setup.complete ? '/today' : '/welcome'
-    if (!d.setup.complete) return path === '/welcome' || path === '/lessons' || path.startsWith('/lesson/') ? null : '/welcome'
+    if (!d.setup.complete) return path === '/welcome' || path === '/room' || path === '/lessons' || path.startsWith('/lesson/') ? null : '/welcome'
     if (path === '/' || path === '' || path === '/welcome') return '/today'
     return null
   }

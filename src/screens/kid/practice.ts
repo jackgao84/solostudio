@@ -187,9 +187,12 @@ export const practiceScreen: Screen = (root, { params, query }) => {
         }
       } else from = v.from
       const p = player
+      // Her loop starts going round as soon as she makes it (or stops it); a nudge applies next time round.
       loopBtns = new LoopButtons(
         () => p.time(),
-        () => loop?.again(),
+        (_l, why) => {
+          if (why !== 'nudged') loop?.again()
+        },
       )
       controls.after(loopBtns.el)
     }

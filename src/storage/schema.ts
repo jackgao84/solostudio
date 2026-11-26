@@ -9,9 +9,9 @@ import { DEFAULT_REFS } from '../content/references'
 
 /**
  * 1: version 1.0. 2: version 1.1 (stage, sounds, Showtime routine, notes, practice log, tour, celebrations).
- * 3: version 1.2 (narration, her lessons, the setup wizard).
+ * 3: version 1.2 (narration, her lessons, the setup wizard). 4: version 1.3 (her own parts).
  */
-export const CURRENT_SCHEMA_VERSION = 3
+export const CURRENT_SCHEMA_VERSION = 4
 
 export type Lang = 'en' | 'ko'
 
@@ -250,6 +250,28 @@ export interface WizardState {
   done: WizardStep[]
 }
 
+/** The speeds she ticks a part at: "I did it" at 50, 75 and 100% speed. */
+export const PART_SPEEDS = [0.5, 0.75, 1] as const
+export type PartSpeed = (typeof PART_SPEEDS)[number]
+export const PART_NAME_MAX = 40
+
+/**
+ * One of her parts (version 1.3): a loop she made in the practice room and saved under her own name.
+ * Hers to rename or delete. A grown-up's setup never needs to have happened.
+ */
+export interface MyPart {
+  id: string
+  name: string
+  /** What it plays on: a reference video's id, or 'track' for her track. */
+  source: string
+  /** The loop, in that video's (or her track's) seconds. */
+  from: number
+  to: number
+  /** The speeds she has ticked "I did it" at. */
+  done: PartSpeed[]
+  createdAt: string
+}
+
 export interface SaveData {
   schemaVersion: number
   setup: {
@@ -285,6 +307,8 @@ export interface SaveData {
   narration: NarrationSettings
   lessons: LessonState
   wizard: WizardState
+  /** Her own parts, made in the practice room (version 1.3). */
+  parts: MyPart[]
 }
 
 /** The original video (a default reference) stands in for her track until it is loaded. */
@@ -362,5 +386,6 @@ export function defaultSave(_now: Date = new Date()): SaveData {
     narration: { on: true },
     lessons: { done: [], videos: {} },
     wizard: { at: null, done: [] },
+    parts: [],
   }
 }

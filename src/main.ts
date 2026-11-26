@@ -41,6 +41,7 @@ import { showtimeSettingsScreen } from './screens/grownups/showtime'
 import { lessonsAdmin } from './screens/grownups/lessons'
 import { setupWizard } from './screens/grownups/setup'
 import { learnScreen } from './screens/kid/learn'
+import { roomScreen } from './screens/kid/room'
 import { KID_COPY } from './content/kid'
 
 function pickStorage(): StorageLike {
@@ -94,6 +95,7 @@ const routes: [string, Screen][] = [
   ['/lessons', lessonsScreen],
   ['/lesson/:id', lessonScreen],
   ['/learn/:section/:ladder', learnScreen],
+  ['/room', roomScreen],
   ['/grownups', grownupsHome],
   ['/grownups/plan', planScreen],
   ['/grownups/track', trackScreen],

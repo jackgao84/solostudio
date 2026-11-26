@@ -2,6 +2,7 @@
  * Fills in anything missing from a stored or imported save, field by field, so an older or partial
  * document always loads. Unknown fields are dropped. A complete save comes back unchanged.
  */
+import { KID_COPY } from '../content/kid'
 import { DEFAULT_REFS } from '../content/references'
 import {
   CURRENT_SCHEMA_VERSION,
@@ -17,6 +18,10 @@ import {
   defaultStage,
   SKILL_LESSON_IDS,
   WIZARD_STEPS,
+  PART_NAME_MAX,
+  PART_SPEEDS,
+  type MyPart,
+  type PartSpeed,
   type DayActivity,
   type LessonState,
   type SkillLessonId,
@@ -216,6 +221,23 @@ function wizard(v: unknown): WizardState {
   return { at: known(o.at) ? o.at : null, done: [...new Set(arr(o.done).filter(known))] }
 }
 
+/** Her parts: each needs an id, a source and a loop that runs forwards; the rest is filled in. */
+function parts(v: unknown): MyPart[] {
+  const out: MyPart[] = []
+  const ids = new Set<string>()
+  for (const x of arr(v)) {
+    if (!isObj(x) || typeof x.id !== 'string' || !x.id || ids.has(x.id) || typeof x.source !== 'string' || !x.source) continue
+    const from = num(x.from)
+    const to = num(x.to)
+    if (from == null || to == null || from < 0 || to <= from) continue
+    ids.add(x.id)
+    const name = str(x.name).trim().slice(0, PART_NAME_MAX).trim() || KID_COPY.room.partName.replace('{n}', String(out.length + 1))
+    const done = PART_SPEEDS.filter((sp) => arr(x.done).includes(sp)) as PartSpeed[]
+    out.push({ id: x.id, name, source: x.source, from, to, done, createdAt: str(x.createdAt, new Date(0).toISOString()) })
+  }
+  return out
+}
+
 export function normalize(raw: unknown): SaveData {
   const d = defaultSave()
   const o = isObj(raw) ? raw : {}
@@ -270,6 +292,7 @@ export function normalize(raw: unknown): SaveData {
     narration: { on: bool(isObj(o.narration) ? o.narration.on : undefined, true) },
     lessons: lessons(o.lessons),
     wizard: wizard(o.wizard),
+    parts: parts(o.parts),
   }
 }
 
