@@ -23,8 +23,8 @@ export type SessionItem =
   | { kind: 'showtime'; blockId: string; family: boolean }
   | { kind: 'listen'; blockId: string }
   | { kind: 'empty'; blockId: string; type: BlockType }
-  /** A skill lesson due before this block's practice (version 1.2). */
-  | { kind: 'lesson'; blockId: string; lessonId: SkillLessonId }
+  /** A skill lesson due just before a block's practice (version 1.2): a part of its own, `before` that block. */
+  | { kind: 'lesson'; blockId: string; lessonId: SkillLessonId; before: string }
 
 export const LADDER_OF: Partial<Record<BlockType, LadderId>> = { rap: 'rap', dance: 'dance', together: 'together' }
 
@@ -57,7 +57,7 @@ export function sessionItems(save: SaveData, day: PlanDay, today: string): Sessi
     for (const id of skillsDue(save, need)) {
       if (given.has(id)) continue
       given.add(id)
-      out.push({ kind: 'lesson', blockId, lessonId: id })
+      out.push({ kind: 'lesson', blockId: `lesson:${id}`, lessonId: id, before: blockId })
     }
   }
   for (const b of applyOrder(day.blocks, state.order)) {

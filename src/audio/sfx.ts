@@ -187,3 +187,30 @@ export function playApplause(): SoundHandle | null {
     return applauseBuffer.duration
   })
 }
+
+/**
+ * A click for a grown-up checking the beat in setup (version 1.2): a short tick, higher and louder on
+ * each 1. It plays even when her sound effects are off (it's the grown-up's tool, not hers).
+ */
+export function click(one: boolean): void {
+  const c = context()
+  if (!c) return
+  try {
+    if (c.state !== 'running') void c.resume().catch(() => undefined)
+    const volume = one ? 0.9 : 0.55
+    const o = c.createOscillator()
+    const g = c.createGain()
+    const t0 = c.currentTime + 0.005
+    o.type = 'square'
+    o.frequency.setValueAtTime(one ? 1760 : 1175, t0)
+    g.gain.setValueAtTime(0.0001, t0)
+    g.gain.exponentialRampToValueAtTime(volume * 0.4, t0 + 0.004)
+    g.gain.exponentialRampToValueAtTime(0.0001, t0 + 0.05)
+    o.connect(g).connect(c.destination)
+    o.start(t0)
+    o.stop(t0 + 0.07)
+    played.push({ name: 'click', at: Date.now(), volume })
+  } catch (err) {
+    console.warn('[solostudio] click failed', err)
+  }
+}

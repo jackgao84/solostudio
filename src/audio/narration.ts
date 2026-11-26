@@ -23,7 +23,7 @@ function url(file: string): string {
   return `${import.meta.env.BASE_URL}voice/${file}`
 }
 
-function decode(c: AudioContext, data: ArrayBuffer): Promise<AudioBuffer> {
+export function decode(c: AudioContext, data: ArrayBuffer): Promise<AudioBuffer> {
   // Older Safari only has the callback form.
   return new Promise((resolve, reject) => {
     const p = c.decodeAudioData(data, resolve, reject) as Promise<AudioBuffer> | undefined

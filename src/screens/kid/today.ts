@@ -158,7 +158,7 @@ export const todayScreen: Screen = (root) => {
     const wrap = h('section', { class: 'today__blocks today-lessons' }, h('h2', null, H.todayTitle))
     // Skill lessons due today, by the block they come just before.
     const skillsBefore = new Map<string, string[]>()
-    for (const i of items) if (i.kind === 'lesson') skillsBefore.set(i.blockId, [...(skillsBefore.get(i.blockId) ?? []), i.lessonId])
+    for (const i of items) if (i.kind === 'lesson') skillsBefore.set(i.before, [...(skillsBefore.get(i.before) ?? []), i.lessonId])
     const note = h('p', { class: 'move-note', role: 'status', hidden: true })
     const list = h('ol', { class: 'blocks' })
     const allDone = h('p', { class: 'note', hidden: true }, T.allDone)

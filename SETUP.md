@@ -1,133 +1,169 @@
 # Setting up Solo Studio on the iPad
 
-A one-time setup for a grown-up. Allow about 30 minutes. Everything you type (her name, the show,
-the dates, the rap lines) stays on the iPad and is never part of the app.
+For a grown-up. About 10 minutes, and she can start practising after the first three steps; the
+rest can be done any time later. Everything you type (her name, the show, the dates, the rap lines)
+stays on the iPad and is never part of the app.
 
-You need: the iPad (on Wi-Fi), her practice track (the showcase music with the vocals removed) as a
-file, and the lines of her rap.
+You need: the iPad (on Wi-Fi the first time), her practice track (the showcase music with the vocals
+removed) as a file, and the lines of her rap.
 
-## 1. Put the app on the Home Screen (3 minutes)
+## 1. Put the app on the Home Screen (2 minutes)
 
 1. On the iPad, open **Safari** and go to **https://jackgao84.github.io/solostudio/**
 2. Tap **Share** (the square with an arrow), then **Add to Home Screen**, then **Add**.
 3. Open **Solo Studio from the new Home Screen icon** while the iPad is online. Wait a few seconds:
-   this first open saves the whole app on the iPad so it works without the internet.
+   this first open saves the whole app on the iPad (the coach's voice included) so it works without
+   the internet.
 
-## 2. Open the grown-ups' area (under a minute)
+## 2. Open the grown-ups' area and tap Set up
 
-Press and hold **Grown-ups: press and hold** for two seconds, until the bar fills. A quick tap
-won't open it. It locks again as soon as you leave.
+Press and hold **Grown-ups: press and hold** for two seconds, until the bar fills (a quick tap won't
+open it; it locks again as soon as you leave). Tap **Set up (about 10 minutes)**.
 
-## 3. Show and plan (3 minutes)
+The wizard has seven steps. You can leave at any point (**Back to practice** or **Done**): next time
+the button says **Carry on setting up** and opens where you stopped. Tap any step's title to open it.
 
-Tap **Show and plan** and fill in:
+### Step 1: Her track (1 minute)
 
-- **Her name** (she sees "Hi, …!") and, if you like, the song's name.
-- **Show name** and **show date** (the showcase first).
-- **Holidays start** (and end, if the holidays finish before the show).
-- **Minutes on a school day** (45) and **on a holiday** (120 at most).
-- **Lighter day each week**: a day she does about half.
+First get the file onto the iPad: AirDrop it, or save it from Mail or Messages into **Files** (.m4a,
+.mp3 or .wav). Tap **Choose her track from Files** and pick it. It stays on the iPad. The app works
+out the beat from it in the background (step 6 lets you check it).
 
-Tap **Save plan**. If Safari asks whether the app may store data, allow it.
+### Step 2: Her lines (3 minutes)
 
-The plan counts back from the show: rap lines and the first dance sections from day one, every
-section learned slowly by about ten days out, rap and dance together after that, then full
-run-throughs and performing for family in the last four days, with a lighter day before the show.
+Paste all her lines into the one box. Each section's name goes in square brackets on its own line,
+with its lines under it. Under any line, a line starting with **=** is what it means; that also
+marks the line as Korean, written in English letters the way it sounds. Like this:
 
-## 4. Her track (2 minutes)
+```
+[Verse 1]
+Line 1 of Verse 1
+Line 2 of Verse 1
+= Meaning of Line 2 of Verse 1
 
-1. First get the file onto the iPad: AirDrop it, or save it from Mail or Messages into **Files**.
-   An .m4a, .mp3 or .wav file works.
-2. In Solo Studio tap **Her track**, then **Choose her track from Files**, and pick it.
+[Chorus]
+Line 1 of Chorus
+Line 2 of Chorus
 
-It stays on the iPad. Until it is loaded, any YouTube video can stand in (the same screen has a
-**Stand-in video** box; the original is a good choice).
+[Dance break]
+```
 
-## 5. Check the videos (3 minutes)
+Tap a name (Intro, Verse 1, Verse 2, Pre-chorus, Chorus, Post-chorus, Rap, Bridge, Dance break,
+Outro) to put it where the cursor is, or type a custom name and tap **Add this name**. A section can
+have no lines (a dance break). Tap **Save her lines**. If something needs fixing, it says which line.
+The coach says the standard names out loud; a custom name is said in the iPad's own voice.
 
-Tap **Videos**. Seven reference videos are already there: listen and read, original, performance,
-mirrored follow-along, the full tutorial, the chorus-and-dance-break tutorial with counts, and slow
-music. Tap **Open in YouTube** on any of them to check it is the right one.
+Saving again later keeps everything she has done in a section with the same name. A section you
+take out of the box is left as it is (delete it in **Sections**).
 
-- If one later says **"This video won't play inside the app"**, paste a different link into its box
-  and tap **Save** (its section marks are cleared; mark them again).
-- A teacher's demo filmed on the iPad can be added under **Add a local video**. Switch **Mirror**
-  on to show it mirrored. YouTube videos are never flipped: the mirrored follow-along is a video
-  that is already mirrored.
+### Step 3: Where each section starts (3 minutes)
 
-## 6. Sections and lines (12–15 minutes)
+Tap **Play her track**. As each section starts, tap the big **… starts now** button (it names the next
+section in the order of the box). Each section ends where the next one begins, and the last one at
+the end of her track. Afterwards, use the nudges beside each section (−0.5, −0.1, +0.1, +0.5
+seconds) and **Hear it** to check. **Tap them again** starts over.
 
-Tap **Sections**. Add each part of the song in turn (for example Intro, Verse 1, Chorus, Dance
-Break). For each one:
+Her lines are spread evenly through each section as a first guess, so they light up straight away.
 
-1. **Lines**: type or paste the lines into **Add lines**, one per line, and tap **Add these lines**.
-   For a Korean line, set its language to **Korean (by sound)**, write it in English letters the way
-   it sounds, and add a **meaning** line if it helps her.
-2. **Mark it on her track**: with **Mark it on** set to *Her track*, tap **Play**, tap **Mark start**
-   as the section begins and **Mark end** as it finishes. Use the nudges (−0.5, −0.1, +0.1, +0.5
-   seconds) to fine-tune, and **Hear this section** to check.
-3. **Mark it on the videos** the same way. Choose each in **Mark it on**: at least *Listen and
-   read*, *Mirrored follow-along* and whichever tutorial covers this part (the chorus-and-dance-break
-   tutorial for those parts, the full tutorial for the rest). *Performance* is what her recordings
-   are shown beside. A **Speed** of 75% can make tapping easier.
-4. **Tap-along**: tap **Start tap-along** (75% is fine). Her track plays from just before the
-   section; tap **Next line** as each line starts. Lines then light up in time at any speed.
+**That's all she needs.** Tap **Back to practice**: her home page is ready.
 
-Sections sort themselves into song order once they are marked on her track.
+### Step 4 (optional): The mirrored follow-along (3 minutes)
 
-## 7. Tempo and counts (2 minutes)
+The same as step 3, on the mirrored follow-along video: **Play the video** and tap as each section
+starts. Her "follow" dance steps then start at each section. Until this is done they play the video
+from the start, and she can loop any bit herself.
 
-Tap **Tempo and counts**, then **Play**. Tap **Tap tempo** along with the beat at least eight times.
-Then tap **This is a 1** on the first beat of an 8-count. Watch the counts for a few seconds; use
-**Move the 1 earlier / later** if they drift. (If you know the beats per minute, type it instead.)
+### Step 5 (optional): Line timing
 
-## 8. Showtime routine, notes and sounds (version 1.1, 3 minutes)
+For lines that light up exactly with her rap, open a section (**Tap along**), tap **Start tap-along**
+and tap **Next line** as each line starts (75% speed is fine). Or tap **Keep the even spread for now**.
 
-1. Tap **Showtime routine**. Stand where she will perform and time how long it takes to walk there
-   from the iPad; put that in **Seconds to walk to her spot** (8 is the default). Choose the
-   **Breaths backstage** (3 is the default). The **Audience sound** (a gentle crowd and applause,
-   never during her track) can be switched off here or on the Showtime screen. Tap **Save routine**.
-2. Tap **Notes**. A **teacher’s note** for a section shows on that section’s practice screens. A
-   **note for her** shows on Today until she taps **Got it**; this screen then says she has seen it.
-3. On her side, **Today → Sounds** has a volume and an off switch for the spoken cues (“Next:
-   Chorus, Dance, 75% speed” and the 5, 6, 7, 8 count-in) and for the sound effects. Set them with
-   her, with the iPad where it will stand while she practises.
+### Step 6 (optional): The beat (1 minute)
 
-## 9. Back up, then hand it over (2 minutes)
+The tempo and the first "1" are worked out from her track. Tap **Play with a click**: the high click
+should land on each 1 and the low clicks on the beats in between. If it is twice too fast or slow,
+tap **Half** or **Double**; if the 1 is off, **The 1 is earlier** or **The 1 is later** (0.05 seconds
+each). Tap **That's the beat**. (If it can't be worked out, tap the tempo by hand in **Tempo and
+counts**.) The 8-count and the "5, 6, 7, 8" count-in use this tempo. While a tutorial plays, the app
+shows no 8-count, because the tutorial calls its own.
 
-1. Tap **Backup**, then **Export backup**, and save the file in Files. (The backup holds everything
-   except her track, local videos and clips.)
-2. Tap **Back to practice**. Today's plan is ready for her. The first time, Today offers her a
-   30-second tour; her big button is **Start today’s practice**.
+### Step 7 (optional): Dates, minutes and her walk-on time (1 minute)
+
+Her name (she sees "Hi, …!"), the show's name and date, the holidays, the minutes on a school day
+(45) and a holiday (120 at most), and **her walk-on time**: the seconds from the iPad to her spot
+(5 unless you change it). It is the countdown before anything is filmed and Showtime's walk-on.
+Tap **Save dates**.
+
+With a date, the plan counts back from the show: rap lines and the first dance sections from day
+one, every section learned slowly by about ten days out, rap and dance together after that, then
+full run-throughs and performing for family in the last four days, with a lighter day before the
+show. Without one, her day is simply the next lessons on her path.
+
+## Her home page
+
+The top shows only **Start today's practice**, the D-day and today's lessons. Below is her whole
+lesson path: seven skill lessons (counting, learning a dance, a voice warm-up, breathing while she
+raps and dances, marking and full out, expressions, performing), each just before the first lesson
+that needs it, and a Rap, a Dance and a Together lesson for each section, with its stage lights.
+Finished lessons fold away. **Start today's practice** runs today's lessons one after another, and
+the coach says what's next.
+
+## Lessons, narration and videos
+
+- **Grown-ups → Lessons and narration**: **Read lessons aloud** turns the coach's reading of the
+  lessons on or off (the cues stay; she can turn those down or off in **Today → Sounds**). Each skill
+  lesson's video can be swapped here: paste a YouTube link and a start time (m:ss).
+- **Videos** (as before): seven reference videos. No video needs marking: tutorials and the
+  listen-and-read video play from the start, with her own speed buttons and **Loop from here** /
+  **Loop to here** to repeat any bit. If you mark where a section starts on a video (in **Sections**,
+  **Mark it on**), that video starts there for that section.
+- If a video says **"This video won't play inside the app"**, paste a different link into its box
+  and tap **Save**.
+
+## Showtime routine, notes and sounds (3 minutes, optional)
+
+1. **Showtime routine**: the breaths backstage (3) and the seconds to walk to her spot (the walk-on
+   time from step 7). The **Audience sound** can be switched off here or on the Showtime screen.
+   **Film my Showtime** on the Showtime screen films the whole show (after the walk-on and the
+   opening pose's count) and keeps the clip with her run-throughs.
+2. **Notes**: a **teacher's note** per section, and a **note for her** on her home page until she taps
+   **Got it**.
+3. **Today → Sounds** (hers): a volume and an off switch for the spoken cues and for the sound
+   effects. Set them with her, with the iPad where it will stand.
+
+## Back up
+
+**Backup → Export backup**, and save the file in Files. (The backup holds everything except her
+track, local videos and clips.)
 
 ## Later
 
-- **The talent show**: Grown-ups → Show and plan → **A new show**: enter its name and date and
-  tap **Reset the plan for this show** (then **Yes, reset it**). Everything she has learned stays.
-- **Updates**: when a new version is ready, Today shows **New version: tap to update**. It never
-  updates in the middle of practice.
+- **The talent show**: Grown-ups → Show and plan → **A new show**: its name and date, then **Reset the
+  plan for this show** (then **Yes, reset it**). Everything she has learned stays.
+- **Updates**: when a new version is ready, her home page shows **New version: tap to update**. It
+  never updates in the middle of practice.
 - **The version** is shown at the bottom of the grown-ups' home.
-- **Her week**: Grown-ups → Her week shows the last 7 days: days and minutes practised, ladder steps
-  per section, sections marked shaky and her “one thing” notes.
-- **Updating from 1.0**: everything already set up carries over by itself the first time 1.1 opens
-  (the 1.0 save is kept as the backup copy). Nothing needs doing again.
+- **Her week**: Grown-ups → Her week shows the last 7 days.
+- **The detailed screens** (Show and plan, Her track, Videos, Sections, Tempo and counts) are still in
+  the grown-ups' area for changes later.
+- **Updating from 1.1**: everything carries over by itself the first time 1.2 opens (the 1.1 save is
+  kept as the backup copy), and the wizard counts what was set up as done. Her walk-on time stays as
+  it was (1.1 used 8 seconds); change it in step 7 if you like.
 
 ## Things to check on the iPad itself
 
 These can't be checked anywhere else:
 
-- **Each default video plays inside the app** (open a practice step that uses it). If one doesn't,
-  swap it in Videos.
-- **The camera records**: open a section, tap **Record this section**, then **Start camera**, and
-  allow the camera when asked. Her clips stay on the iPad.
-- **Her track at 50% and 75% keeps its pitch** (it should sound slower, not lower).
-- **The screen stays awake** during a practice block (needs iPadOS 16.4 or later).
-- **The spoken cues** (1.1): tap **Start today’s practice** and listen for “Next: …” in the iPad’s
-  English voice, then “5, 6, 7, 8”. If nothing is said, check Today → Sounds, the ring/silent
-  switch and the volume; the count-in still shows on screen.
-- **The count-in lands on the beat** of her track, and the music comes in on the 1. If it feels
-  off, redo Tempo and counts (the count-in uses that tempo).
-- **Sound levels**: the cues, the stage-light sound, the crowd and the applause at a comfortable
+- **The coach's voice** (1.2): open a lesson and listen; the line being read lights up. If nothing is
+  heard, check the ring/silent switch, the volume and **Today → Sounds**.
+- **The count-in lands on the beat** of her track, and the music comes in on the 1. If it feels off,
+  check the beat (step 6).
+- **The beat worked out from her real track** (1.2): check it against the click in step 6.
+- **Filming** (1.2): **Record this section** says "Get to your spot" with a countdown, then counts her
+  in; check the clip starts with the music. **Film my Showtime** asks for the camera at Start.
+- **Each video plays inside the app**, including the seven lesson videos. If one doesn't, swap it.
+- **The camera records**: allow the camera when asked. Her clips stay on the iPad.
+- **Her track at 50% and 75% keeps its pitch** (slower, not lower).
+- **The screen stays awake** during practice (iPadOS 16.4 or later).
+- **Sound levels**: the coach, the stage-light sound, the crowd and the applause at a comfortable
   level from where she dances (Today → Sounds).
-- **Recording** now starts after a count-in, so she can get to her spot: check the clip starts with
-  the music.

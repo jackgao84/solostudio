@@ -39,6 +39,7 @@ import { backupScreen } from './screens/grownups/backup'
 import { linksScreen } from './screens/grownups/links'
 import { showtimeSettingsScreen } from './screens/grownups/showtime'
 import { lessonsAdmin } from './screens/grownups/lessons'
+import { setupWizard } from './screens/grownups/setup'
 import { learnScreen } from './screens/kid/learn'
 import { KID_COPY } from './content/kid'
 
@@ -106,6 +107,7 @@ const routes: [string, Screen][] = [
   ['/grownups/week', weekScreen],
   ['/grownups/notes', notesScreen],
   ['/grownups/lessons', lessonsAdmin],
+  ['/grownups/setup', setupWizard],
 ]
 
 const app = document.getElementById('app')

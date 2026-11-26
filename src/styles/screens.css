@@ -1913,3 +1913,96 @@ html[data-theme='mint'] {
 .film-saved p {
   margin: 0;
 }
+
+/* ---- The setup wizard (version 1.2) ----------------------------------------------------------- */
+
+.wizard-step {
+  padding: 0;
+  overflow: hidden;
+}
+
+.wizard-step__head {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  justify-content: flex-start;
+  text-align: left;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  min-height: 56px;
+}
+
+.wizard-step__n {
+  flex: none;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  background: var(--panel-strong);
+  font-weight: 700;
+}
+
+.wizard-step.is-done .wizard-step__n {
+  background: var(--lime);
+  color: #1b1b1b;
+}
+
+.wizard-step__title {
+  flex: 1 1 auto;
+  font-weight: 650;
+}
+
+.wizard-step__status {
+  color: var(--muted);
+}
+
+.wizard-step[data-required='true']:not(.is-done) .wizard-step__status {
+  color: var(--gold);
+}
+
+.wizard-step.is-open > :not(.wizard-step__head) {
+  margin: 0 16px 16px;
+}
+
+.wizard textarea[name='songText'] {
+  width: 100%;
+  min-height: 16em;
+  font: inherit;
+  font-size: 18px;
+  line-height: 1.5;
+  padding: 12px;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  background: rgba(0, 0, 0, 0.25);
+  color: var(--text);
+}
+
+.section-chips {
+  align-items: center;
+}
+
+.section-chips input {
+  max-width: 14em;
+}
+
+.tap-starts .tap-big {
+  min-height: 72px;
+  font-size: 22px;
+}
+
+.start-row {
+  align-items: center;
+}
+
+.start-row__name {
+  min-width: 10em;
+  font-variant-numeric: tabular-nums;
+}
+
+.beat-bpm {
+  font-size: 28px;
+  font-weight: 800;
+}

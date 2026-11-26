@@ -9,6 +9,7 @@ import { spanOf } from '../../model/timing'
 import { button } from '../../ui/components'
 import { h } from '../../ui/dom'
 import { grownScreen } from './common'
+import { setupButtonLabel } from './setup'
 
 export const grownupsHome: Screen = (root) => {
   const d = save()
@@ -20,7 +21,8 @@ export const grownupsHome: Screen = (root) => {
     'grownups',
     'Grown-ups',
     null,
-    h('p', null, 'Set up Solo Studio here. SETUP.md (in the project) walks through it step by step in about 30 minutes.'),
+    h('p', null, 'Set up Solo Studio here: about 10 minutes, and she can start after the first three steps. SETUP.md (in the project) walks through it.'),
+    h('div', { class: 'row' }, button(setupButtonLabel(), () => go('/grownups/setup'), { variant: 'primary', class: 'btn--big setup-go' })),
     h(
       'section',
       { class: 'card' },
