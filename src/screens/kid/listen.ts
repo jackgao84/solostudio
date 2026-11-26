@@ -62,6 +62,7 @@ export function listeningRun(opts: { autoStart?: boolean } = {}): { el: HTMLElem
       range?.destroy()
       range = new RangePlayer(player, 0, player.duration() ?? Infinity, 1)
       range.onStop = () => {
+        if (state === 'done') return
         state = 'done'
         label()
         panel.replaceChildren(h('p', { class: 'listen-done', role: 'status' }, L.done))

@@ -53,7 +53,10 @@ part by part: checks first, then the code, a commit after each part.
    (`src/model/session.ts`, `src/app/session.ts`, `src/screens/kid/sounds.ts`, `tour.ts`, practice
    and drill screens on `RepLoop`; checks `tests/unit/session.test.ts`, `e2e/session.spec.ts`,
    `e2e/reach.spec.ts`).
-7. [ ] Fun: stage lights, light stick, D-day, build the line, celebrations, her stage's name and colours.
+7. [x] Fun: stage lights, light stick, D-day, build the line, celebrations, her stage's name and
+   colours (`src/model/stage.ts`, `celebrate.ts`, `buildline.ts`, `src/app/celebrate.ts`,
+   `src/screens/kid/mystage.ts`, `src/ui/theme.ts`; checks `tests/unit/fun.test.ts`,
+   `e2e/fun.spec.ts`).
 8. [ ] Docs (REVIEW.md, SETUP.md), full checks, screens in both orientations, version 1.1.0, deploy.
 
 Decisions (1.1):
@@ -108,6 +111,18 @@ Decisions (1.1):
   6 s read out loud. Sounds: five volume steps each for cues and effects, plus mute.
 - D14. On Showtime's start view a stand-in video is hidden until her track plays, so Start is in
   reach in landscape too.
+
+- D15. Her stage is the Sections screen: each section a rig of 14 lamps (5 rap, 5 dance, 4
+  together), lit for ticked steps, all lit on show day. Ticking a step plays the switch-on sound and
+  shows "A light switched on" in the next screen's top bar (never over a player); finishing a ladder
+  adds a cheer. Confetti (a pop and falling paper, `pointer-events: none`) only for her first full
+  Showtime or family performance; a 1.0 save that already had one counts it as done.
+- D16. Build the line takes a chip only when its word is next (the same word on two chips is the
+  same); any other chip wiggles and stays. Nothing about misses is stored. Peek lights the next chip.
+- D17. Colour themes (Neon, Sunset, Ocean, Mint) only change the colour variables; the light stick
+  (Pink, Violet, Cyan, Lime, Gold) sits inside the 8-count box and pulses on each count.
+- D18. RangePlayer stops once per play, and also when the media stops or its clock freezes within
+  0.5 s of the end (WebKit sometimes never fires "ended" there).
 
 **Check change approved by the owner (1.1):** `e2e/journey.spec.ts` steps 13–14: only the waits
 grow by the Showtime routine's length (the routine now comes before and after her track); every

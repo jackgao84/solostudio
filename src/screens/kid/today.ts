@@ -12,6 +12,7 @@ import { PHASE_COPY, blockCopy } from '../../content/blocks'
 import { KID_COPY } from '../../content/kid'
 import { LADDER_COPY } from '../../content/ladders'
 import { daysBetween } from '../../model/dates'
+import { ddayLabel } from '../../model/stage'
 import { PINNED_TYPES, applyOrder, moveBlock, planDay, planInputFrom, type Block } from '../../model/plan'
 import { dueItems } from '../../model/progress'
 import { button } from '../../ui/components'
@@ -63,6 +64,8 @@ export const todayScreen: Screen = (root) => {
     el.append(h('p', { class: 'show-over' }, T.showOver))
   } else {
     const day = planDay(input, t < input.startDate ? input.startDate : t)
+    const dday = ddayLabel(daysBetween(t, d.show.date))
+    if (dday) head.append(h('p', { class: 'dday' }, dday))
     head.append(h('p', { class: 'countdown' }, countdownText(daysBetween(t, d.show.date), showName)))
     if (day) {
       head.append(h('p', { class: 'phase' }, PHASE_COPY[day.phase].name))

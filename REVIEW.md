@@ -2,7 +2,7 @@
 
 Every piece of kid-facing text in the app, grouped by where it appears. Words in {curly brackets} are filled in on the iPad (her name, a section name, a number). The rap lines themselves are typed on the iPad by a grown-up and are never part of the app.
 
-- 370 lines in 21 groups
+- 398 lines in 22 groups
 
 **This file is generated from `src/content`. Don’t edit it by hand.** To change the words, edit the files in `src/content`, then run `npm run review` to rebuild this file. `npm test` fails while it is out of date.
 
@@ -28,7 +28,7 @@ The buttons for getting around, and the "new version" button on Today.
 - New version: tap to update <sub>`kid.nav.newVersion`</sub>
 - Sounds <sub>`kid.nav.sounds`</sub>
 
-## 3. Today (32)
+## 3. Today (34)
 
 Her day: the countdown, the phase, the blocks, moving blocks, checks that are due.
 
@@ -60,6 +60,8 @@ Her day: the countdown, the phase, the blocks, moving blocks, checks that are du
 - A note from a grown-up <sub>`kid.today.noteTitle`</sub>
 - Got it <sub>`kid.today.noteGotIt`</sub>
 - Start today’s practice <sub>`kid.today.startPractice`</sub>
+- D-{days} <sub>`kid.today.dday`</sub>
+- D-DAY <sub>`kid.today.ddayToday`</sub>
 - New here? <sub>`kid.today.tourTitle`</sub>
 - A 30-second tour shows you around. <sub>`kid.today.tourHow`</sub>
 - Take the tour <sub>`kid.today.tourGo`</sub>
@@ -263,7 +265,26 @@ The two drills from the together phase on: a random part with a count-in, and ke
 - Keep going! <sub>`kid.drills.keepGoing`</sub>
 - A grown-up needs to mark your sections on your track first. <sub>`kid.drills.needsMarks`</sub>
 
-## 10. The listening run (5)
+## 10. Her stage (14)
+
+Naming her stage and choosing its colours and her light stick’s colour.
+
+- Name your stage <sub>`kid.stage.title`</sub>
+- Your stage’s name <sub>`kid.stage.name`</sub>
+- Stage colours <sub>`kid.stage.colours`</sub>
+- Light stick colour <sub>`kid.stage.stick`</sub>
+- Save my stage <sub>`kid.stage.save`</sub>
+- Neon <sub>`kid.stage.neon`</sub>
+- Sunset <sub>`kid.stage.sunset`</sub>
+- Ocean <sub>`kid.stage.ocean`</sub>
+- Mint <sub>`kid.stage.mint`</sub>
+- Pink <sub>`kid.stage.pink`</sub>
+- Violet <sub>`kid.stage.violet`</sub>
+- Cyan <sub>`kid.stage.cyan`</sub>
+- Lime <sub>`kid.stage.lime`</sub>
+- Gold <sub>`kid.stage.gold`</sub>
+
+## 11. The listening run (5)
 
 On light days: her track with no words on screen while she imagines performing it, eyes closed.
 
@@ -273,14 +294,14 @@ On light days: her track with no words on screen while she imagines performing i
 - Open your eyes. That was your listening run. <sub>`kid.listen.cueEnd`</sub>
 - That was your listening run. You can tap All done. <sub>`kid.listen.done`</sub>
 
-## 11. The guided session (2)
+## 12. The guided session (2)
 
 Start today’s practice: the buttons she taps between reps.
 
 - Next <sub>`kid.session.next`</sub>
 - Part {n} of {total} <sub>`kid.session.progress`</sub>
 
-## 12. Sounds (10)
+## 13. Sounds (10)
 
 Her volume and mute for the spoken cues and the sound effects.
 
@@ -295,7 +316,7 @@ Her volume and mute for the spoken cues and the sound effects.
 - Volume {n} of 5 <sub>`kid.sounds.volume`</sub>
 - Off <sub>`kid.sounds.muted`</sub>
 
-## 13. The first-run tour (10)
+## 14. The first-run tour (10)
 
 Five short slides, about 30 seconds, offered on Today the first time.
 
@@ -310,7 +331,7 @@ Five short slides, about 30 seconds, offered on Today the first time.
 - Let’s go <sub>`kid.tour.go`</sub>
 - Skip the tour <sub>`kid.tour.skip`</sub>
 
-## 14. Spoken cues (5)
+## 15. Spoken cues (5)
 
 What the iPad says out loud in its English voice. Only between reps, never over a video or her track.
 
@@ -320,7 +341,7 @@ What the iPad says out loud in its English voice. Only between reps, never over 
 - Next: {block} <sub>`kid.cues.nextBlock`</sub>
 - That’s today’s practice done. Have some water and rest your voice. <sub>`kid.cues.sessionDone`</sub>
 
-## 15. Her sections (11)
+## 16. Her sections (18)
 
 The list of sections and each section’s page.
 
@@ -333,10 +354,17 @@ The list of sections and each section’s page.
 - Missing words <sub>`kid.sections.missingWords`</sub>
 - Counts from memory <sub>`kid.sections.countsTest`</sub>
 - Record this section <sub>`kid.sections.record`</sub>
+- Build the line <sub>`kid.sections.buildLine`</sub>
+- Your stage <sub>`kid.sections.stageTitle`</sub>
+- Every step you tick switches on a light. <sub>`kid.sections.stageNote`</sub>
+- Show day! Every light is on for you. <sub>`kid.sections.showDayLights`</sub>
+- Name your stage <sub>`kid.sections.nameStage`</sub>
+- A light switched on: {section} <sub>`kid.sections.lightOn`</sub>
+- Every light on this ladder: {section}! <sub>`kid.sections.ladderDone`</sub>
 - Back for a quick check today <sub>`kid.sections.checkToday`</sub>
 - ticked <sub>`kid.sections.rungTicked`</sub>
 
-## 16. Quick tests (9)
+## 17. Quick tests (14)
 
 Missing words and counts from memory.
 
@@ -349,8 +377,13 @@ Missing words and counts from memory.
 - Play the music and count the 8-counts out loud. Then check. <sub>`kid.quiz.countsHow`</sub>
 - Show the counts <sub>`kid.quiz.showCounts`</sub>
 - Hide the counts <sub>`kid.quiz.hideCounts`</sub>
+- Build the line <sub>`kid.quiz.buildTitle`</sub>
+- Tap the words in order to build each line. Say it out loud as you go. <sub>`kid.quiz.buildHow`</sub>
+- Line {n} of {total} <sub>`kid.quiz.lineOf`</sub>
+- Next line <sub>`kid.quiz.nextLine`</sub>
+- You built every line! <sub>`kid.quiz.allBuilt`</sub>
 
-## 17. Showtime (29)
+## 18. Showtime (29)
 
 The whole track from the top, with no stopping.
 
@@ -384,7 +417,7 @@ The whole track from the top, with no stopping.
 - That’s your bow. Big smile! <sub>`kid.showtime.bowDone`</sub>
 - Someone watched me <sub>`kid.showtime.someoneWatched`</sub>
 
-## 18. Looking back (25)
+## 19. Looking back (25)
 
 After Showtime, a clip or performing for family: one thing that went well, one to work on.
 
@@ -420,7 +453,7 @@ After Showtime, a clip or performing for family: one thing that went well, one t
 - My face and eyes <sub>`reflect.workOn.7`</sub>
 - Keeping the mic still <sub>`reflect.workOn.8`</sub>
 
-## 19. Recording (16)
+## 20. Recording (16)
 
 The camera, recording beside the reference, and the note when an older clip is deleted.
 
@@ -441,7 +474,7 @@ The camera, recording beside the reference, and the note when an older clip is d
 - The camera didn’t start. A grown-up can check the camera settings. <sub>`kid.record.cameraOff`</sub>
 - A grown-up needs to load your track before you can record. <sub>`kid.record.needsTrack`</sub>
 
-## 20. Her clips (8)
+## 21. Her clips (8)
 
 The list of clips kept on the iPad.
 
@@ -454,7 +487,7 @@ The list of clips kept on the iPad.
 - You keep the newest 3 of each. <sub>`kid.clips.keepNote`</sub>
 - Close <sub>`kid.clips.close`</sub>
 
-## 21. Lessons (52)
+## 22. Lessons (52)
 
 The six short reads, in full, each with its “try it” and the line that puts her teachers first.
 

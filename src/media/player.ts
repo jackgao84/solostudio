@@ -26,6 +26,8 @@ export interface Player {
 export class RangePlayer {
   private raf = 0
   private atEnd = true
+  /** The media has been seen playing since this play began. */
+  private seen = false
   onTick: ((t: number) => void) | null = null
   onStop: (() => void) | null = null
 
@@ -53,6 +55,7 @@ export class RangePlayer {
     this.player.setRate(this.speed)
     this.player.seek(this.from)
     this.atEnd = false
+    this.seen = false
     this.player.play()
     this.loop()
     return true
@@ -66,6 +69,7 @@ export class RangePlayer {
     if (this.atEnd) return this.playFromTop()
     if (!(await this.whenReady())) return false
     this.player.setRate(this.speed)
+    this.seen = false
     this.player.play()
     this.loop()
     return true
@@ -82,6 +86,8 @@ export class RangePlayer {
   }
 
   private finish(): void {
+    // Reaching `to` and the media's own "ended" can both happen at the end: stop once.
+    if (this.atEnd) return
     this.pause()
     this.atEnd = true
     this.onStop?.()
@@ -89,10 +95,23 @@ export class RangePlayer {
 
   private loop(): void {
     cancelAnimationFrame(this.raf)
+    let lastT = -1
+    let movedAt = performance.now()
     const step = () => {
       const t = this.player.time()
       this.onTick?.(t)
+      const playing = this.player.playing()
+      if (playing) this.seen = true
+      const now = performance.now()
+      if (t !== lastT) {
+        lastT = t
+        movedAt = now
+      }
       if (Number.isFinite(this.to) && t >= this.to) return this.finish()
+      // The media stopped, or its clock froze, just short of the end without an "ended" event
+      // (WebKit's media clock can stall there): that's the end too.
+      const nearEnd = Number.isFinite(this.to) && t >= this.to - 0.5
+      if (this.seen && nearEnd && (!playing || now - movedAt > 1000)) return this.finish()
       this.raf = requestAnimationFrame(step)
     }
     this.raf = requestAnimationFrame(step)

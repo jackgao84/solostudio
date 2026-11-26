@@ -24,6 +24,8 @@ import { weekScreen } from './screens/grownups/week'
 import { notesScreen } from './screens/grownups/notes'
 import { soundsScreen } from './screens/kid/sounds'
 import { tourScreen } from './screens/kid/tour'
+import { myStageScreen } from './screens/kid/mystage'
+import { applyTheme } from './ui/theme'
 import { recordScreen } from './screens/kid/record'
 import { clipsScreen } from './screens/kid/clips'
 import { lessonScreen, lessonsScreen } from './screens/kid/lessons'
@@ -47,6 +49,7 @@ function pickStorage(): StorageLike {
 }
 
 const store = initStore(pickStorage())
+applyTheme(store.data.stage.theme)
 
 window.addEventListener('pagehide', () => store.flush())
 document.addEventListener('visibilitychange', () => {
@@ -82,6 +85,7 @@ const routes: [string, Screen][] = [
   ['/clips', clipsScreen],
   ['/sounds', soundsScreen],
   ['/tour', tourScreen],
+  ['/my-stage', myStageScreen],
   ['/lessons', lessonsScreen],
   ['/lesson/:id', lessonScreen],
   ['/grownups', grownupsHome],

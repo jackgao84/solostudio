@@ -1,4 +1,7 @@
-/** Her sections: each with three little ladders of ticks (never a score), and each section's page. */
+/**
+ * Her stage: each section a lighting rig whose lights switch on as she ticks steps (all on for show
+ * day), never a score; she can name the stage. And each section's page with its three ladders.
+ */
 import { go, save, sectionById, sectionsInOrder, today, update } from '../../app/ctx'
 import type { Screen } from '../../app/router'
 import { KID_COPY } from '../../content/kid'
@@ -6,6 +9,7 @@ import { LADDER_COPY, STEP_COPY } from '../../content/ladders'
 import { LADDERS, LADDER_IDS } from '../../model/ladders'
 import { logShaky } from '../../model/activity'
 import { clearShaky, dueItems, markShaky, progressOf } from '../../model/progress'
+import { stageRigs } from '../../model/stage'
 import { button, toggle } from '../../ui/components'
 import { fill, h } from '../../ui/dom'
 import { kidScreen, topbar } from './common'
@@ -13,25 +17,36 @@ import { kidScreen, topbar } from './common'
 const S = KID_COPY.sections
 
 export const sectionsScreen: Screen = (root) => {
-  const el = kidScreen(root, 'sections', topbar(), h('h1', null, S.title))
+  const d = save()
+  const el = kidScreen(root, 'sections', topbar(button(S.nameStage, () => go('/my-stage'), { variant: 'quiet' })))
   const sections = sectionsInOrder()
+  const { rigs, allOn } = stageRigs(d, today())
+  el.append(
+    h(
+      'header',
+      { class: 'stage-head' },
+      h('h1', { class: 'stage-name' }, d.stage.name || S.stageTitle),
+      h('p', { class: 'note' }, allOn ? S.showDayLights : S.stageNote),
+    ),
+  )
   if (!sections.length) {
     el.append(h('p', { class: 'note' }, S.none))
     return
   }
+  // Her stage: one lighting rig per section, a light for every ladder step she has ticked.
   el.append(
     h(
       'div',
-      { class: 'section-cards' },
-      ...sections.map((s) => {
-        const p = progressOf(save().progress, s.id)
+      { class: `stage-lights section-cards${allOn ? ' is-show-day' : ''}` },
+      ...rigs.map((r) => {
+        const p = progressOf(save().progress, r.sectionId)
         return h(
           'article',
           { class: 'section-card card' },
-          h('h2', null, s.name),
-          h('div', { class: 'mini-ladders', 'aria-hidden': 'true' }, ...LADDER_IDS.map((l) => h('div', { class: 'mini-ladder' }, ...LADDERS[l].map((st) => h('span', { class: p[l].done.includes(st.id) ? 'is-done' : '' }))))),
+          h('div', { class: 'rig', 'data-section': r.sectionId, 'aria-hidden': 'true' }, h('span', { class: 'rig__bar' }), h('div', { class: 'rig__lamps' }, ...r.lights.map((l) => h('span', { class: `lamp lamp--${l.ladder}${l.on ? ' is-on' : ''}` })))),
+          h('h2', null, r.name),
           p.shaky ? h('p', { class: 'shaky-note' }, S.shaky) : null,
-          button(fill(S.open, { section: s.name }), () => go(`/section/${s.id}`), { variant: 'primary' }),
+          button(fill(S.open, { section: r.name }), () => go(`/section/${r.sectionId}`), { variant: 'primary' }),
         )
       }),
     ),
@@ -73,7 +88,7 @@ export const sectionScreen: Screen = (root, { params }) => {
       'section',
       { class: 'card stack' },
       h('h2', null, S.quickTests),
-      h('div', { class: 'row' }, button(S.missingWords, () => go(`/quiz/${s.id}/words`)), button(S.countsTest, () => go(`/quiz/${s.id}/counts`))),
+      h('div', { class: 'row' }, button(S.missingWords, () => go(`/quiz/${s.id}/words`)), button(S.buildLine, () => go(`/quiz/${s.id}/build`)), button(S.countsTest, () => go(`/quiz/${s.id}/counts`))),
       toggle(S.shaky, p.shaky, (on) =>
         update((d) => {
           const cur = progressOf(d.progress, s.id)

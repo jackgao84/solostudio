@@ -1306,3 +1306,315 @@
 .practice__notes p {
   margin: 0;
 }
+
+/* ---- 1.1: her stage, celebrations, the light stick, D-day, build the line, themes ---------- */
+
+html[data-theme='sunset'] {
+  --bg: #1f0f1a;
+  --wall: #2d1426;
+  --pink: #ff7a59;
+  --violet: #ff4f8b;
+  --cyan: #ffc65c;
+}
+
+html[data-theme='ocean'] {
+  --bg: #0b1530;
+  --wall: #10224a;
+  --pink: #4fd1ff;
+  --violet: #5b7dff;
+  --cyan: #45f0d1;
+}
+
+html[data-theme='mint'] {
+  --bg: #0d1f1a;
+  --wall: #12302a;
+  --pink: #6bffb8;
+  --violet: #3ecf9f;
+  --cyan: #b8ff6b;
+}
+
+.stage-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 4px 18px;
+}
+
+.stage-name {
+  margin: 0.2em 0;
+  background: linear-gradient(100deg, var(--pink), var(--violet) 45%, var(--cyan));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/* A lighting rig: a truss with a row of lamps, one per ladder step. */
+.rig {
+  position: relative;
+  padding: 10px 8px 6px;
+  margin-bottom: 6px;
+}
+
+.rig__bar {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 6px;
+  height: 6px;
+  border-radius: 3px;
+  background: repeating-linear-gradient(90deg, rgba(255, 255, 255, 0.35) 0 6px, rgba(255, 255, 255, 0.12) 6px 12px);
+}
+
+.rig__lamps {
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(14, 1fr);
+  gap: 4px;
+  padding-top: 8px;
+}
+
+.lamp {
+  aspect-ratio: 1;
+  border-radius: 50% 50% 40% 40%;
+  background: rgba(255, 255, 255, 0.1);
+  border: 2px solid rgba(255, 255, 255, 0.18);
+  transition: background 0.4s, box-shadow 0.4s;
+}
+
+.lamp.is-on.lamp--rap {
+  background: var(--violet);
+  box-shadow: 0 6px 18px var(--violet);
+}
+
+.lamp.is-on.lamp--dance {
+  background: var(--pink);
+  box-shadow: 0 6px 18px var(--pink);
+}
+
+.lamp.is-on.lamp--together {
+  background: var(--lime);
+  box-shadow: 0 6px 18px var(--lime);
+}
+
+.stage-lights.is-show-day .lamp {
+  animation: show-day-glow 1.6s ease-in-out infinite alternate;
+}
+
+@keyframes show-day-glow {
+  to {
+    box-shadow: 0 8px 26px var(--gold);
+  }
+}
+
+/* A light that just switched on, in the top bar for a few seconds. */
+.celebrate {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  margin: 0;
+  padding: 8px 16px;
+  border-radius: 999px;
+  background: rgba(255, 211, 110, 0.15);
+  border: 2px solid var(--gold);
+  color: var(--gold);
+  font-weight: 700;
+}
+
+.celebrate__lamp {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: var(--gold);
+  box-shadow: 0 0 16px var(--gold);
+}
+
+/* The light stick beside the 8-count, in her colour, pulsing on every beat. */
+.counts__main {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.light-stick {
+  flex: none;
+  width: 22px;
+  height: 84px;
+  border-radius: 11px 11px 6px 6px;
+  background: linear-gradient(#fff 0 8%, var(--stick, var(--pink)) 8% 72%, #2b2340 72%);
+  box-shadow: 0 0 14px var(--stick, var(--pink));
+}
+
+.light-stick[data-colour='pink'] {
+  --stick: #ff5fae;
+}
+.light-stick[data-colour='violet'] {
+  --stick: #a77bff;
+}
+.light-stick[data-colour='cyan'] {
+  --stick: #45e3ff;
+}
+.light-stick[data-colour='lime'] {
+  --stick: #c6ff6b;
+}
+.light-stick[data-colour='gold'] {
+  --stick: #ffd36e;
+}
+
+.light-stick.is-beat {
+  animation: stick-pulse 0.35s ease-out;
+}
+
+@keyframes stick-pulse {
+  from {
+    box-shadow: 0 0 34px 10px var(--stick, var(--pink));
+  }
+  to {
+    box-shadow: 0 0 14px var(--stick, var(--pink));
+  }
+}
+
+.dday {
+  margin: 0;
+  padding: 4px 16px;
+  border-radius: 12px;
+  font-size: 34px;
+  font-weight: 900;
+  letter-spacing: 0.04em;
+  color: #fff;
+  background: linear-gradient(120deg, var(--pink), var(--violet));
+  box-shadow: 0 0 20px rgba(255, 95, 174, 0.45);
+}
+
+/* Build the line. */
+.built-line {
+  min-height: 64px;
+  margin: 0;
+  padding: 10px 16px;
+  border-radius: var(--radius);
+  border: 2px dashed rgba(255, 255, 255, 0.3);
+  font-size: 36px;
+  font-weight: 700;
+}
+
+.built-line.is-built {
+  border-style: solid;
+  border-color: var(--lime);
+  color: var(--lime);
+}
+
+.word-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.word-chip {
+  min-height: 64px;
+  min-width: 64px;
+  padding: 8px 22px;
+  border-radius: 16px;
+  border: 2px solid rgba(167, 123, 255, 0.75);
+  background: rgba(255, 255, 255, 0.08);
+  color: var(--text);
+  font: inherit;
+  font-size: 32px;
+  font-weight: 650;
+  cursor: pointer;
+}
+
+.word-chip.is-placed {
+  visibility: hidden;
+}
+
+.word-chip.is-peek {
+  border-color: var(--gold);
+  box-shadow: 0 0 20px var(--gold);
+}
+
+.word-chip.is-not-yet {
+  animation: wiggle 0.35s ease-in-out;
+}
+
+@keyframes wiggle {
+  25% {
+    transform: translateX(-6px);
+  }
+  75% {
+    transform: translateX(6px);
+  }
+}
+
+.all-built {
+  margin: 0;
+  font-size: 32px;
+  font-weight: 800;
+  color: var(--lime);
+}
+
+.chip__swatch {
+  display: inline-block;
+  width: 22px;
+  height: 22px;
+  margin-right: 8px;
+  border-radius: 50%;
+  vertical-align: -3px;
+  background: var(--swatch, #fff);
+}
+
+.chip--neon {
+  --swatch: linear-gradient(120deg, #ff5fae, #a77bff, #45e3ff);
+}
+.chip--sunset {
+  --swatch: linear-gradient(120deg, #ff7a59, #ff4f8b, #ffc65c);
+}
+.chip--ocean {
+  --swatch: linear-gradient(120deg, #4fd1ff, #5b7dff, #45f0d1);
+}
+.chip--mint {
+  --swatch: linear-gradient(120deg, #6bffb8, #3ecf9f, #b8ff6b);
+}
+.chip--pink {
+  --swatch: #ff5fae;
+}
+.chip--violet {
+  --swatch: #a77bff;
+}
+.chip--cyan {
+  --swatch: #45e3ff;
+}
+.chip--lime {
+  --swatch: #c6ff6b;
+}
+.chip--gold {
+  --swatch: #ffd36e;
+}
+
+/* Confetti for her first full Showtime: falls over the top of the screen, never blocks a tap. */
+.confetti {
+  position: relative;
+  height: 0;
+  pointer-events: none;
+}
+
+.confetti span {
+  position: absolute;
+  top: -20px;
+  left: var(--x);
+  width: 12px;
+  height: 18px;
+  border-radius: 3px;
+  background: var(--c);
+  pointer-events: none;
+  animation: confetti-fall 2.6s ease-in var(--d) both;
+}
+
+@keyframes confetti-fall {
+  from {
+    transform: translateY(0) rotate(0);
+    opacity: 1;
+  }
+  to {
+    transform: translateY(70vh) rotate(var(--r));
+    opacity: 0;
+  }
+}

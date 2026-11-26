@@ -1,4 +1,5 @@
 /** Pieces every one of her screens uses: the screen frame, the top bar, the block timer pill. */
+import { takeCelebration } from '../../app/celebrate'
 import { go, getActiveBlock, today } from '../../app/ctx'
 import { blockCopy } from '../../content/blocks'
 import { KID_COPY } from '../../content/kid'
@@ -44,5 +45,9 @@ export function blockTimer(): { el: HTMLElement; stop: () => void } | null {
 }
 
 export function topbar(...extra: Child[]): HTMLElement {
-  return h('nav', { class: 'topbar' }, todayButton(), h('span', { class: 'topbar__spacer' }), ...extra)
+  // A light that just switched on (she ticked a step) shows here for a few seconds.
+  const words = takeCelebration()
+  const pill = words ? h('p', { class: 'celebrate', role: 'status' }, h('span', { class: 'celebrate__lamp', 'aria-hidden': 'true' }), words) : null
+  if (pill) window.setTimeout(() => pill.remove(), 5000)
+  return h('nav', { class: 'topbar' }, todayButton(), pill, h('span', { class: 'topbar__spacer' }), ...extra)
 }

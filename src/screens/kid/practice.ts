@@ -10,7 +10,9 @@ import { KID_COPY } from '../../content/kid'
 import { STEP_COPY } from '../../content/ladders'
 import { sectionFadeLevels } from '../../model/fade'
 import { LADDERS, pickReference, stepById } from '../../model/ladders'
+import { celebrate } from '../../app/celebrate'
 import { logTick } from '../../model/activity'
+import { celebrationsForTick } from '../../model/celebrate'
 import { progressOf, reviewLadder, setFade, tickStep } from '../../model/progress'
 import { isDue } from '../../model/spacing'
 import { lineStarts, wordsOf } from '../../model/sync'
@@ -231,6 +233,7 @@ export const practiceScreen: Screen = (root, { params, query }) => {
     }
     const t = today()
     const before = prog()
+    celebrate(celebrationsForTick(before, step!.ladder, step!.id), s.name)
     let p = tickStep(before, step!.ladder, step!.id, t)
     if (before[step!.ladder].finishedAt && isDue(p[step!.ladder].review, t)) p = reviewLadder(p, step!.ladder, t)
     update((d) => {

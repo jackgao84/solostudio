@@ -16,7 +16,8 @@ import { go, save, sectionsInOrder, today, update } from '../../app/ctx'
 import { sessionCue, sessionItem, sessionNext } from '../../app/session'
 import type { Screen } from '../../app/router'
 import { GATE_HOLD_MS } from '../../app/gate'
-import { playApplause, startCrowd, type SoundHandle } from '../../audio/sfx'
+import { confettiPop, playApplause, startCrowd, type SoundHandle } from '../../audio/sfx'
+import { celebrateShowtime } from '../../model/celebrate'
 import { hush, say } from '../../audio/voice'
 import { KID_COPY } from '../../content/kid'
 import { countInSchedule } from '../../model/countin'
@@ -41,6 +42,16 @@ function songLines(): { start: number; text: string }[] {
     s.lines.forEach((l, i) => out.push({ start: starts[i], text: l.lyric }))
   }
   return out.sort((a, b) => a.start - b.start)
+}
+
+/** Paper confetti falling from the top of the screen (no player is on screen by then). */
+function confettiBurst(): HTMLElement {
+  const colours = ['var(--pink)', 'var(--violet)', 'var(--cyan)', 'var(--lime)', 'var(--gold)']
+  return h(
+    'div',
+    { class: 'confetti', 'aria-hidden': 'true' },
+    ...Array.from({ length: 48 }, (_, i) => h('span', { style: `--x:${(i * 37) % 100}%;--d:${(i % 7) * 0.12}s;--r:${(i * 53) % 360}deg;--c:${colours[i % colours.length]}` })),
+  )
 }
 
 export const showtimeScreen: Screen = (root, { query }) => {
@@ -258,7 +269,13 @@ export const showtimeScreen: Screen = (root, { query }) => {
     if (family) watched.append(...brave())
     else watched.append(button(S.someoneWatched, () => watched.replaceChildren(...brave())))
     playerArea.hidden = true
-    top.replaceChildren(h('h1', null, S.finished))
+    // Confetti for her first full Showtime, once (for doing it, nothing else).
+    const confetti = celebrateShowtime(save())
+    if (confetti) {
+      update((d) => (d.celebrated.firstShowtime = true))
+      confettiPop()
+    }
+    top.replaceChildren(...(confetti ? [confettiBurst()] : []), h('h1', null, S.finished))
     bottom.replaceChildren(
       reflectView(
         (r) =>

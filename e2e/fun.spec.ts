@@ -161,9 +161,9 @@ test('confetti for her first full Showtime, and only the first', async ({ page }
   await holdGate(page)
   await loadTrack(page, 5)
   await tap(page.getByRole('button', { name: 'Back to practice' }))
-  await page.goto('./#/showtime')
   for (const first of [true, false]) {
-    if (!first) await tap(page.getByRole('button', { name: 'Do another run-through' }))
+    await page.goto('./#/today')
+    await page.goto('./#/showtime')
     await tap(page.getByRole('button', { name: 'Start' }))
     await expect(page.locator('.reflect')).toBeVisible({ timeout: 70_000 })
     await expect(page.locator('.confetti')).toHaveCount(first ? 1 : 0)
