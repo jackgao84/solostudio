@@ -7,12 +7,20 @@ import {
   CURRENT_SCHEMA_VERSION,
   DEFAULT_HOLIDAY_MINUTES,
   DEFAULT_SCHOOL_MINUTES,
+  STAGE_NAME_MAX,
+  STAGE_THEMES,
+  STICK_COLOURS,
   defaultSave,
   defaultSettings,
+  defaultShowtime,
+  defaultSound,
+  defaultStage,
+  type DayActivity,
   type DayState,
   type LadderProgress,
   type Line,
   type Marks,
+  type Notes,
   type PlanSettings,
   type Reference,
   type Reflection,
@@ -21,6 +29,9 @@ import {
   type Section,
   type SectionProgress,
   type Show,
+  type ShowtimeSettings,
+  type SoundSettings,
+  type StageSettings,
 } from './schema'
 
 type Obj = Record<string, unknown>
@@ -129,6 +140,54 @@ function reflection(v: unknown): Reflection | null {
   }
 }
 
+const clampNum = (v: unknown, lo: number, hi: number, d: number): number => Math.min(hi, Math.max(lo, num(v, d) as number))
+const isDay = (k: string) => /^\d{4}-\d{2}-\d{2}$/.test(k)
+
+function stage(v: unknown): StageSettings {
+  const o = isObj(v) ? v : {}
+  const d = defaultStage()
+  return {
+    name: str(o.name).trim().slice(0, STAGE_NAME_MAX),
+    theme: (STAGE_THEMES as readonly string[]).includes(str(o.theme)) ? (o.theme as StageSettings['theme']) : d.theme,
+    stick: (STICK_COLOURS as readonly string[]).includes(str(o.stick)) ? (o.stick as StageSettings['stick']) : d.stick,
+  }
+}
+
+function sound(v: unknown): SoundSettings {
+  const o = isObj(v) ? v : {}
+  const d = defaultSound()
+  return {
+    voiceOn: bool(o.voiceOn, d.voiceOn),
+    voiceVolume: clampNum(o.voiceVolume, 0, 1, d.voiceVolume),
+    effectsOn: bool(o.effectsOn, d.effectsOn),
+    effectsVolume: clampNum(o.effectsVolume, 0, 1, d.effectsVolume),
+    audience: bool(o.audience, d.audience),
+  }
+}
+
+function showtimeSettings(v: unknown): ShowtimeSettings {
+  const o = isObj(v) ? v : {}
+  const d = defaultShowtime()
+  return { breaths: Math.round(clampNum(o.breaths, 1, 5, d.breaths)), walkOnSeconds: Math.round(clampNum(o.walkOnSeconds, 3, 30, d.walkOnSeconds)) }
+}
+
+function notes(v: unknown): Notes {
+  const o = isObj(v) ? v : {}
+  const teacher: Record<string, string> = {}
+  if (isObj(o.teacher)) for (const [k, t] of Object.entries(o.teacher)) if (typeof t === 'string' && t.trim()) teacher[k] = t
+  const f = isObj(o.forHer) ? o.forHer : null
+  return { teacher, forHer: f && typeof f.text === 'string' && f.text.trim() ? { text: f.text, at: str(f.at), seen: bool(f.seen, false) } : null }
+}
+
+function activity(v: unknown): DayActivity {
+  const o = isObj(v) ? v : {}
+  return {
+    seconds: Math.max(0, Math.round(num(o.seconds, 0) as number)),
+    ticks: arr(o.ticks).filter((t): t is Obj => isObj(t) && typeof t.section === 'string' && typeof t.step === 'string').map((t) => ({ section: t.section as string, step: t.step as string })),
+    shaky: strs(o.shaky),
+  }
+}
+
 export function normalize(raw: unknown): SaveData {
   const d = defaultSave()
   const o = isObj(raw) ? raw : {}
@@ -143,6 +202,10 @@ export function normalize(raw: unknown): SaveData {
   if (isObj(o.progress)) for (const [k, v] of Object.entries(o.progress)) progressOut[k] = progress(v)
   const days: Record<string, DayState> = {}
   if (isObj(o.days)) for (const [k, v] of Object.entries(o.days)) days[k] = day(v)
+  const log: Record<string, DayActivity> = {}
+  if (isObj(o.activity)) for (const [k, v] of Object.entries(o.activity)) if (isDay(k)) log[k] = activity(v)
+  const tour = isObj(o.tour) ? o.tour : {}
+  const celebrated = isObj(o.celebrated) ? o.celebrated : {}
   return {
     schemaVersion: CURRENT_SCHEMA_VERSION,
     setup: { complete: bool(setup.complete, false), persistAsked: bool(setup.persistAsked, false), persisted: typeof setup.persisted === 'boolean' ? setup.persisted : null },
@@ -169,6 +232,13 @@ export function normalize(raw: unknown): SaveData {
       trackSpeed: Math.min(1, Math.max(0.5, num(settings.trackSpeed, defaults.trackSpeed) as number)),
       mirrorClips: bool(settings.mirrorClips, defaults.mirrorClips),
     },
+    stage: stage(o.stage),
+    sound: sound(o.sound),
+    showtime: showtimeSettings(o.showtime),
+    notes: notes(o.notes),
+    activity: log,
+    tour: { seen: bool(tour.seen, false) },
+    celebrated: { firstShowtime: bool(celebrated.firstShowtime, false) },
   }
 }
 

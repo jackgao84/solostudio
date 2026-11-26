@@ -2,6 +2,7 @@
  * The backup file: everything except media (her track, videos and clips stay in IndexedDB on the
  * iPad). Import goes through the same normalising as loading and refuses files from newer versions.
  */
+import { migrate } from './migrate'
 import { normalize, versionOf } from './normalize'
 import { CURRENT_SCHEMA_VERSION, type SaveData } from './schema'
 
@@ -64,6 +65,6 @@ export function parseImport(text: string): ImportResult {
   const v = versionOf(env.data)
   if (v === null) return { ok: false, error: IMPORT_ERRORS.notOurs }
   if (v > CURRENT_SCHEMA_VERSION) return { ok: false, error: IMPORT_ERRORS.newer }
-  const data = normalize(env.data)
+  const data = normalize(migrate(env.data))
   return { ok: true, data, summary: summarize(data) }
 }

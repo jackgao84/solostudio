@@ -27,7 +27,29 @@
     update specs seed no YouTube stand-in (routing can't reach a worker-controlled page).
   No assertion was changed anywhere.
 
-## Stages
+## Version 1.1 (in progress)
+
+The owner's update brief for 1.1 (start anywhere, rejoin, the Showtime routine, the grown-ups'
+week, the listening run, a guided session with spoken cues, and the stage lights) is worked through
+part by part: checks first, then the code, a commit after each part.
+
+1. [x] Save version 2 with a tested migration from 1.0 (`src/storage/migrate.ts`; checks
+   `tests/unit/migration.test.ts`, `e2e/migration.spec.ts`, fixture `tests/fixtures/v1-save.ts`).
+   A 1.0 save loads unchanged with the new parts at their defaults; the 1.0 document is kept as
+   the backup copy before the new one is written, once; 1.0 backup files still import.
+2. [ ] Start anywhere and rejoin drills, in the plan from the together phase on.
+3. [ ] The Showtime routine, audience sound, walk-on and bow on their own.
+4. [ ] Grown-ups' week, teacher notes per section, a note for her on Today.
+5. [ ] Listening run on light days.
+6. [ ] Ease of use: guided session, spoken cues and count-ins, looping reps, sound settings, tour.
+7. [ ] Fun: stage lights, light stick, D-day, build the line, celebrations, her stage's name and colours.
+8. [ ] Docs (REVIEW.md, SETUP.md), full checks, screens in both orientations, version 1.1.0, deploy.
+
+**Check change approved by the owner (1.1):** `e2e/journey.spec.ts` steps 13–14: only the waits
+grow by the Showtime routine's length (the routine now comes before and after her track); every
+assertion stays.
+
+## Stages (1.0)
 
 1. [x] Read Up Anyway conventions (via gh) and probe WebKit.
 2. [x] Scaffold: Vite + TypeScript, plain DOM/CSS, service worker, `/solostudio/`, Playwright WebKit.

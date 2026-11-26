@@ -7,7 +7,8 @@
  */
 import { DEFAULT_REFS } from '../content/references'
 
-export const CURRENT_SCHEMA_VERSION = 1
+/** 1: version 1.0. 2: version 1.1 (stage, sounds, Showtime routine, notes, practice log, tour, celebrations). */
+export const CURRENT_SCHEMA_VERSION = 2
 
 export type Lang = 'en' | 'ko'
 
@@ -153,6 +154,60 @@ export interface Settings {
   mirrorClips: boolean
 }
 
+/** Her stage: its name, its colour theme and the colour of her light stick. */
+export const STAGE_THEMES = ['neon', 'sunset', 'ocean', 'mint'] as const
+export type StageTheme = (typeof STAGE_THEMES)[number]
+export const STICK_COLOURS = ['pink', 'violet', 'cyan', 'lime', 'gold'] as const
+export type StickColour = (typeof STICK_COLOURS)[number]
+export const STAGE_NAME_MAX = 40
+
+export interface StageSettings {
+  name: string
+  theme: StageTheme
+  stick: StickColour
+}
+
+/** Spoken cues and sound effects each have their own volume (0–1) and mute. */
+export interface SoundSettings {
+  voiceOn: boolean
+  voiceVolume: number
+  effectsOn: boolean
+  effectsVolume: number
+  /** A gentle crowd and applause in Showtime (always the same, whatever happens). */
+  audience: boolean
+}
+
+/** The Showtime routine: breaths backstage, and seconds to walk from the iPad to her spot. */
+export interface ShowtimeSettings {
+  breaths: number
+  walkOnSeconds: number
+}
+
+export interface NoteForHer {
+  text: string
+  /** ISO time it was written. */
+  at: string
+  /** She tapped it: it no longer shows on Today. */
+  seen: boolean
+}
+
+export interface Notes {
+  /** A teacher's note for each section (by section id), typed by a grown-up. */
+  teacher: Record<string, string>
+  /** A short note from a grown-up, shown on Today until she taps it. */
+  forHer: NoteForHer | null
+}
+
+/** What she did on one day, for the grown-ups' week. */
+export interface DayActivity {
+  /** Seconds spent practising (a practice screen open while she was active). */
+  seconds: number
+  /** Ladder steps she ticked. */
+  ticks: { section: string; step: string }[]
+  /** Sections she marked shaky. */
+  shaky: string[]
+}
+
 export interface SaveData {
   schemaVersion: number
   setup: {
@@ -176,6 +231,15 @@ export interface SaveData {
   days: Record<string, DayState>
   reflections: Reflection[]
   settings: Settings
+  stage: StageSettings
+  sound: SoundSettings
+  showtime: ShowtimeSettings
+  notes: Notes
+  /** By day (YYYY-MM-DD). */
+  activity: Record<string, DayActivity>
+  tour: { seen: boolean }
+  /** One-off celebrations that have happened. */
+  celebrated: { firstShowtime: boolean }
 }
 
 /** The original video (a default reference) stands in for her track until it is loaded. */
@@ -205,6 +269,25 @@ export function defaultSettings(): Settings {
   }
 }
 
+export const DEFAULT_BREATHS = 3
+export const DEFAULT_WALK_ON_SECONDS = 8
+
+export function defaultStage(): StageSettings {
+  return { name: '', theme: 'neon', stick: 'pink' }
+}
+
+export function defaultSound(): SoundSettings {
+  return { voiceOn: true, voiceVolume: 1, effectsOn: true, effectsVolume: 0.6, audience: true }
+}
+
+export function defaultShowtime(): ShowtimeSettings {
+  return { breaths: DEFAULT_BREATHS, walkOnSeconds: DEFAULT_WALK_ON_SECONDS }
+}
+
+export function emptyActivity(): DayActivity {
+  return { seconds: 0, ticks: [], shaky: [] }
+}
+
 /** A fresh save: no sections, no lines, the default reference videos. */
 export function defaultSave(_now: Date = new Date()): SaveData {
   return {
@@ -223,5 +306,12 @@ export function defaultSave(_now: Date = new Date()): SaveData {
     days: {},
     reflections: [],
     settings: defaultSettings(),
+    stage: defaultStage(),
+    sound: defaultSound(),
+    showtime: defaultShowtime(),
+    notes: { teacher: {}, forHer: null },
+    activity: {},
+    tour: { seen: false },
+    celebrated: { firstShowtime: false },
   }
 }

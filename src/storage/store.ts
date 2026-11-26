@@ -4,6 +4,7 @@
  * so unit tests run in node with an in-memory map.
  */
 import { KEYS } from './keys'
+import { migrate } from './migrate'
 import { normalize, versionOf } from './normalize'
 import { CURRENT_SCHEMA_VERSION, defaultSave, type SaveData } from './schema'
 
@@ -31,7 +32,8 @@ export class MemoryStorage implements StorageLike {
 
 export interface LoadResult {
   data: SaveData
-  info: { kind: 'loaded' | 'fresh' | 'recovered' | 'newer' }
+  /** 'migrated': an older save brought up to date (`from` is its version). */
+  info: { kind: 'loaded' | 'fresh' | 'recovered' | 'newer' | 'migrated'; from?: number }
 }
 
 function parse(text: string | null): unknown {
@@ -43,16 +45,20 @@ function parse(text: string | null): unknown {
   }
 }
 
-/** Load the save; a broken one is replaced by the backup, and a missing or broken pair by a fresh save. */
+/**
+ * Load the save; an older one is migrated, a broken one is replaced by the backup, and a missing or
+ * broken pair by a fresh save.
+ */
 export function loadSave(storage: StorageLike): LoadResult {
   const raw = parse(storage.getItem(KEYS.save))
   const v = versionOf(raw)
   if (raw !== undefined && v !== null) {
     if (v > CURRENT_SCHEMA_VERSION) return { data: normalize(raw), info: { kind: 'newer' } }
+    if (v < CURRENT_SCHEMA_VERSION) return { data: normalize(migrate(raw)), info: { kind: 'migrated', from: v } }
     return { data: normalize(raw), info: { kind: 'loaded' } }
   }
   const backup = parse(storage.getItem(KEYS.backup))
-  if (backup !== undefined && versionOf(backup) !== null) return { data: normalize(backup), info: { kind: 'recovered' } }
+  if (backup !== undefined && versionOf(backup) !== null) return { data: normalize(migrate(backup)), info: { kind: 'recovered' } }
   return { data: defaultSave(), info: { kind: 'fresh' } }
 }
 
@@ -74,7 +80,16 @@ export class Store {
     const result = loadSave(storage)
     this.doc = result.data
     this.loadInfo = result.info
-    if (result.info.kind === 'fresh' || result.info.kind === 'recovered') {
+    if (result.info.kind === 'migrated') {
+      // Keep the older document exactly as it was, as the backup copy, before writing the new one.
+      try {
+        const old = storage.getItem(KEYS.save)
+        if (old != null) storage.setItem(KEYS.backup, old)
+      } catch (err) {
+        this.lastWriteError = String(err)
+      }
+    }
+    if (result.info.kind === 'fresh' || result.info.kind === 'recovered' || result.info.kind === 'migrated') {
       this.dirty = true
       this.flush()
     }
