@@ -15,7 +15,7 @@ import { GATE_HOLD_MS } from '../src/app/gate'
 import { DEFAULT_REFS } from '../src/content/references'
 import { addDays, dayKey, weekdayOf } from '../src/model/dates'
 import { KEYS } from '../src/storage/keys'
-import { defaultSave, type Line, type SaveData, type Section } from '../src/storage/schema'
+import { SKILL_LESSON_IDS, defaultSave, type Line, type SaveData, type Section } from '../src/storage/schema'
 import { isPlaceholder, lyricLine, meaningLine } from '../tests/fixtures/placeholders'
 
 export { expect }
@@ -573,7 +573,10 @@ export interface SeedOptions {
   standIn?: string
 }
 
-/** A save past setup: a show, a plan from today, placeholder sections marked everywhere, a tempo. */
+/**
+ * A save past setup: a show, a plan from today, placeholder sections marked everywhere, a tempo, and
+ * (version 1.2) every skill lesson already heard, so it is about practising, not first lessons.
+ */
 export function setUpSave(opts: SeedOptions = {}): SaveData {
   const d = defaultSave()
   const t = today()
@@ -585,6 +588,7 @@ export function setUpSave(opts: SeedOptions = {}): SaveData {
   d.track = { mediaId: null, fileName: '', duration: null, standInYoutubeId: opts.standIn ?? 'JSFG-IE8n_c' }
   d.sections = Array.from({ length: opts.sections ?? 3 }, (_, i) => seededSection(i))
   d.tempo = { bpm: 120, offset: 0.5 }
+  d.lessons.done = [...SKILL_LESSON_IDS]
   return d
 }
 

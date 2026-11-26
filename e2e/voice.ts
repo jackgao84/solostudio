@@ -5,6 +5,10 @@
  *   overrides on instance objects) by a recorder that notes each utterance's words, volume and
  *   language, the time, and whether any media was playing at that moment: her track, a YouTube
  *   player or a video (the camera preview doesn't count). Cues must never be spoken over media.
+ * - Narration clips (version 1.2): the coach's recorded voice plays through Web Audio. The app labels
+ *   each clip's source node with the words it says (`solostudioSay`) and its volume
+ *   (`solostudioVolume`); AudioBufferSourceNode.prototype.start is wrapped to note those clips in the
+ *   same log, the same way, marked `clip: true`.
  * - Sound effects are read from the app's debug hook (`__solostudio.sounds()`), which lists each
  *   effect actually played with its volume.
  * - `test` here is helpers' `test` with the speech stand-in added.
@@ -19,6 +23,8 @@ export interface Utterance {
   at: number
   /** Media was playing when it was spoken. */
   overMedia: string[]
+  /** Said by a recorded narration clip (not the iPad's voice). */
+  clip?: boolean
 }
 
 export interface PlayedSound {
@@ -44,6 +50,15 @@ const VOICE_STANDIN = () => {
       log.push({ text: u.text, volume: u.volume, lang: u.lang, at: performance.now(), overMedia: playing() })
     }
     SpeechSynthesis.prototype.cancel = function () {}
+  }
+  if (typeof AudioBufferSourceNode !== 'undefined') {
+    const start = AudioBufferSourceNode.prototype.start
+    AudioBufferSourceNode.prototype.start = function (this: AudioBufferSourceNode & { solostudioSay?: unknown; solostudioVolume?: unknown }, ...args: unknown[]) {
+      if (typeof this.solostudioSay === 'string') {
+        log.push({ text: this.solostudioSay, volume: typeof this.solostudioVolume === 'number' ? this.solostudioVolume : 1, lang: 'en', at: performance.now(), overMedia: playing(), clip: true })
+      }
+      return (start as (...a: unknown[]) => void).apply(this, args)
+    }
   }
 }
 

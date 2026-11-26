@@ -1,8 +1,8 @@
 /**
  * Every screen at iPad portrait and landscape: 48 px touch targets, no sideways scrolling, 16 px text
  * fields, text readable from two metres on her screens, and the YouTube rules wherever a player is.
- * Also: the lessons (each puts her teachers first, with Face Lab and Up Anyway linked from the
- * performing lesson and the links set in the grown-ups' area).
+ * Also: the lessons (each puts her teachers first, with Face Lab linked from the expressions lesson,
+ * Up Anyway from the performing lesson, and the links set in the grown-ups' area).
  */
 import { DEFAULT_FACE_LAB_URL, DEFAULT_UP_ANYWAY_URL } from '../src/storage/schema'
 import { LESSON_IDS } from '../src/content/lessons'
@@ -101,13 +101,14 @@ test('lessons put her teachers first and link to Face Lab and Up Anyway', async 
   await tap(page.getByRole('button', { name: 'Lessons' }))
   await expectRoute(page, '/lessons')
   await expect(page.locator('.lesson-card')).toHaveCount(LESSON_IDS.length)
-  await tap(page.locator('.lesson-card').nth(3))
+  await tap(page.locator('.lesson-card[data-lesson="performing"]'))
   await expectRoute(page, '/lesson/performing')
   await expect(page.locator('.teachers-first')).toContainText(/teachers/i)
+  await expect(page.locator('a.upanyway-link')).toHaveAttribute('href', DEFAULT_UP_ANYWAY_URL)
+  await page.goto('./#/lesson/expressions')
   const face = page.locator('a.facelab-link')
   await expect(face).toHaveAttribute('href', DEFAULT_FACE_LAB_URL)
   await expect(face).toHaveAttribute('target', '_blank')
-  await expect(page.locator('a.upanyway-link')).toHaveAttribute('href', DEFAULT_UP_ANYWAY_URL)
 
   // A grown-up changes the Face Lab link.
   await tap(page.getByRole('button', { name: 'Today' }))
@@ -115,6 +116,6 @@ test('lessons put her teachers first and link to Face Lab and Up Anyway', async 
   await tap(page.getByRole('button', { name: 'Links' }))
   await typeInto(page.locator('input[name="faceLabUrl"]'), 'https://jackgao84.github.io/face-lab/?from=solo')
   await tap(page.getByRole('button', { name: 'Save links' }))
-  await page.goto('./#/lesson/performing')
+  await page.goto('./#/lesson/expressions')
   await expect(page.locator('a.facelab-link')).toHaveAttribute('href', 'https://jackgao84.github.io/face-lab/?from=solo')
 })

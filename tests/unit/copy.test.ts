@@ -42,8 +42,8 @@ describe('every line she sees', () => {
 })
 
 describe('lessons', () => {
-  it('are the six short reads, in order', () => {
-    expect(LESSON_IDS).toEqual(['learning-a-dance', 'rap-basics', 'rapping-while-dancing', 'performing', 'voice-care', 'practising-smart'])
+  it('are the seven skill lessons, in order', () => {
+    expect(LESSON_IDS).toEqual(['counting', 'learning-a-dance', 'voice-warm-up', 'breathing', 'marking', 'expressions', 'performing'])
     expect(LESSONS.map((l) => l.id)).toEqual(LESSON_IDS)
   })
 
@@ -76,19 +76,20 @@ describe('lessons', () => {
       return [l.title, ...l.paragraphs, l.tryIt].join(' ')
     }
     const need: Record<string, RegExp[]> = {
-      'learning-a-dance': [/8 counts?|eight counts?|8-count/i, /mirror/i, /slow/i, /chunk/i, /chain/i],
-      'rap-basics': [/rhythm|beat/i, /consonant/i, /breath/i, /energy/i],
-      'rapping-while-dancing': [/\bmark/i, /breath|breathe/i, /stamina/i, /headset|mic/i],
+      counting: [/8 counts?|eight counts?|8-count/i, /rhythm|beat/i],
+      'learning-a-dance': [/mirror/i, /slow/i, /chunk/i, /chain/i, /short/i, /test yourself/i, /sleep/i],
+      'voice-warm-up': [/consonant/i, /water/i, /shout/i, /\brest\b/i, /hoarse/i],
+      breathing: [/breath|breathe/i, /stamina/i],
+      marking: [/\bmark/i, /energy/i, /headset|mic/i, /full out/i],
+      expressions: [/face|expression/i],
       performing: [/\beyes?\b|eye line/i, /face|expression/i, /keep going/i],
-      'voice-care': [/water/i, /shout/i, /\brest\b/i, /hoarse/i],
-      'practising-smart': [/short/i, /test yourself/i, /sleep/i],
     }
     for (const [id, res] of Object.entries(need)) for (const re of res) expect(text(id), `${id} ${re}`).toMatch(re)
   })
 
   it('link to Face Lab for expressions and to Up Anyway for brave things', () => {
-    const performing = LESSONS.find((l) => l.id === 'performing')!
-    expect(performing.links).toEqual(expect.arrayContaining(['faceLab', 'upAnyway']))
+    expect(LESSONS.find((l) => l.id === 'expressions')!.links).toEqual(expect.arrayContaining(['faceLab']))
+    expect(LESSONS.find((l) => l.id === 'performing')!.links).toEqual(expect.arrayContaining(['upAnyway']))
   })
 })
 
