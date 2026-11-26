@@ -62,7 +62,8 @@ const clicks = (() => {
 })()
 function trackSample(i: number): number {
   let click = 0
-  for (let k = 0; k < 60; k++) if (clicks.has(i - k)) click = 0.5 * Math.exp(-k / 12) * (k % 2 ? -1 : 1)
+  // A short burst that rings and dies away (like a drum hit), not a pattern at the very top of the band.
+  for (let k = 0; k < 60; k++) if (clicks.has(i - k)) click = 0.5 * Math.exp(-k / 12) * Math.sin(k * 1.7 + 0.3)
   return 0.25 * Math.sin((2 * Math.PI * 440 * i) / RATE) + click
 }
 /** The "voice": a steady 660 Hz tone. */
@@ -70,9 +71,10 @@ const voiceSample = (i: number) => 0.25 * Math.sin((2 * Math.PI * 660 * i) / RAT
 
 const TRACK = { name: 'practice-track.wav', mimeType: 'audio/wav', buffer: wav(trackSample) }
 const VOCALS = { name: 'guide-voice.wav', mimeType: 'audio/wav', buffer: wav(voiceSample) }
-/** A full guide mix: her track (starting a quarter of a second later) with the voice in it. */
-const LAG = 0.25
-const MIX = { name: 'guide-mix.wav', mimeType: 'audio/wav', buffer: wav((i) => (i >= LAG * RATE ? trackSample(i - LAG * RATE) : 0) + voiceSample(i)) }
+/** A full guide mix: her track (starting a quarter of a second later, a whole number of samples) with the voice in it. */
+const LAG_SAMPLES = Math.round(0.25 * RATE)
+const LAG = LAG_SAMPLES / RATE
+const MIX = { name: 'guide-mix.wav', mimeType: 'audio/wav', buffer: wav((i) => (i >= LAG_SAMPLES ? trackSample(i - LAG_SAMPLES) : 0) + voiceSample(i)) }
 
 interface VoiceState {
   level: string
