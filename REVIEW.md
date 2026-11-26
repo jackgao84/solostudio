@@ -2,7 +2,7 @@
 
 Every piece of kid-facing text in the app, grouped by where it appears. Words in {curly brackets} are filled in on the iPad (her name, a section name, a number). The rap lines themselves are typed on the iPad by a grown-up and are never part of the app.
 
-- 454 lines in 25 groups
+- 457 lines in 26 groups
 
 **This file is generated from `src/content`. Don’t edit it by hand.** To change the words, edit the files in `src/content`, then run `npm run review` to rebuild this file. `npm test` fails while it is out of date.
 
@@ -258,7 +258,7 @@ Each ladder and each rung, with the one-line how-to shown on the practice screen
 - Link it up <sub>`step.together-linked.name`</sub>
 - Start in the part before and flow straight into this one. <sub>`step.together-linked.how`</sub>
 
-## 10. Practising (39)
+## 10. Practising (38)
 
 The practice screen: buttons, notes, speeds and what she sees when a video won’t play.
 
@@ -285,7 +285,6 @@ The practice screen: buttons, notes, speeds and what she sees when a video won�
 - Follow the video like a mirror. <sub>`kid.practice.followNote`</sub>
 - Counts <sub>`kid.practice.countsTitle`</sub>
 - 8-count {n} <sub>`kid.practice.eight`</sub>
-- A grown-up needs to mark this part on a video first. <sub>`kid.practice.needsMarks`</sub>
 - A grown-up needs to mark this part on your track first. <sub>`kid.practice.needsTrackMarks`</sub>
 - A grown-up needs to load your track first. <sub>`kid.practice.needsTrack`</sub>
 - Your track isn’t loaded yet, so a video is standing in. <sub>`kid.practice.standIn`</sub>
@@ -507,7 +506,7 @@ After Showtime, a clip or performing for family: one thing that went well, one t
 - My face and eyes <sub>`reflect.workOn.7`</sub>
 - Keeping the mic still <sub>`reflect.workOn.8`</sub>
 
-## 22. Recording (16)
+## 22. Recording (15)
 
 The camera, recording beside the reference, and the note when an older clip is deleted.
 
@@ -522,7 +521,6 @@ The camera, recording beside the reference, and the note when an older clip is d
 - Play both <sub>`kid.record.playBoth`</sub>
 - You <sub>`kid.record.you`</sub>
 - The video <sub>`kid.record.reference`</sub>
-- No video to compare with yet. A grown-up can mark this part on one. <sub>`kid.record.noReference`</sub>
 - Your oldest clip of {section} was deleted to make room. You keep the newest 3. <sub>`kid.record.deletedOne`</sub>
 - Your oldest run-through clip was deleted to make room. You keep the newest 3. <sub>`kid.record.deletedRun`</sub>
 - The camera didn’t start. A grown-up can check the camera settings. <sub>`kid.record.cameraOff`</sub>
@@ -550,7 +548,17 @@ The buttons for the coach reading a lesson aloud.
 - Replay <sub>`kid.narrator.replay`</sub>
 - Skip <sub>`kid.narrator.skip`</sub>
 
-## 25. Lessons (69)
+## 25. Her own loop (5)
+
+Looping any bit of a video herself: tap where it starts and ends while it plays.
+
+- Loop from here <sub>`kid.video.loopFrom`</sub>
+- Loop to here <sub>`kid.video.loopTo`</sub>
+- Stop the loop <sub>`kid.video.loopClear`</sub>
+- Loop from {from}. Now tap Loop to here. <sub>`kid.video.loopStarted`</sub>
+- Looping {from} to {to} <sub>`kid.video.looping`</sub>
+
+## 26. Lessons (69)
 
 The seven skill lessons, in full, each read aloud by the coach word for word, with its “try it” and the line that puts her teachers first.
 

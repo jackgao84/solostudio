@@ -45,6 +45,7 @@ export const KID_GROUPS: readonly { id: string; title: string; about: string }[]
   { id: 'record', title: 'Recording', about: 'The camera, recording beside the reference, and the note when an older clip is deleted.' },
   { id: 'clips', title: 'Her clips', about: 'The list of clips kept on the iPad.' },
   { id: 'narrator', title: 'The coach’s voice', about: 'The buttons for the coach reading a lesson aloud.' },
+  { id: 'video', title: 'Her own loop', about: 'Looping any bit of a video herself: tap where it starts and ends while it plays.' },
   { id: 'lessons', title: 'Lessons', about: 'The seven skill lessons, in full, each read aloud by the coach word for word, with its “try it” and the line that puts her teachers first.' },
 ]
 

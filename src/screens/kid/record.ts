@@ -157,7 +157,10 @@ export const recordScreen: Screen = (root, { params }) => {
       if (ref) return { ref, from: playRange(spanOf(section!.refs[ref.id])!).from }
     }
     const local = refs.find((r) => r.kind === 'local' && r.mediaId && spanOf(section!.refs[r.id]))
-    return local ? { ref: local, from: playRange(spanOf(section!.refs[local.id])!).from } : null
+    if (local) return { ref: local, from: playRange(spanOf(section!.refs[local.id])!).from }
+    // Nothing marked on this section: the performance video from its start (no marks needed).
+    const any = BESIDE.map((role) => refs.find((r) => r.role === role && r.kind === 'youtube' && !!r.youtubeId)).find(Boolean)
+    return any ? { ref: any, from: 0 } : null
   }
 
   function reviewView(blob: Blob, notice: string | null): void {
@@ -174,7 +177,7 @@ export const recordScreen: Screen = (root, { params }) => {
     if (beside) {
       refPlayer = referencePlayer(refPane, beside.ref)
       refRange = new RangePlayer(refPlayer, beside.from, Infinity, 1)
-    } else refPane.append(h('p', { class: 'note' }, R.noReference))
+    }
     const wrap = h(
       'div',
       { class: 'stack', 'data-view': 'review' },

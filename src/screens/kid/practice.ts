@@ -9,7 +9,9 @@ import type { Screen } from '../../app/router'
 import { KID_COPY } from '../../content/kid'
 import { STEP_COPY } from '../../content/ladders'
 import { sectionFadeLevels } from '../../model/fade'
-import { LADDERS, pickReference, stepById } from '../../model/ladders'
+import { LADDERS, stepById } from '../../model/ladders'
+import { stepVideo } from '../../model/videos'
+import { LoopButtons } from '../../ui/loop'
 import { celebrate } from '../../app/celebrate'
 import { logTick } from '../../model/activity'
 import { celebrationsForTick } from '../../model/celebrate'
@@ -133,6 +135,7 @@ export const practiceScreen: Screen = (root, { params, query }) => {
   let toTrack: (t: number) => number | null = () => null
   let scale = 1
   let counts: CountsView | null = null
+  let loopBtns: LoopButtons | null = null
   let gone = false
 
   const setPlaying = (on: boolean) => {
@@ -170,15 +173,25 @@ export const practiceScreen: Screen = (root, { params, query }) => {
       } else ({ from, to } = playRange(trackSpan))
       toTrack = (t) => t
     } else {
-      const ref = pickReference(save().refs, section!, step.source)
-      if (!ref) return disable(P.needsMarks)
-      player = referencePlayer(playerArea, ref)
-      const refSpan = spanOf(section!.refs[ref.id])!
-      ;({ from, to } = playRange(refSpan))
-      if (ref.synced && trackSpan) {
-        toTrack = (t) => mapTime(refSpan, trackSpan, t)
-        scale = (trackSpan.end - trackSpan.start) / (refSpan.end - refSpan.start)
-      }
+      // Never blocked by marks: a marked video is cued to this section, any other plays from its
+      // start (or a chapter time), and she can loop any bit of it herself.
+      const v = stepVideo(save(), section!, step.source)
+      if (!v) return disable(P.videoMissing)
+      player = referencePlayer(playerArea, v.ref)
+      const refSpan = v.span
+      if (refSpan) {
+        ;({ from, to } = playRange(refSpan))
+        if (v.ref.synced && trackSpan) {
+          toTrack = (t) => mapTime(refSpan, trackSpan, t)
+          scale = (trackSpan.end - trackSpan.start) / (refSpan.end - refSpan.start)
+        }
+      } else from = v.from
+      const p = player
+      loopBtns = new LoopButtons(
+        () => p.time(),
+        () => loop?.again(),
+      )
+      controls.after(loopBtns.el)
     }
     if (step.counts && tempo.bpm && tempo.offset != null && toTrack(from) != null) {
       counts = new CountsView(tempo.bpm, tempo.offset)
@@ -191,7 +204,8 @@ export const practiceScreen: Screen = (root, { params, query }) => {
     // The session's cue ("Next: Chorus, Dance, 75% speed") is said before the first rep only.
     let cue: string | null = inSession ? sessionCue() : null
     loop = new RepLoop(player, () => {
-      const rep = { from, to, speed, cue }
+      const own = loopBtns?.loop
+      const rep = { from: own?.from ?? from, to: own?.to ?? to, speed, cue }
       cue = null
       return rep
     }, () => save().tempo.bpm)

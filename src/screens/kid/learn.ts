@@ -19,6 +19,7 @@ import { button, holdButton } from '../../ui/components'
 import { fill, h } from '../../ui/dom'
 import { Narrator } from '../../ui/narrator'
 import { referencePlayer, youTubeIn } from '../../ui/video'
+import { videoControls } from '../../ui/video-controls'
 import { kidScreen, topbar } from './common'
 
 const L = KID_COPY.learn
@@ -104,12 +105,17 @@ export const learnScreen: Screen = (root, { params }) => {
   // The video for this part: from where it's marked on this section, or from its start.
   const v = sectionLessonVideo(d, section, ladder)
   let player: Player | null = null
+  let ctl: ReturnType<typeof videoControls> | null = null
   if (v) {
-    player = v.ref.kind === 'local' ? referencePlayer(videoBox, v.ref) : youTubeIn(videoBox, v.ref.youtubeId, undefined, v.start)
-    if (v.ref.kind === 'local' && v.start) void player.ready.then(() => player?.seek(v.start)).catch(() => undefined)
+    const p = v.ref.kind === 'local' ? referencePlayer(videoBox, v.ref) : youTubeIn(videoBox, v.ref.youtubeId, undefined, v.start)
+    if (v.ref.kind === 'local' && v.start) void p.ready.then(() => p.seek(v.start)).catch(() => undefined)
+    player = p
+    ctl = videoControls(p)
+    videoBox.after(ctl.el)
   }
   narrator?.start()
   return () => {
+    ctl?.destroy()
     narrator?.destroy()
     player?.destroy()
   }

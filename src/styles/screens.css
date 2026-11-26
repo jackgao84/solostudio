@@ -2006,3 +2006,25 @@ html[data-theme='mint'] {
   font-size: 28px;
   font-weight: 800;
 }
+
+/* ---- Her own loop and lesson video controls (version 1.2) ----------------------------------- */
+
+.loop-row {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.loop-row p {
+  margin: 0;
+}
+
+.loop-status {
+  color: var(--cyan);
+  font-weight: 650;
+}
+
+.video-controls .speed {
+  margin: 0;
+  align-self: center;
+}

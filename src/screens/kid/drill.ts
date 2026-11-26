@@ -83,7 +83,9 @@ export const drillScreen: Screen = (root, { params, query }) => {
     words = on
     if (lyrics) lyrics.el.hidden = !on
   }))
-  if (drill === 'anywhere') toggles.append(toggle(D.showVideo, false, (on) => {
+  // The video option needs the follow-along marked per section (it lands in a random part).
+  const videoMarked = sectionsInOrder().some((s) => !!pickReference(save().refs, s, 'mirrored'))
+  if (drill === 'anywhere' && videoMarked) toggles.append(toggle(D.showVideo, false, (on) => {
     video = on
     void setSource()
   }))
@@ -174,7 +176,11 @@ export const drillScreen: Screen = (root, { params, query }) => {
     playBtn.textContent = P.play
     if (video) {
       ref = pickReference(save().refs, eligible()[0] ?? sectionsInOrder()[0] ?? ({ refs: {} } as Section), 'mirrored')
-      if (!ref) return note(P.needsMarks)
+      // Landing in a random part on the video needs it marked per section; without that, her track.
+      if (!ref) {
+        video = false
+        return setSource()
+      }
       player = referencePlayer(playerArea, ref)
     } else {
       ref = null

@@ -15,6 +15,7 @@ import { button } from '../../ui/components'
 import { fill, h } from '../../ui/dom'
 import { Narrator } from '../../ui/narrator'
 import { youTubeIn } from '../../ui/video'
+import { videoControls } from '../../ui/video-controls'
 import { kidScreen, topbar } from './common'
 
 const L = KID_COPY.lessons
@@ -85,8 +86,11 @@ export const lessonScreen: Screen = (root, { params, query }) => {
     ),
   )
   const player: Player = youTubeIn(videoBox, video.youtubeId, undefined, video.start)
+  const ctl = videoControls(player)
+  videoBox.after(ctl.el)
   narrator?.start()
   return () => {
+    ctl.destroy()
     narrator?.destroy()
     player.destroy()
   }
