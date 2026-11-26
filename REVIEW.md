@@ -2,7 +2,7 @@
 
 Every piece of kid-facing text in the app, grouped by where it appears. Words in {curly brackets} are filled in on the iPad (her name, a section name, a number). The rap lines themselves are typed on the iPad by a grown-up and are never part of the app.
 
-- 314 lines in 17 groups
+- 330 lines in 17 groups
 
 **This file is generated from `src/content`. Don’t edit it by hand.** To change the words, edit the files in `src/content`, then run `npm run review` to rebuild this file. `npm test` fails while it is out of date.
 
@@ -290,12 +290,12 @@ Missing words and counts from memory.
 - Show the counts <sub>`kid.quiz.showCounts`</sub>
 - Hide the counts <sub>`kid.quiz.hideCounts`</sub>
 
-## 13. Showtime (13)
+## 13. Showtime (29)
 
 The whole track from the top, with no stopping.
 
 - Showtime! <sub>`kid.showtime.title`</sub>
-- Your whole track from the top, with no stopping. Just like the show. <sub>`kid.showtime.how`</sub>
+- The whole show: breathe backstage, walk on, do your whole track with no stopping, then bow. <sub>`kid.showtime.how`</sub>
 - Show the words <sub>`kid.showtime.showWords`</sub>
 - Start <sub>`kid.showtime.start`</sub>
 - Get ready… <sub>`kid.showtime.getReady`</sub>
@@ -307,6 +307,22 @@ The whole track from the top, with no stopping.
 - Perform for your family <sub>`kid.showtime.familyTitle`</sub>
 - Record a run-through <sub>`kid.showtime.recordRun`</sub>
 - Do another run-through <sub>`kid.showtime.again`</sub>
+- Audience sound <sub>`kid.showtime.audience`</sub>
+- Practise the walk-on <sub>`kid.showtime.practiseWalkOn`</sub>
+- Practise the bow <sub>`kid.showtime.practiseBow`</sub>
+- Backstage. Breathe with the circle. <sub>`kid.showtime.backstage`</sub>
+- Breathe in <sub>`kid.showtime.breatheIn`</sub>
+- Breathe out <sub>`kid.showtime.breatheOut`</sub>
+- Say it out loud: I’m excited! <sub>`kid.showtime.excited`</sub>
+- Walk to your spot <sub>`kid.showtime.walk`</sub>
+- Opening pose <sub>`kid.showtime.pose`</sub>
+- Ending pose. Hold it! <sub>`kid.showtime.endPose`</sub>
+- Take a bow <sub>`kid.showtime.bow`</sub>
+- Smile and wave <sub>`kid.showtime.applause`</sub>
+- Walk off the stage <sub>`kid.showtime.walkOff`</sub>
+- That’s your walk-on. Nice and calm. <sub>`kid.showtime.walkOnDone`</sub>
+- That’s your bow. Big smile! <sub>`kid.showtime.bowDone`</sub>
+- Someone watched me <sub>`kid.showtime.someoneWatched`</sub>
 
 ## 14. Looking back (25)
 

@@ -41,7 +41,9 @@ part by part: checks first, then the code, a commit after each part.
    (`src/model/drills.ts`, `src/model/countin.ts`, `src/media/reploop.ts`, `src/screens/kid/drill.ts`;
    checks `tests/unit/drills.test.ts`, `tests/unit/routes-v11.test.ts`, `e2e/drills.spec.ts`, with a
    speech stand-in in `e2e/voice.ts`).
-3. [ ] The Showtime routine, audience sound, walk-on and bow on their own.
+3. [x] The Showtime routine, audience sound, walk-on and bow on their own (`src/model/routine.ts`,
+   `src/audio/audience.ts`, `src/audio/sfx.ts`, `src/screens/kid/showtime.ts`, Grown-ups →
+   Showtime routine; checks `tests/unit/showtime-routine.test.ts`, `e2e/showtime-routine.spec.ts`).
 4. [ ] Grown-ups' week, teacher notes per section, a note for her on Today.
 5. [ ] Listening run on light days.
 6. [ ] Ease of use: guided session, spoken cues and count-ins, looping reps, sound settings, tour.
@@ -62,6 +64,16 @@ Decisions (1.1):
   never by speech events (Playwright's WebKit has no voices and never ends an utterance).
 - D4. Cues are never spoken while her track, a video or a YouTube player plays (`mediaPlaying()`);
   a YouTube player counts as paused as soon as it is told to pause.
+
+- D5. Showtime routine: breaths (default 3) and seconds to walk to her spot (default 8) are set in
+  Grown-ups → Showtime routine. The opening pose is "Opening pose", then "5, 6, 7, 8" at her
+  track's tempo, and the track comes in on the 1. The crowd plays from "I'm excited!" and fades as
+  the pose count starts; the applause starts with the bow. Neither ever plays during her track.
+- D6. The applause is one fixed buffer made from a fixed seed (`applauseSamples(sampleRate)` takes
+  nothing else), so nothing about how she did can change it. Only `crowd` and `applause` exist.
+- D7. The Showtime player stays in one place in the page and is shown or hidden (a moved YouTube
+  iframe reloads). Up Anyway is offered after a plain Showtime with "Someone watched me"; performing
+  for family offers it straight away, as before.
 
 **Check change approved by the owner (1.1):** `e2e/journey.spec.ts` steps 13–14: only the waits
 grow by the Showtime routine's length (the routine now comes before and after her track); every

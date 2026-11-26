@@ -30,6 +30,7 @@ import { sectionEditor, sectionsAdmin } from './screens/grownups/sections'
 import { tempoScreen } from './screens/grownups/tempo'
 import { backupScreen } from './screens/grownups/backup'
 import { linksScreen } from './screens/grownups/links'
+import { showtimeSettingsScreen } from './screens/grownups/showtime'
 
 function pickStorage(): StorageLike {
   try {
@@ -84,6 +85,7 @@ const routes: [string, Screen][] = [
   ['/grownups/tempo', tempoScreen],
   ['/grownups/backup', backupScreen],
   ['/grownups/links', linksScreen],
+  ['/grownups/showtime', showtimeSettingsScreen],
 ]
 
 const app = document.getElementById('app')

@@ -65,6 +65,7 @@ export const grownupsHome: Screen = (root) => {
           ['Tempo and counts', '/grownups/tempo'],
           ['Backup', '/grownups/backup'],
           ['Links', '/grownups/links'],
+          ['Showtime routine', '/grownups/showtime'],
         ] as const
       ).map(([label, path]) => button(label, () => go(path))),
     ),

@@ -6,6 +6,7 @@
  * None of them ever depends on how she did.
  */
 import { save } from '../app/ctx'
+import { applauseSamples, crowdSamples } from './audience'
 
 export interface PlayedSound {
   name: string
@@ -49,7 +50,11 @@ export function playedSounds(): PlayedSound[] {
  * Play an effect: `build` wires its nodes into `out` (a gain at the effects volume) starting at
  * `t0`, and returns how long it lasts. Nothing happens when effects are muted.
  */
-export function play(name: string, build: (c: AudioContext, out: AudioNode, t0: number) => number, gain = 1): { stop: (fadeS?: number) => void } | null {
+export interface SoundHandle {
+  stop: (fadeS?: number) => void
+}
+
+export function play(name: string, build: (c: AudioContext, out: AudioNode, t0: number, keep: (n: AudioScheduledSourceNode) => void) => number, gain = 1): SoundHandle | null {
   const volume = effectsVolume()
   if (volume <= 0) return null
   const c = context()
@@ -60,17 +65,30 @@ export function play(name: string, build: (c: AudioContext, out: AudioNode, t0: 
     out.gain.value = volume * gain
     out.connect(c.destination)
     const t0 = c.currentTime + 0.02
-    const length = build(c, out, t0)
+    const sources: AudioScheduledSourceNode[] = []
+    const length = build(c, out, t0, (n) => sources.push(n))
     played.push({ name, at: Date.now(), volume })
-    const cleanup = window.setTimeout(() => out.disconnect(), (length + 1) * 1000)
+    const finish = () => {
+      for (const s of sources)
+        try {
+          s.stop()
+        } catch {
+          /* already stopped */
+        }
+      out.disconnect()
+    }
+    const cleanup = window.setTimeout(finish, (length + 1) * 1000)
+    let stopped = false
     return {
       stop: (fadeS = 0.6) => {
+        if (stopped) return
+        stopped = true
         window.clearTimeout(cleanup)
         const now = c.currentTime
         out.gain.cancelScheduledValues(now)
         out.gain.setValueAtTime(out.gain.value, now)
         out.gain.linearRampToValueAtTime(0, now + fadeS)
-        window.setTimeout(() => out.disconnect(), (fadeS + 0.2) * 1000)
+        window.setTimeout(finish, (fadeS + 0.2) * 1000)
       },
     }
   } catch (err) {
@@ -125,5 +143,42 @@ export function confettiPop(): void {
     tone(c, out, 'sine', 180, 60, t0, 0.12, 0.5)
     ;[1318.5, 1568, 2093, 2637].forEach((f, i) => tone(c, out, 'sine', f, f, t0 + 0.1 + i * 0.06, 0.25, 0.12))
     return 0.8
+  })
+}
+
+let crowdBuffer: AudioBuffer | null = null
+let applauseBuffer: AudioBuffer | null = null
+
+/** The gentle crowd before she walks on: fades in, loops until stopped. */
+export function startCrowd(): SoundHandle | null {
+  return play(
+    'crowd',
+    (c, out, t0, keep) => {
+      crowdBuffer ??= buffer(c, crowdSamples(c.sampleRate))
+      const src = c.createBufferSource()
+      src.buffer = crowdBuffer
+      src.loop = true
+      const g = c.createGain()
+      g.gain.setValueAtTime(0, t0)
+      g.gain.linearRampToValueAtTime(1, t0 + 1.5)
+      src.connect(g).connect(out)
+      src.start(t0)
+      keep(src)
+      return 600
+    },
+    0.7,
+  )
+}
+
+/** Applause after her bow: the same every time, whatever happened. */
+export function playApplause(): SoundHandle | null {
+  return play('applause', (c, out, t0, keep) => {
+    applauseBuffer ??= buffer(c, applauseSamples(c.sampleRate))
+    const src = c.createBufferSource()
+    src.buffer = applauseBuffer
+    src.connect(out)
+    src.start(t0)
+    keep(src)
+    return applauseBuffer.duration
   })
 }
