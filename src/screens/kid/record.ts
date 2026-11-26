@@ -4,11 +4,14 @@
  * count-in; the recording and the music start together on the 1.
  * The clip plays back beside the reference section, and she picks one thing that went well and one
  * to work on. Clips stay on the iPad (IndexedDB) and never upload: the newest 3 per section and the
- * newest 3 run-throughs are kept, and she is told when an older one is deleted.
+ * newest 3 run-throughs are kept, and she is told when an older one is deleted. A recording runs for
+ * at least a moment (a Stop straight after the start waits for it), and a clip with nothing in it is
+ * never kept: she is told, and can record again.
  */
 import { go, save, sectionById, update } from '../../app/ctx'
 import type { Screen } from '../../app/router'
 import { KID_COPY } from '../../content/kid'
+import { keepable, stopDelay } from '../../model/clips'
 import { playRange, spanOf } from '../../model/timing'
 import { keepClip, pickMime } from '../../media/clip-store'
 import { runGetReady } from '../../media/countin-run'
@@ -75,12 +78,13 @@ export const recordScreen: Screen = (root, { params }) => {
     cameraView()
   }
 
-  const cameraView = () => {
+  const cameraView = (note: string | null = null) => {
     const preview = h('video', { class: 'camera-preview', playsinline: true, autoplay: true, muted: true }) as HTMLVideoElement
     preview.muted = true
     preview.srcObject = stream
     void preview.play().catch(() => undefined)
     view.replaceChildren(preview, trackArea, h('div', { class: 'row' }, button(R.record, () => void record(), { variant: 'primary', class: 'btn--big' })))
+    if (note) view.append(h('p', { class: 'note recording-empty', role: 'status' }, note))
     if (src?.standIn) view.append(h('p', { class: 'note' }, KID_COPY.practice.standIn))
     if (!src) view.append(h('p', { class: 'note' }, R.needsTrack))
   }
@@ -98,15 +102,21 @@ export const recordScreen: Screen = (root, { params }) => {
     const { from, to } = span ? playRange(span) : { from: 0, to: src.player.duration() ?? Infinity }
     range = new RangePlayer(src.player, from, to, 1)
     let finished = false
+    let startedAt = 0
     const finish = async () => {
       if (finished) return
       finished = true
+      // Stopped straight after the start: let it run for a moment, so there is something in it.
+      const wait = stopDelay(performance.now() - startedAt)
+      if (startedAt && wait > 0) await new Promise((r) => window.setTimeout(r, wait))
       range?.pause()
       if (recorder && recorder.state !== 'inactive') recorder.stop()
       await stopped
       if (gone) return
       const type = (recorder?.mimeType || mime || 'video/mp4').split(';')[0]
-      await keep(new Blob(chunks, { type }))
+      const blob = new Blob(chunks, { type })
+      if (!keepable(blob.size)) return cameraView(R.nothingRecorded)
+      await keep(blob)
     }
     range.onStop = () => void finish()
     // Time to get ready: "Get to your spot" with her walk-on countdown, then the count-in; the
@@ -136,6 +146,7 @@ export const recordScreen: Screen = (root, { params }) => {
       if (gone || !recorder) return
       countIn.el.replaceWith(h('p', { class: 'rec-dot', role: 'status' }, R.recording))
       recorder.start(500)
+      startedAt = performance.now()
       void range?.playFromTop()
     })
   }

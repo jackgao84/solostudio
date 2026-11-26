@@ -281,6 +281,7 @@ export const KID_COPY = {
     deletedRun: 'Your oldest run-through clip was deleted to make room. You keep the newest 3.',
     cameraOff: 'The camera didn’t start. A grown-up can check the camera settings.',
     needsTrack: 'A grown-up needs to load your track before you can record.',
+    nothingRecorded: 'Nothing was recorded that time. Tap Record to try again.',
   },
   clips: {
     title: 'My clips',

@@ -2,7 +2,7 @@
 
 Every piece of kid-facing text in the app, grouped by where it appears. Words in {curly brackets} are filled in on the iPad (her name, a section name, a number). The rap lines themselves are typed on the iPad by a grown-up and are never part of the app.
 
-- 506 lines in 27 groups
+- 507 lines in 27 groups
 
 **This file is generated from `src/content`. Don’t edit it by hand.** To change the words, edit the files in `src/content`, then run `npm run review` to rebuild this file. `npm test` fails while it is out of date.
 
@@ -508,7 +508,7 @@ After Showtime, a clip or performing for family: one thing that went well, one t
 - My face and eyes <sub>`reflect.workOn.7`</sub>
 - Keeping the mic still <sub>`reflect.workOn.8`</sub>
 
-## 22. Recording (15)
+## 22. Recording (16)
 
 The camera, recording beside the reference, and the note when an older clip is deleted.
 
@@ -527,6 +527,7 @@ The camera, recording beside the reference, and the note when an older clip is d
 - Your oldest run-through clip was deleted to make room. You keep the newest 3. <sub>`kid.record.deletedRun`</sub>
 - The camera didn’t start. A grown-up can check the camera settings. <sub>`kid.record.cameraOff`</sub>
 - A grown-up needs to load your track before you can record. <sub>`kid.record.needsTrack`</sub>
+- Nothing was recorded that time. Tap Record to try again. <sub>`kid.record.nothingRecorded`</sub>
 
 ## 23. Her clips (8)
 
