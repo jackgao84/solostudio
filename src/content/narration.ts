@@ -105,6 +105,12 @@ export function roomHint(): string[] {
   return [R.hint1, R.hint2, R.hint3]
 }
 
+/** How to find her part in a karaoke video (version 1.4), read aloud when a rap rung opens the practice room. */
+export function roomStepHint(): string[] {
+  const R = KID_COPY.room
+  return [R.stepHint1, R.stepHint2]
+}
+
 /** Everything the coach records, once each. */
 export function narrationLines(): NarrationLine[] {
   const out = new Map<string, NarrationLine>()
@@ -120,5 +126,6 @@ export function narrationLines(): NarrationLine[] {
   for (const l of LESSONS) for (const t of lessonScript(l)) add({ text: t })
   for (const c of Object.values(SECTION_LESSON_COPY)) for (const t of c.intro) add({ text: t })
   for (const t of roomHint()) add({ text: t })
+  for (const t of roomStepHint()) add({ text: t })
   return [...out.values()]
 }

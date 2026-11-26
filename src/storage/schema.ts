@@ -10,8 +10,9 @@ import { DEFAULT_REFS } from '../content/references'
 /**
  * 1: version 1.0. 2: version 1.1 (stage, sounds, Showtime routine, notes, practice log, tour, celebrations).
  * 3: version 1.2 (narration, her lessons, the setup wizard). 4: version 1.3 (her own parts).
+ * 5: version 1.4 (the two karaoke videos, and the guide: the singer's voice in time with her track).
  */
-export const CURRENT_SCHEMA_VERSION = 4
+export const CURRENT_SCHEMA_VERSION = 5
 
 export type Lang = 'en' | 'ko'
 
@@ -45,7 +46,14 @@ export interface Section {
   createdAt: string
 }
 
-export type RefRole = 'listen' | 'original' | 'performance' | 'mirrored' | 'tutorialFull' | 'tutorialParts' | 'slow' | 'local'
+/**
+ * 'voiceGuide' and 'karaoke' (version 1.4): the singer's voice turned down low, and no voice at all.
+ * 'added' (1.4): any YouTube video a grown-up added under a name they chose. 'local': a video from the iPad.
+ */
+export type RefRole = 'listen' | 'original' | 'performance' | 'mirrored' | 'tutorialFull' | 'tutorialParts' | 'slow' | 'voiceGuide' | 'karaoke' | 'added' | 'local'
+export const REF_ROLES: readonly RefRole[] = ['listen', 'original', 'performance', 'mirrored', 'tutorialFull', 'tutorialParts', 'slow', 'voiceGuide', 'karaoke', 'added', 'local']
+/** A video's name (what the practice room calls it) is kept this short. */
+export const VIDEO_NAME_MAX = 40
 
 export interface Reference {
   id: string
@@ -272,6 +280,42 @@ export interface MyPart {
   createdAt: string
 }
 
+/**
+ * The guide (version 1.4): a second audio file a grown-up loads from Files, kept on the iPad like her
+ * track. Either a full guide mix of her cut (her music with the voice in it) or the voice on its own,
+ * the same length as her track. The app works out which and a grown-up confirms it; then it keeps her
+ * track and the guide side by side in one four-channel file (`mixId`), so the voice can never drift
+ * from her track at any speed, and the voice control (Off, Light, Full) only turns the voice up or down.
+ */
+export const GUIDE_KINDS = ['mix', 'vocals'] as const
+export type GuideKind = (typeof GUIDE_KINDS)[number]
+export const VOICE_LEVELS = ['off', 'light', 'full'] as const
+export type VoiceLevel = (typeof VOICE_LEVELS)[number]
+/** Whose voice it is, as her control names it ("{singer}’s voice"); typed on the iPad, never in the app. */
+export const SINGER_NAME_MAX = 30
+
+export interface Guide {
+  /** The guide file as it was loaded (IndexedDB); null until a grown-up loads one. */
+  mediaId: string | null
+  fileName: string
+  duration: number | null
+  /** What a grown-up confirmed it is; null until then (the guide isn't used before that). */
+  kind: GuideKind | null
+  /** What the app worked out it is. */
+  guess: GuideKind | null
+  /** Seconds the guide runs behind her track (a full mix lined up with her track; 0 for the voice on its own). */
+  offset: number
+  /** Her track and the guide in one four-channel file (IndexedDB), built once the kind is confirmed. */
+  mixId: string | null
+  /** Her track's media id when that file was built (a new track needs it built again). */
+  forTrack: string | null
+  singer: string
+}
+
+export function emptyGuide(): Guide {
+  return { mediaId: null, fileName: '', duration: null, kind: null, guess: null, offset: 0, mixId: null, forTrack: null, singer: '' }
+}
+
 export interface SaveData {
   schemaVersion: number
   setup: {
@@ -309,6 +353,8 @@ export interface SaveData {
   wizard: WizardState
   /** Her own parts, made in the practice room (version 1.3). */
   parts: MyPart[]
+  /** The singer's voice in time with her track (version 1.4). */
+  guide: Guide
 }
 
 /** The original video (a default reference) stands in for her track until it is loaded. */
@@ -387,5 +433,6 @@ export function defaultSave(_now: Date = new Date()): SaveData {
     lessons: { done: [], videos: {} },
     wizard: { at: null, done: [] },
     parts: [],
+    guide: emptyGuide(),
   }
 }

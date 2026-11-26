@@ -9,7 +9,6 @@ import { say } from '../../audio/voice'
 import type { Screen } from '../../app/router'
 import { blockCopy } from '../../content/blocks'
 import { KID_COPY } from '../../content/kid'
-import { STEP_COPY } from '../../content/ladders'
 import { ROUTINES } from '../../content/routines'
 import { applyOrder, type Block } from '../../model/plan'
 import { todayPlan } from '../../model/today'
@@ -17,7 +16,7 @@ import { practiceChoices, roomItems, routeFor } from '../../model/session'
 import type { LadderId } from '../../storage/schema'
 import { button } from '../../ui/components'
 import { fill, h } from '../../ui/dom'
-import { blockTimer, kidScreen, topbar } from './common'
+import { blockTimer, kidScreen, rungCopy, topbar } from './common'
 import { listeningRun } from './listen'
 
 const B = KID_COPY.block
@@ -111,7 +110,7 @@ export const blockScreen: Screen = (root, { params, query }) => {
     wrap.append(h('p', null, B.pick))
     for (const c of choices) {
       const section = sectionById(c.sectionId)!
-      const text = c.check ? fill(B.checkLine, { section: section.name }) : c.finished ? fill(B.allTicked, { section: section.name }) : fill(B.stepLine, { section: section.name, step: STEP_COPY[c.stepId].name })
+      const text = c.check ? fill(B.checkLine, { section: section.name }) : c.finished ? fill(B.allTicked, { section: section.name }) : fill(B.stepLine, { section: section.name, step: rungCopy(section, c.stepId).name })
       wrap.append(button(text, () => go(`/practice/${c.sectionId}/${c.stepId}`), { class: 'block-step' }))
     }
     return wrap

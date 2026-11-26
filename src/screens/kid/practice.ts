@@ -7,10 +7,10 @@ import { go, save, sectionById, today, update } from '../../app/ctx'
 import { sessionCue, sessionItem, sessionNext } from '../../app/session'
 import type { Screen } from '../../app/router'
 import { KID_COPY } from '../../content/kid'
-import { STEP_COPY } from '../../content/ladders'
+import { stepCopyFor } from '../../content/ladders'
 import { sectionFadeLevels } from '../../model/fade'
-import { LADDERS, stepById } from '../../model/ladders'
-import { stepSource, stepVideo } from '../../model/videos'
+import { LADDERS, stepBefore, stepById } from '../../model/ladders'
+import { rapMode, stepRoute, stepSource, stepVideo } from '../../model/videos'
 import { LoopButtons } from '../../ui/loop'
 import { celebrate } from '../../app/celebrate'
 import { logTick } from '../../model/activity'
@@ -40,16 +40,26 @@ export const practiceScreen: Screen = (root, { params, query }) => {
   }
   const step = found
   const sid = section.id
-  // A rap step on a part with no lines (1.3): the listen-and-read video where the words would light up, her track for the rest.
-  const source = stepSource(step, section)
+  // A rung on a karaoke video that isn't marked on this section opens in the practice room (1.4).
+  const route = stepRoute(save(), sid, step.id, query.get('session') === '1' ? 'session=1' : '')
+  if (!route.startsWith('/practice/')) {
+    window.location.replace(`#${route}`)
+    return
+  }
+  // What it plays (1.4): the rap ladder fades the singer's voice with the karaoke videos, or her track with the guide.
+  const source = stepSource(step, section, save())
+  const mode = rapMode(save())
   const wordsInVideo = step.ladder === 'rap' && !section.lines.length
   const item = sessionItem(query)
   const inSession = item?.kind === 'practice' && item.sectionId === section.id && item.stepId === found.id
   const prog = () => progressOf(save().progress, sid)
   const timer = blockTimer()
-  const copy = STEP_COPY[step.id]
+  const copy = stepCopyFor(step, source, mode)
   const el = kidScreen(root, 'practice', topbar(timer?.el ?? null))
-  el.append(h('header', { class: 'practice__head' }, h('h1', null, section.name), h('p', { class: 'practice__step' }, copy.name), h('p', { class: 'note' }, copy.how)))
+  // Back a step (1.4): always there on the rap ladder after its first rung, and it never counts against her.
+  const before = step.ladder === 'rap' ? stepBefore(step.id) : null
+  const back = before ? button(P.back, () => go(stepRoute(save(), sid, before.id, inSession ? 'session=1' : '')), { variant: 'quiet', class: 'back-step' }) : null
+  el.append(h('header', { class: 'practice__head' }, h('h1', null, section.name), h('div', { class: 'practice__rung' }, h('p', { class: 'practice__step' }, copy.name), back), h('p', { class: 'note' }, copy.how)))
 
   const notes = h('div', { class: 'practice__notes' })
   el.append(notes)
@@ -89,7 +99,7 @@ export const practiceScreen: Screen = (root, { params, query }) => {
     const mode = step.words === 'fade' ? 'fade' : step.words === 'hidden' ? 'hidden' : 'show'
     lyrics.setMode(mode, prog().rap.fade)
   } else if (wordsInVideo) {
-    if (source === 'listen') side.append(h('p', { class: 'note' }, P.wordsInVideo))
+    if (source !== 'track') side.append(h('p', { class: 'note' }, P.wordsInVideo))
   } else if (wantsWords) {
     side.append(h('p', { class: 'note' }, P.noLines))
   }
@@ -279,7 +289,7 @@ export const practiceScreen: Screen = (root, { params, query }) => {
     if (inSession) return sessionNext()
     const steps = LADDERS[step!.ladder]
     const next = steps[steps.findIndex((x) => x.id === step!.id) + 1]
-    go(next ? `/practice/${sid}/${next.id}` : `/section/${sid}`)
+    go(next ? stepRoute(save(), sid, next.id) : `/section/${sid}`)
   }
 
   void setup()

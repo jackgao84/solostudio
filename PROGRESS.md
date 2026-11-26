@@ -7,6 +7,8 @@
 
 ## Status
 
+- **Version 1.4 in progress** (see "Version 1.4" below): part 1 built; part 2 next.
+
 - **Version 1.3.0 done and live (2026-11-26), build 75e988e:** practice that needs no setup (see
   "Version 1.3" below). Confirmed in WebKit against the live site at iPad portrait and landscape: "Version
   1.3.0 · build 75e988e"; one `solostudio:precache:<hash>` cache of 227 files (218 clips); a fresh iPad
@@ -82,6 +84,49 @@
     (Playwright's WebKit drops overrides on the navigator objects ~2 s after load); the offline and
     update specs seed no YouTube stand-in (routing can't reach a worker-controlled page).
   No assertion was changed anywhere.
+
+## Version 1.4 (in progress)
+
+The owner's 1.4 brief: the singer's voice as a guide for the rap. Two parts, each checks first, then
+code, a commit after each; a 1.3 save migrates through a tested migration (save version 5). No song
+audio or lyrics ever go in the repo: the guide is loaded on the iPad and stays there, and the checks
+make their audio on the spot (tones and clicks).
+
+1. [x] Karaoke videos in the app. Checks first (841400f): `tests/unit/karaoke.test.ts`,
+   `tests/unit/migration-v5.test.ts`, `e2e/karaoke.spec.ts`, `e2e/migration-v5.spec.ts` (fixture
+   `tests/fixtures/v4-save.ts`). Two fixes to my own new checks, no assertion changed: placeholder lines
+   from `lyricLine()` (d131552), and section-start taps at least a second apart (MIN_SECTION).
+   Code: `DEFAULT_REFS` gains "Voice guide (light)" (81BPeeksFqo, role `voiceGuide`) and "Karaoke
+   (no voice)" (d_-jC3519xI, role `karaoke`); save version 5 (migration 4 → 5 adds both after the
+   videos already there, and an empty `guide`); `src/model/refs.ts` (add a YouTube video under a name,
+   rename any, swap, remove an added or karaoke one); `videoName` in `src/model/room.ts` (every video
+   by its name in the room); `rapMode`, `stepSource(step, section, save)`, `stepRoom`, `stepRoute` in
+   `src/model/videos.ts`; `stepBefore` in `src/model/ladders.ts`; `stepCopyFor` in
+   `src/content/ladders.ts`; the practice screen sends an unmarked karaoke rung to the room
+   (`/room?section=…&step=…&source=…`), whose rung mode reads a two-line hint, ticks the rung and has
+   Back a step; Grown-ups → Videos (add, rename, remove, Tap section starts → `/grownups/taps/:ref`,
+   the wizard's tapper moved to `src/screens/grownups/tapper.ts`). Narration: 3 new clips (the room's
+   rung hint and the rap lesson's new second line), 226 characters.
+   - **Embedding:** YouTube's oEmbed answers 200 for 81BPeeksFqo and 401 ("Unauthorized") for
+     d_-jC3519xI: its owner has turned off playing inside other apps. On the iPad the app shows its
+     honest "won't play inside the app" panel with Open in YouTube. Put to the owner.
+2. [ ] A guide file in the app.
+
+Decisions (1.4):
+
+- D33. The rap ladder keeps its five rungs (ids, lamps, ticks, spacing and history carry over) and
+  fades the singer's voice: with no guide file, rap-listen plays the listen-and-read video, rap-say
+  Voice guide, rap-fade Karaoke (the lines on screen still fade there), the two memory rungs her
+  track. A karaoke video a grown-up removed gives that rung back its 1.3 source.
+- D34. A karaoke rung opens in the practice room when its video has no start tapped on the section;
+  "I did it" there ticks the rung like the practice screen. Back a step is on every rap rung after
+  the first (practice screen and room); it only opens the rung before, so nothing is unticked or
+  logged.
+- D35. The room shows every video by its name: a grown-up's name for it, or for a default video they
+  haven't renamed, the kind of video (as in 1.3). The seven earlier defaults can be renamed and
+  swapped, not removed (the ladders use them); added videos and the two karaoke ones can be removed.
+- D36. The control's label never names the singer in the repo (Decision 1): a grown-up types whose
+  voice it is on the iPad, and the label reads "{name}'s voice" there.
 
 ## After 1.3.0: the flaky recording check (fixed, live 2026-11-27, build 18cb71e)
 

@@ -4,6 +4,8 @@
  * she saves a loop as one of her parts and ticks "I did it" on it at 50, 75 and 100% speed. Pure, so
  * the checks can read it.
  */
+import { KID_COPY } from '../content/kid'
+import { DEFAULT_REFS } from '../content/references'
 import { PART_NAME_MAX, PART_SPEEDS, type MyPart, type PartSpeed, type Reference, type RefRole, type SaveData } from '../storage/schema'
 import { fill } from '../ui/dom'
 
@@ -22,8 +24,38 @@ export interface RoomSource {
   ref: Reference | null
 }
 
-/** The dance videos first, then the rest, then any video a grown-up added from the iPad. */
-export const ROOM_ROLE_ORDER: readonly RefRole[] = ['mirrored', 'tutorialParts', 'tutorialFull', 'performance', 'original', 'listen', 'slow', 'local']
+/**
+ * The dance videos first, then the rest (the karaoke videos after the listen-and-read video, version
+ * 1.4), then any YouTube video a grown-up added, then any video from the iPad.
+ */
+export const ROOM_ROLE_ORDER: readonly RefRole[] = ['mirrored', 'tutorialParts', 'tutorialFull', 'performance', 'original', 'listen', 'voiceGuide', 'karaoke', 'slow', 'added', 'local']
+
+const R = KID_COPY.room
+const ROLE_NAMES: Partial<Record<RefRole | 'track', string>> = {
+  mirrored: R.sourceMirrored,
+  tutorialParts: R.sourceTutorialParts,
+  tutorialFull: R.sourceTutorialFull,
+  performance: R.sourcePerformance,
+  original: R.sourceOriginal,
+  listen: R.sourceListen,
+  slow: R.sourceSlow,
+  voiceGuide: R.sourceVoiceGuide,
+  karaoke: R.sourceKaraoke,
+  track: R.sourceTrack,
+}
+
+/**
+ * What the practice room calls a video (version 1.4: every video by its name): the name a grown-up
+ * gave it, or for a default video they haven't renamed, the kind of video it is.
+ */
+export function videoName(src: Pick<RoomSource, 'role' | 'ref'> | null): string {
+  if (!src) return R.sourceLocal
+  if (src.role === 'track') return R.sourceTrack
+  const label = src.ref?.label.trim() ?? ''
+  const def = DEFAULT_REFS.find((r) => r.role === src.role)
+  if (def && (!label || label === def.label)) return ROLE_NAMES[src.role] ?? def.label
+  return label || ROLE_NAMES[src.role] || R.sourceLocal
+}
 
 const usable = (r: Reference) => (r.kind === 'youtube' ? !!r.youtubeId : !!r.mediaId)
 

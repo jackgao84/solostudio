@@ -10,7 +10,7 @@ import { go, save, sectionById, unlockGrownups } from '../../app/ctx'
 import { GATE_HOLD_MS } from '../../app/gate'
 import type { Screen } from '../../app/router'
 import { KID_COPY } from '../../content/kid'
-import { LADDER_COPY, STEP_COPY } from '../../content/ladders'
+import { LADDER_COPY } from '../../content/ladders'
 import { SECTION_LESSON_COPY } from '../../content/learn'
 import { LADDERS } from '../../model/ladders'
 import { lessonGaps, sectionLessonVideo } from '../../model/path'
@@ -22,7 +22,7 @@ import { fill, h } from '../../ui/dom'
 import { Narrator } from '../../ui/narrator'
 import { referencePlayer, youTubeIn } from '../../ui/video'
 import { videoControls } from '../../ui/video-controls'
-import { kidScreen, topbar } from './common'
+import { kidScreen, rungCopy, topbar } from './common'
 
 const L = KID_COPY.learn
 const GAP_WORDS: Record<WizardStep, string> = {
@@ -77,14 +77,14 @@ export const learnScreen: Screen = (root, { params }) => {
         'li',
         { class: `rung${ticked ? ' is-done' : ''}`, 'data-step': st.id },
         h('span', { class: `lamp lamp--${ladder}${ticked ? ' is-on' : ''}`, 'aria-hidden': 'true' }),
-        h('span', { class: 'rung__name' }, STEP_COPY[st.id].name),
+        h('span', { class: 'rung__name' }, rungCopy(section, st.id).name),
         ticked ? h('span', { class: 'rung__done' }, KID_COPY.sections.rungTicked) : null,
-        button(L.practiseShort, () => go(`/practice/${section.id}/${st.id}`), { variant: 'quiet', class: 'rung__go', label: fill(L.practise, { step: STEP_COPY[st.id].name }) }),
+        button(L.practiseShort, () => go(`/practice/${section.id}/${st.id}`), { variant: 'quiet', class: 'rung__go', label: fill(L.practise, { step: rungCopy(section, st.id).name }) }),
       )
     }),
   )
   const first = next ?? LADDERS[ladder][LADDERS[ladder].length - 1]
-  const main = button(next ? fill(L.practise, { step: STEP_COPY[first.id].name }) : L.again, () => go(`/practice/${section.id}/${first.id}`), { variant: 'primary', class: 'btn--huge' })
+  const main = button(next ? fill(L.practise, { step: rungCopy(section, first.id).name }) : L.again, () => go(`/practice/${section.id}/${first.id}`), { variant: 'primary', class: 'btn--huge' })
 
   const videoBox = h('div', { class: 'player-area lesson-video' })
   kidScreen(

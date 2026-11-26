@@ -222,6 +222,32 @@
   margin: 0;
 }
 
+/* The rung's name with Back a step beside it (1.4). */
+.practice__rung {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px 16px;
+}
+
+.back-step {
+  min-height: 48px;
+  font-size: 22px;
+}
+
+/* A rap rung opened in the practice room (1.4): the section, the rung, how to do it. */
+.room-step {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 2px 18px;
+}
+
+.room-step .note {
+  flex-basis: 100%;
+  margin: 2px 0 0;
+}
+
 /* Portrait: player, controls, lyrics and counts, then I did it. Landscape: the player with its
    buttons on the left, the lyrics and counts on the right. */
 .player-col {

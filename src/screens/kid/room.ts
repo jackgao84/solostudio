@@ -10,18 +10,29 @@
  *
  * From today's session (?session=1) it says the item's cue first: a part of hers loops by itself and
  * "I did it" moves on; with no parts yet (?hint=1) the coach reads the hint on making a loop.
+ *
+ * Version 1.4: a rap rung on a karaoke video that isn't marked on the section opens here
+ * (?section=…&step=…&source=…): the rung's name, the coach saying how to find her part, her loop
+ * buttons, "I did it" ticking the rung, and Back a step (which never counts against her).
  */
-import { save, update } from '../../app/ctx'
+import { go, save, sectionById, today, update } from '../../app/ctx'
+import { celebrate } from '../../app/celebrate'
+import { logTick } from '../../model/activity'
+import { celebrationsForTick } from '../../model/celebrate'
+import { LADDERS, stepBefore, stepById, type StepDef } from '../../model/ladders'
+import { progressOf, reviewLadder, tickStep } from '../../model/progress'
+import { isDue } from '../../model/spacing'
+import { stepRoute } from '../../model/videos'
 import type { Screen } from '../../app/router'
 import { sessionCue, sessionItem, sessionNext } from '../../app/session'
 import { lightOn } from '../../audio/sfx'
 import { say } from '../../audio/voice'
 import { KID_COPY } from '../../content/kid'
-import { roomHint } from '../../content/narration'
+import { roomHint, roomStepHint } from '../../content/narration'
 import type { Player } from '../../media/player'
 import { RepLoop, cueTime } from '../../media/reploop'
 import { trackPlayer } from '../../media/track'
-import { cleanPartName, defaultPartName, defaultSource, nextPartSpeed, partFinished, roomSources, sourceById, tickPart, type RoomSource } from '../../model/room'
+import { cleanPartName, defaultPartName, defaultSource, nextPartSpeed, partFinished, roomSources, sourceById, tickPart, videoName, type RoomSource } from '../../model/room'
 import { PART_SPEEDS, type MyPart } from '../../storage/schema'
 import { button } from '../../ui/components'
 import { CountInView } from '../../ui/countin'
@@ -29,27 +40,14 @@ import { fill, h } from '../../ui/dom'
 import { LoopButtons } from '../../ui/loop'
 import { Narrator } from '../../ui/narrator'
 import { referencePlayer, trackArt } from '../../ui/video'
-import { blockTimer, kidScreen, topbar } from './common'
+import { blockTimer, kidScreen, rungCopy, topbar } from './common'
 
 const R = KID_COPY.room
 const P = KID_COPY.practice
 
-const ROLE_NAMES: Record<string, string> = {
-  mirrored: R.sourceMirrored,
-  tutorialParts: R.sourceTutorialParts,
-  tutorialFull: R.sourceTutorialFull,
-  performance: R.sourcePerformance,
-  original: R.sourceOriginal,
-  listen: R.sourceListen,
-  slow: R.sourceSlow,
-  track: R.sourceTrack,
-}
-
-/** Her name for a video: the kind of video it is, or a grown-up's own name for one from the iPad. */
+/** Her name for a video: the name a grown-up gave it, or the kind of video it is (version 1.4: every video by its name). */
 export function sourceName(src: RoomSource | null): string {
-  if (!src) return R.sourceLocal
-  if (src.role === 'local') return src.ref?.label.trim() || R.sourceLocal
-  return ROLE_NAMES[src.role] ?? R.sourceLocal
+  return videoName(src)
 }
 
 const speedSteps = (p: Player | null) => (p?.kind === 'youtube' ? [0.5, 0.75, 1] : Array.from({ length: 11 }, (_, i) => Math.round((0.5 + i * 0.05) * 100) / 100))
@@ -66,16 +64,20 @@ export function partLamps(part: Pick<MyPart, 'done'>): HTMLElement {
 export const roomScreen: Screen = (root, { query }) => {
   const timer = blockTimer()
   const d = save()
-  let part: MyPart | null = d.parts.find((p) => p.id === query.get('part')) ?? null
+  // A rap rung opened here (1.4): its section and step.
+  const rungSection = sectionById(query.get('section') ?? '')
+  const rungStep = stepById(query.get('step') ?? '')
+  const rung: { sectionId: string; step: StepDef } | null = rungSection && rungStep ? { sectionId: rungSection.id, step: rungStep } : null
+  let part: MyPart | null = rung ? null : (d.parts.find((p) => p.id === query.get('part')) ?? null)
   const asked = query.get('source')
   let sourceId: string | null = part?.source ?? (asked && sourceById(d, asked) ? asked : defaultSource(d))
-  let speed: number = part ? nextPartSpeed(part) : 1
+  let speed: number = part ? nextPartSpeed(part) : (rung?.step.speed ?? 1)
   let player: Player | null = null
   let rep: RepLoop | null = null
   let raf = 0
   const item = sessionItem(query)
-  const inSession = item?.kind === 'room'
-  const wantsHint = query.get('hint') === '1'
+  const inSession = item?.kind === 'room' || (!!rung && item?.kind === 'practice' && item.sectionId === rung.sectionId && item.stepId === rung.step.id)
+  const wantsHint = query.get('hint') === '1' && !rung
   // The session's cue: before her part's first go, or before the hint.
   let cue: string | null = inSession ? sessionCue() : null
 
@@ -83,12 +85,15 @@ export const roomScreen: Screen = (root, { query }) => {
 
   // ---- The head: the room's name, and the part she picked with its lamps ---------------------
   const partHead = h('div', { class: 'room-part', hidden: true })
-  el.append(h('header', { class: 'room__head' }, h('h1', null, R.title), partHead))
+  const rungHead = rung && rungSection ? rungView(rungSection.name, rung) : null
+  el.append(h('header', { class: 'room__head' }, rungHead ?? h('h1', null, R.title), partHead))
 
   // ---- Her side: how to make a loop (until she has a part), the videos, her parts ------------
-  const hintLines = roomHint().map((t) => h('p', { class: 'narrated' }, t))
-  const narrator = wantsHint && d.narration.on ? new Narrator(hintLines, roomHint()) : null
-  const hint = h('section', { class: 'room-hint card', role: 'note' }, narrator?.el ?? null, ...hintLines)
+  // On a rung (1.4) the coach says how to find her part in the video instead.
+  const hintText = rung ? roomStepHint() : roomHint()
+  const hintLines = hintText.map((t) => h('p', { class: 'narrated' }, t))
+  const narrator = (wantsHint || !!rung) && d.narration.on ? new Narrator(hintLines, hintText) : null
+  const hint = h('section', { class: `room-hint card${rung ? ' room-hint--rung' : ''}`, role: 'note' }, narrator?.el ?? null, ...hintLines)
   const sources = h('div', { role: 'radiogroup', 'aria-label': R.pick, class: 'chips room-sources' })
   const pick = h('section', { class: 'room-pick' }, h('h2', null, R.pick), sources)
   const partsList = h('section', { class: 'my-parts' })
@@ -138,9 +143,22 @@ export const roomScreen: Screen = (root, { query }) => {
     speedEl.textContent = fill(P.speed, { speed: Math.round(speed * 100) })
   }
 
+  /** The rung's name and how-to, and Back a step (it never counts against her). */
+  function rungView(sectionName: string, r: { sectionId: string; step: StepDef }): HTMLElement {
+    const copy = rungCopy(sectionById(r.sectionId)!, r.step.id)
+    const before = stepBefore(r.step.id)
+    return h(
+      'div',
+      { class: 'room-step' },
+      h('h1', null, sectionName),
+      h('div', { class: 'practice__rung' }, h('p', { class: 'practice__step' }, copy.name), before ? button(P.back, () => go(stepRoute(save(), r.sectionId, before.id, inSession ? 'session=1' : '')), { variant: 'quiet', class: 'back-step' }) : null),
+      h('p', { class: 'note' }, copy.how),
+    )
+  }
+
   function drawPart(): void {
     partHead.hidden = !part
-    didBtn.hidden = !part
+    didBtn.hidden = !part && !rung
     if (!part) return partHead.replaceChildren()
     partHead.replaceChildren(h('p', { class: 'room-part__name' }, part.name), partLamps(part))
     if (partFinished(part)) partHead.append(h('p', { class: 'room-part__done note' }, R.allTicked))
@@ -267,7 +285,7 @@ export const roomScreen: Screen = (root, { query }) => {
   }
 
   function drawAll(): void {
-    hint.hidden = save().parts.length > 0 && !wantsHint
+    hint.hidden = save().parts.length > 0 && !wantsHint && !rung
     drawPart()
     drawSources()
     drawSave()
@@ -340,7 +358,28 @@ export const roomScreen: Screen = (root, { query }) => {
       .catch(() => undefined)
   }
 
+  /** "I did it" on a rung: ticked like on the practice screen, then on to the next rung. */
+  function rungDone(r: { sectionId: string; step: StepDef }): void {
+    const sec = sectionById(r.sectionId)
+    if (!sec) return
+    const t = today()
+    const before = progressOf(save().progress, r.sectionId)
+    celebrate(celebrationsForTick(before, r.step.ladder, r.step.id), sec.name)
+    let p = tickStep(before, r.step.ladder, r.step.id, t)
+    if (before[r.step.ladder].finishedAt && isDue(p[r.step.ladder].review, t)) p = reviewLadder(p, r.step.ladder, t)
+    update((s) => {
+      s.progress[r.sectionId] = p
+      if (!before[r.step.ladder].done.includes(r.step.id)) logTick(s, t, r.sectionId, r.step.id)
+    })
+    rep?.stop()
+    if (inSession) return sessionNext()
+    const steps = LADDERS[r.step.ladder]
+    const next = steps[steps.indexOf(r.step) + 1]
+    go(next ? stepRoute(save(), r.sectionId, next.id) : `/section/${r.sectionId}`)
+  }
+
   function didIt(): void {
+    if (rung && !part) return rungDone(rung)
     if (!part) return
     const before = part
     const next = tickPart(before, speed)

@@ -20,6 +20,12 @@ import {
   WIZARD_STEPS,
   PART_NAME_MAX,
   PART_SPEEDS,
+  REF_ROLES,
+  GUIDE_KINDS,
+  SINGER_NAME_MAX,
+  emptyGuide,
+  type Guide,
+  type GuideKind,
   type MyPart,
   type PartSpeed,
   type DayActivity,
@@ -86,10 +92,9 @@ function section(v: unknown, i: number): Section {
 
 function reference(v: unknown): Reference | null {
   if (!isObj(v) || typeof v.id !== 'string') return null
-  const roles = ['listen', 'original', 'performance', 'mirrored', 'tutorialFull', 'tutorialParts', 'slow', 'local']
   return {
     id: v.id,
-    role: (roles.includes(str(v.role)) ? v.role : 'local') as Reference['role'],
+    role: ((REF_ROLES as readonly string[]).includes(str(v.role)) ? v.role : 'local') as Reference['role'],
     label: str(v.label),
     kind: v.kind === 'local' ? 'local' : 'youtube',
     youtubeId: str(v.youtubeId),
@@ -238,6 +243,25 @@ function parts(v: unknown): MyPart[] {
   return out
 }
 
+/** The guide (version 1.4): field by field; an unknown kind is not confirmed yet. */
+function guide(v: unknown): Guide {
+  const o = isObj(v) ? v : {}
+  const d = emptyGuide()
+  const kind = (x: unknown): GuideKind | null => ((GUIDE_KINDS as readonly unknown[]).includes(x) ? (x as GuideKind) : null)
+  const id = (x: unknown) => (typeof x === 'string' && x ? x : null)
+  return {
+    mediaId: id(o.mediaId),
+    fileName: str(o.fileName),
+    duration: num(o.duration),
+    kind: kind(o.kind),
+    guess: kind(o.guess),
+    offset: num(o.offset, d.offset) as number,
+    mixId: id(o.mixId),
+    forTrack: id(o.forTrack),
+    singer: str(o.singer).trim().slice(0, SINGER_NAME_MAX).trim(),
+  }
+}
+
 export function normalize(raw: unknown): SaveData {
   const d = defaultSave()
   const o = isObj(raw) ? raw : {}
@@ -293,6 +317,7 @@ export function normalize(raw: unknown): SaveData {
     lessons: lessons(o.lessons),
     wizard: wizard(o.wizard),
     parts: parts(o.parts),
+    guide: guide(o.guide),
   }
 }
 

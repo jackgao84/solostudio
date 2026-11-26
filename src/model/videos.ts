@@ -9,7 +9,8 @@
  * Her own loop goes round the bit between two taps.
  */
 import type { Reference, RefRole, SaveData, Section } from '../storage/schema'
-import { REF_PREFERENCE, type Source, type StepDef } from './ladders'
+import { guideReady } from './guide'
+import { REF_PREFERENCE, stepById, type Source, type StepDef } from './ladders'
 import { tutorialRoles } from './path'
 import { playRange, spanOf, type Span } from './timing'
 
@@ -23,11 +24,11 @@ export interface StepVideo {
 
 const usable = (r: Reference) => (r.kind === 'youtube' ? !!r.youtubeId : !!r.mediaId)
 
-function roles(source: Exclude<Source, 'track'>, section: Section): RefRole[] {
+function roles(source: Exclude<Source, 'track'>, section: Pick<Section, 'name'>): RefRole[] {
   return source === 'tutorial' ? tutorialRoles(section) : [...REF_PREFERENCE[source]]
 }
 
-export function stepVideo(save: Pick<SaveData, 'refs'>, section: Section, source: Source): StepVideo | null {
+export function stepVideo(save: Pick<SaveData, 'refs'>, section: Pick<Section, 'refs' | 'name'>, source: Source): StepVideo | null {
   if (source === 'track') return null
   const ofRoles = (rs: readonly RefRole[]) => rs.flatMap((role) => save.refs.filter((r) => r.role === role && usable(r)))
   const localMirror = source === 'mirrored' ? save.refs.filter((r) => r.kind === 'local' && r.mirror && usable(r)) : []
@@ -45,14 +46,64 @@ export function stepVideo(save: Pick<SaveData, 'refs'>, section: Section, source
   return first ? { ref: first, from: 0, span: null } : null
 }
 
+/** How the rap ladder fades the singer's voice (version 1.4): with the guide file, or with the karaoke videos. */
+export type RapMode = 'guide' | 'videos'
+
+export function rapMode(save: Pick<SaveData, 'guide' | 'track'>): RapMode {
+  return guideReady(save) ? 'guide' : 'videos'
+}
+
 /**
- * What a step plays (version 1.3): its own source, except a rap step on a part with no lines, where
- * the listen-and-read video stands in wherever the words would light up (the words are in the video)
- * and her track plays for the rest.
+ * With no guide file, the rap ladder fades the singer's voice with videos (version 1.4): listen with
+ * the listen-and-read video, say it with Voice guide, say it with Karaoke, then from memory over her
+ * track. With a guide file every rung plays her track, with the voice at Full, Light, then Off.
  */
-export function stepSource(step: Pick<StepDef, 'ladder' | 'source' | 'words'>, section: Pick<Section, 'lines'>): Source {
-  if (step.ladder !== 'rap' || section.lines.length) return step.source
+const RAP_VIDEOS: Record<string, Source> = {
+  'rap-listen': 'listen',
+  'rap-say': 'voiceGuide',
+  'rap-fade': 'karaoke',
+  'rap-memory-75': 'track',
+  'rap-memory-100': 'track',
+}
+
+const hasRole = (save: Pick<SaveData, 'refs'>, role: RefRole) => save.refs.some((r) => r.role === role && usable(r))
+
+/**
+ * What a step plays. The dance and together ladders play their own source. The rap ladder plays her
+ * track throughout with a guide file; otherwise its videos, and where a grown-up removed a karaoke
+ * video, the 1.3 rung (her track, or the listen-and-read video on a part with no lines, where the
+ * words would light up).
+ */
+export function stepSource(step: Pick<StepDef, 'id' | 'ladder' | 'source' | 'words'>, section: Pick<Section, 'lines'>, save: Pick<SaveData, 'refs' | 'guide' | 'track'>): Source {
+  if (step.ladder !== 'rap') return step.source
+  if (rapMode(save) === 'guide') return 'track'
+  const video = RAP_VIDEOS[step.id] ?? step.source
+  if ((video === 'voiceGuide' || video === 'karaoke') && hasRole(save, video)) return video
+  if (video === 'listen') return 'listen'
+  if (section.lines.length) return step.source
   return step.words === 'show' ? 'listen' : 'track'
+}
+
+/**
+ * A rung on a karaoke video that isn't marked on this section (no start tapped on it) opens in the
+ * practice room on that video, with her loop buttons (version 1.4): the room's source id, or null when
+ * the rung stays on the practice screen.
+ */
+export function stepRoom(save: Pick<SaveData, 'refs' | 'guide' | 'track'>, section: Section, step: StepDef): string | null {
+  const source = stepSource(step, section, save)
+  if (source !== 'voiceGuide' && source !== 'karaoke') return null
+  const v = stepVideo(save, section, source)
+  if (!v || v.span || v.from > 0 || section.refs[v.ref.id]?.start != null) return null
+  return v.ref.id
+}
+
+/** Where a rung opens: the practice screen, or the practice room on its karaoke video. `extra` is added to the query (session=1). */
+export function stepRoute(save: Pick<SaveData, 'refs' | 'guide' | 'track' | 'sections'>, sectionId: string, stepId: string, extra = ''): string {
+  const section = save.sections.find((s) => s.id === sectionId)
+  const step = stepById(stepId)
+  const room = section && step ? stepRoom(save, section, step) : null
+  if (room) return `/room?section=${encodeURIComponent(sectionId)}&step=${encodeURIComponent(stepId)}&source=${encodeURIComponent(room)}${extra ? `&${extra}` : ''}`
+  return `/practice/${sectionId}/${stepId}${extra ? `?${extra}` : ''}`
 }
 
 /** Her loop between two taps (either order), at least a second long. */

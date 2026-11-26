@@ -3,8 +3,11 @@
  * YouTube ids only: the app never downloads them, never extracts audio and never shows thumbnails.
  * "Synced" videos play in time with the music, so the section marks can map her track's lyrics and
  * counts onto them; tutorials stop and explain, so they are not synced.
+ * Version 1.4 adds "Voice guide (light)" (the singer's voice turned down low) and "Karaoke (no voice)",
+ * both with the words on screen, named as the practice room shows them.
  */
 import type { Reference } from '../storage/schema'
+import { KID_COPY } from './kid'
 
 function yt(id: string, role: Reference['role'], label: string, synced: boolean, alreadyMirrored = false): Reference {
   return {
@@ -29,4 +32,10 @@ export const DEFAULT_REFS: readonly Reference[] = [
   yt('vVWmbpHj4Eg', 'tutorialFull', 'Tutorial (full)', false),
   yt('FIl3O1uBjQQ', 'tutorialParts', 'Tutorial: chorus and dance break, with counts', false),
   yt('UI4-leflJ00', 'slow', 'Slow music', true),
+  // Version 1.4: two karaoke videos under their own names, for the rap ladder's fading voice.
+  yt('81BPeeksFqo', 'voiceGuide', KID_COPY.room.sourceVoiceGuide, true),
+  yt('d_-jC3519xI', 'karaoke', KID_COPY.room.sourceKaraoke, true),
 ]
+
+/** The roles of the seven videos 1.0 to 1.3 started with: a grown-up can swap or rename them, not remove them. */
+export const CORE_ROLES = ['listen', 'original', 'performance', 'mirrored', 'tutorialFull', 'tutorialParts', 'slow'] as const

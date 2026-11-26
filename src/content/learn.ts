@@ -2,6 +2,7 @@
  * Section lessons (version 1.2): one Rap, one Dance and one Together lesson for each of her sections,
  * each holding that ladder's rungs. The short intro is read aloud by the coach, so it never names a
  * section (a custom name would need the iPad's voice); the lesson's title is the section and ladder.
+ * Version 1.4: the rap ladder fades the singer's voice (a voice guide, then karaoke, then memory).
  */
 import type { LadderId } from '../storage/schema'
 
@@ -9,7 +10,7 @@ export const SECTION_LESSON_COPY: Record<LadderId, { intro: string[] }> = {
   rap: {
     intro: [
       'This is a rap lesson. First, listen and read along as the words light up.',
-      'Then rap with the words, and watch them fade away a few at a time.',
+      'Then rap along while the voice gets softer, and then with no voice at all.',
       'Last, rap it from memory. I count you in every time.',
     ],
   },

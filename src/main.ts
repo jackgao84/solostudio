@@ -32,7 +32,7 @@ import { lessonScreen, lessonsScreen } from './screens/kid/lessons'
 import { grownupsHome } from './screens/grownups/home'
 import { askPersistenceOnce, planScreen } from './screens/grownups/plan'
 import { trackScreen } from './screens/grownups/track'
-import { refsScreen } from './screens/grownups/refs'
+import { refsScreen, tapsScreen } from './screens/grownups/refs'
 import { sectionEditor, sectionsAdmin } from './screens/grownups/sections'
 import { tempoScreen } from './screens/grownups/tempo'
 import { backupScreen } from './screens/grownups/backup'
@@ -100,6 +100,7 @@ const routes: [string, Screen][] = [
   ['/grownups/plan', planScreen],
   ['/grownups/track', trackScreen],
   ['/grownups/refs', refsScreen],
+  ['/grownups/taps/:ref', tapsScreen],
   ['/grownups/sections', sectionsAdmin],
   ['/grownups/section/:id', sectionEditor],
   ['/grownups/tempo', tempoScreen],

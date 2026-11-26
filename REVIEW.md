@@ -2,7 +2,7 @@
 
 Every piece of kid-facing text in the app, grouped by where it appears. Words in {curly brackets} are filled in on the iPad (her name, a section name, a number). The rap lines themselves are typed on the iPad by a grown-up and are never part of the app.
 
-- 507 lines in 27 groups
+- 522 lines in 27 groups
 
 **This file is generated from `src/content`. Don’t edit it by hand.** To change the words, edit the files in `src/content`, then run `npm run review` to rebuild this file. `npm test` fails while it is out of date.
 
@@ -100,7 +100,7 @@ One of her sections on one ladder: its intro, its video, its steps, and what it 
 ### Rap lessons
 
 - This is a rap lesson. First, listen and read along as the words light up. <sub>`learn.rap.1`</sub>
-- Then rap with the words, and watch them fade away a few at a time. <sub>`learn.rap.2`</sub>
+- Then rap along while the voice gets softer, and then with no voice at all. <sub>`learn.rap.2`</sub>
 - Last, rap it from memory. I count you in every time. <sub>`learn.rap.3`</sub>
 
 ### Dance lessons
@@ -209,7 +209,7 @@ The steps shown in those blocks.
 - Sip some water. <sub>`routine.cooldown.4`</sub>
 - Hum softly for a few seconds, then rest your voice. <sub>`routine.cooldown.5`</sub>
 
-## 9. The three ladders (34)
+## 9. The three ladders (44)
 
 Each ladder and each rung, with the one-line how-to shown on the practice screen.
 
@@ -256,7 +256,23 @@ Each ladder and each rung, with the one-line how-to shown on the practice screen
 - Link it up <sub>`step.together-linked.name`</sub>
 - Start in the part before and flow straight into this one. <sub>`step.together-linked.how`</sub>
 
-## 10. Practising (42)
+### Rap with the karaoke videos (no guide file)
+
+- Say it with Voice guide <sub>`rapVideo.voiceGuide.name`</sub>
+- Rap along with Voice guide. Its voice is soft, so yours leads. <sub>`rapVideo.voiceGuide.how`</sub>
+- Say it with Karaoke <sub>`rapVideo.karaoke.name`</sub>
+- Rap along with Karaoke. No voice now, just yours. <sub>`rapVideo.karaoke.how`</sub>
+
+### Rap with the guide file
+
+- Listen and read <sub>`rapGuide.rap-listen.name`</sub>
+- Listen to the voice and follow the words. <sub>`rapGuide.rap-listen.how`</sub>
+- Say it with a light voice <sub>`rapGuide.rap-say.name`</sub>
+- The voice is turned down low. Rap along, and let yours lead. <sub>`rapGuide.rap-say.how`</sub>
+- Say it with no voice <sub>`rapGuide.rap-fade.name`</sub>
+- No voice now. A few words hide each time. Keep rapping them anyway. <sub>`rapGuide.rap-fade.how`</sub>
+
+## 10. Practising (43)
 
 The practice screen: buttons, notes, speeds and what she sees when a video won’t play.
 
@@ -302,6 +318,7 @@ The practice screen: buttons, notes, speeds and what she sees when a video won�
 - The words are in the video. Rap along with it. <sub>`kid.practice.wordsInVideo`</sub>
 - Quick check: do it once from memory. <sub>`kid.practice.reviewNote`</sub>
 - From your teacher <sub>`kid.practice.teacherNote`</sub>
+- Back a step <sub>`kid.practice.back`</sub>
 
 ## 11. Start anywhere and jump back in (8)
 
@@ -565,7 +582,7 @@ Looping any bit of a video or her track herself: tap Loop start and Loop end whi
 - Loop end earlier <sub>`kid.video.endEarlier`</sub>
 - Loop end later <sub>`kid.video.endLater`</sub>
 
-## 26. The practice room (33)
+## 26. The practice room (37)
 
 Practice that needs no setup: any video or her track, her own loop with the count-in, and her parts (saved loops she names, ticks at 50, 75 and 100% speed, renames or deletes).
 
@@ -579,6 +596,8 @@ Practice that needs no setup: any video or her track, her own loop with the coun
 - Original <sub>`kid.room.sourceOriginal`</sub>
 - Listen and read <sub>`kid.room.sourceListen`</sub>
 - Slow music <sub>`kid.room.sourceSlow`</sub>
+- Voice guide (light) <sub>`kid.room.sourceVoiceGuide`</sub>
+- Karaoke (no voice) <sub>`kid.room.sourceKaraoke`</sub>
 - My track <sub>`kid.room.sourceTrack`</sub>
 - Video <sub>`kid.room.sourceLocal`</sub>
 - Here’s how to make your own loop. <sub>`kid.room.hint1`</sub>
@@ -602,6 +621,8 @@ Practice that needs no setup: any video or her track, her own loop with the coun
 - Yes, delete it <sub>`kid.room.deleteSure`</sub>
 - Every speed ticked! Practise it again any time. <sub>`kid.room.allTicked`</sub>
 - This video isn’t on the iPad any more. You can rename or delete this part. <sub>`kid.room.gone`</sub>
+- Find your part in this video. Tap Loop start where it begins, and Loop end where it finishes. <sub>`kid.room.stepHint1`</sub>
+- Then rap along with it, and tap I did it when you’re ready. <sub>`kid.room.stepHint2`</sub>
 
 ## 27. Lessons (79)
 

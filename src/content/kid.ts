@@ -115,6 +115,7 @@ export const KID_COPY = {
     wordsInVideo: 'The words are in the video. Rap along with it.',
     reviewNote: 'Quick check: do it once from memory.',
     teacherNote: 'From your teacher',
+    back: 'Back a step',
   },
   drills: {
     startDrill: 'Start the drill',
@@ -341,6 +342,8 @@ export const KID_COPY = {
     sourceOriginal: 'Original',
     sourceListen: 'Listen and read',
     sourceSlow: 'Slow music',
+    sourceVoiceGuide: 'Voice guide (light)',
+    sourceKaraoke: 'Karaoke (no voice)',
     sourceTrack: 'My track',
     sourceLocal: 'Video',
     hint1: 'Here’s how to make your own loop.',
@@ -364,6 +367,8 @@ export const KID_COPY = {
     deleteSure: 'Yes, delete it',
     allTicked: 'Every speed ticked! Practise it again any time.',
     gone: 'This video isn’t on the iPad any more. You can rename or delete this part.',
+    stepHint1: 'Find your part in this video. Tap Loop start where it begins, and Loop end where it finishes.',
+    stepHint2: 'Then rap along with it, and tap I did it when you’re ready.',
   },
   narrator: {
     pause: 'Pause',

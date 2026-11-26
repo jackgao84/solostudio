@@ -5,6 +5,10 @@ import { blockCopy } from '../../content/blocks'
 import { KID_COPY } from '../../content/kid'
 import { todayPlan } from '../../model/today'
 import { save } from '../../app/ctx'
+import { stepCopyFor } from '../../content/ladders'
+import { stepById } from '../../model/ladders'
+import { rapMode, stepSource } from '../../model/videos'
+import type { Section } from '../../storage/schema'
 import { button } from '../../ui/components'
 import { fill, h, type Child } from '../../ui/dom'
 
@@ -49,4 +53,10 @@ export function topbar(...extra: Child[]): HTMLElement {
   const pill = words ? h('p', { class: 'celebrate', role: 'status' }, h('span', { class: 'celebrate__lamp', 'aria-hidden': 'true' }), words) : null
   if (pill) window.setTimeout(() => pill.remove(), 5000)
   return h('nav', { class: 'topbar' }, todayButton(), pill, h('span', { class: 'topbar__spacer' }), ...extra)
+}
+
+/** A rung's name and how-to for what it plays on this section (version 1.4: the rap ladder's karaoke videos or the guide). */
+export function rungCopy(section: Section, stepId: string): { name: string; how: string } {
+  const step = stepById(stepId)!
+  return stepCopyFor(step, stepSource(step, section, save()), rapMode(save()))
 }

@@ -5,14 +5,14 @@
 import { go, save, sectionById, sectionsInOrder, today, update } from '../../app/ctx'
 import type { Screen } from '../../app/router'
 import { KID_COPY } from '../../content/kid'
-import { LADDER_COPY, STEP_COPY } from '../../content/ladders'
+import { LADDER_COPY } from '../../content/ladders'
 import { LADDERS, LADDER_IDS } from '../../model/ladders'
 import { logShaky } from '../../model/activity'
 import { clearShaky, dueItems, markShaky, progressOf } from '../../model/progress'
 import { stageRigs } from '../../model/stage'
 import { button, toggle } from '../../ui/components'
 import { fill, h } from '../../ui/dom'
-import { kidScreen, topbar } from './common'
+import { kidScreen, rungCopy, topbar } from './common'
 
 const S = KID_COPY.sections
 
@@ -74,7 +74,7 @@ export const sectionScreen: Screen = (root, { params }) => {
           h('p', { class: 'note' }, LADDER_COPY[l].about),
           ...LADDERS[l].map((st) => {
             const done = p[l].done.includes(st.id)
-            const b = button([done ? h('span', { class: 'rung__tick', 'aria-hidden': 'true' }, '✓') : null, STEP_COPY[st.id].name], () => go(`/practice/${s.id}/${st.id}`), { class: `rung${done ? ' is-done' : ''}` })
+            const b = button([done ? h('span', { class: 'rung__tick', 'aria-hidden': 'true' }, '✓') : null, rungCopy(s, st.id).name], () => go(`/practice/${s.id}/${st.id}`), { class: `rung${done ? ' is-done' : ''}` })
             b.setAttribute('data-step', st.id)
             if (done) b.setAttribute('aria-description', S.rungTicked)
             return b

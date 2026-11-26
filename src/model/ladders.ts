@@ -5,7 +5,8 @@
 import type { LadderId, Reference, RefRole, Section } from '../storage/schema'
 import { spanOf } from './timing'
 
-export type Source = 'listen' | 'track' | 'tutorial' | 'mirrored'
+/** 'voiceGuide' and 'karaoke' (version 1.4): the rap ladder's karaoke videos, used when there is no guide file. */
+export type Source = 'listen' | 'track' | 'tutorial' | 'mirrored' | 'voiceGuide' | 'karaoke'
 export type Words = 'show' | 'fade' | 'hidden' | 'optional'
 export type Energy = 'none' | 'half' | 'full'
 
@@ -60,11 +61,21 @@ export function stepById(id: string): StepDef | null {
   return BY_ID.get(id) ?? null
 }
 
+/** The rung before this one on its ladder (version 1.4: "Back a step"), or null on the first rung. */
+export function stepBefore(id: string): StepDef | null {
+  const step = stepById(id)
+  if (!step) return null
+  const steps = LADDERS[step.ladder]
+  return steps[steps.indexOf(step) - 1] ?? null
+}
+
 /** Which references each source can use, best first. */
 export const REF_PREFERENCE: Record<Exclude<Source, 'track'>, readonly RefRole[]> = {
   listen: ['listen', 'original', 'slow'],
   tutorial: ['tutorialParts', 'tutorialFull'],
   mirrored: ['mirrored'],
+  voiceGuide: ['voiceGuide'],
+  karaoke: ['karaoke'],
 }
 
 function usable(r: Reference): boolean {

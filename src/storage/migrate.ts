@@ -3,6 +3,7 @@
  * newer version needs: nothing she or a grown-up set up is changed. normalize() then fills in any
  * field still missing. The store keeps the older document as the backup copy before writing the new one.
  */
+import { DEFAULT_REFS } from '../content/references'
 import { versionOf } from './normalize'
 import { CURRENT_SCHEMA_VERSION, WIZARD_STEPS, type WizardStep } from './schema'
 
@@ -29,6 +30,17 @@ const STEPS: Record<number, (doc: Obj) => Obj> = {
   2: (doc) => ({ ...doc, schemaVersion: 3, wizard: { at: null, done: setupAlreadyDone(doc) } }),
   /** 3 → 4 (version 1.3): she has no parts of her own yet. Nothing already there changes. */
   3: (doc) => ({ ...doc, schemaVersion: 4, parts: [] }),
+  /**
+   * 4 → 5 (version 1.4): the two karaoke videos ("Voice guide (light)" and "Karaoke (no voice)") join
+   * her videos, after the ones already there (unless one of that kind is there already), and there is
+   * no guide yet. Nothing already there changes.
+   */
+  4: (doc) => {
+    const refs = Array.isArray(doc.refs) ? doc.refs : null
+    const has = (role: string) => (refs ?? []).some((r) => isObj(r) && r.role === role)
+    const added = DEFAULT_REFS.filter((r) => (r.role === 'voiceGuide' || r.role === 'karaoke') && !has(r.role)).map((r) => ({ ...r }))
+    return { ...doc, schemaVersion: 5, ...(refs ? { refs: [...refs, ...added] } : {}) }
+  },
 }
 
 const num = (v: unknown) => typeof v === 'number' && Number.isFinite(v)

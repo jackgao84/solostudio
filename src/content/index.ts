@@ -4,7 +4,7 @@
  */
 import { BLOCK_COPY, DRILL_COPY, PHASE_COPY } from './blocks'
 import { KID_COPY } from './kid'
-import { LADDER_COPY, STEP_COPY } from './ladders'
+import { LADDER_COPY, RAP_GUIDE_STEP_COPY, RAP_VIDEO_STEP_COPY, STEP_COPY } from './ladders'
 import { SECTION_LESSON_COPY } from './learn'
 import { LESSONS } from './lessons'
 import { WENT_WELL, WORK_ON } from './reflect'
@@ -80,6 +80,14 @@ export function kidStrings(): KidString[] {
       out.push({ group: 'ladders', sub: c.name, where: `step.${id}.name`, text: s.name })
       out.push({ group: 'ladders', sub: c.name, where: `step.${id}.how`, text: s.how })
     }
+  }
+  for (const [source, s] of Object.entries(RAP_VIDEO_STEP_COPY)) {
+    out.push({ group: 'ladders', sub: 'Rap with the karaoke videos (no guide file)', where: `rapVideo.${source}.name`, text: s.name })
+    out.push({ group: 'ladders', sub: 'Rap with the karaoke videos (no guide file)', where: `rapVideo.${source}.how`, text: s.how })
+  }
+  for (const [id, s] of Object.entries(RAP_GUIDE_STEP_COPY)) {
+    out.push({ group: 'ladders', sub: 'Rap with the guide file', where: `rapGuide.${id}.name`, text: s.name })
+    out.push({ group: 'ladders', sub: 'Rap with the guide file', where: `rapGuide.${id}.how`, text: s.how })
   }
   for (const [ladder, c] of Object.entries(SECTION_LESSON_COPY)) {
     c.intro.forEach((t, i) => out.push({ group: 'learn', sub: `${human(ladder)} lessons`, where: `learn.${ladder}.${i + 1}`, text: t }))
