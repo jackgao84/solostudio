@@ -57,7 +57,11 @@ part by part: checks first, then the code, a commit after each part.
    colours (`src/model/stage.ts`, `celebrate.ts`, `buildline.ts`, `src/app/celebrate.ts`,
    `src/screens/kid/mystage.ts`, `src/ui/theme.ts`; checks `tests/unit/fun.test.ts`,
    `e2e/fun.spec.ts`).
-8. [ ] Docs (REVIEW.md, SETUP.md), full checks, screens in both orientations, version 1.1.0, deploy.
+8. [ ] Still to do: SETUP.md (Showtime routine timing, Notes, Her week, Sounds) and README for 1.1;
+   one more full run of all checks; finish looking at every new screen in both orientations (the
+   first portrait set looked right); version 1.1.0; push; confirm the deploy and the live site.
+   Done so far in this step: a count-in before recording a section and counts from memory
+   (`e2e/countin-everywhere.spec.ts`), and Sections' Open buttons made plain (one main action).
 
 Decisions (1.1):
 

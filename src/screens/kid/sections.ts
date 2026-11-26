@@ -46,7 +46,7 @@ export const sectionsScreen: Screen = (root) => {
           h('div', { class: 'rig', 'data-section': r.sectionId, 'aria-hidden': 'true' }, h('span', { class: 'rig__bar' }), h('div', { class: 'rig__lamps' }, ...r.lights.map((l) => h('span', { class: `lamp lamp--${l.ladder}${l.on ? ' is-on' : ''}` })))),
           h('h2', null, r.name),
           p.shaky ? h('p', { class: 'shaky-note' }, S.shaky) : null,
-          button(fill(S.open, { section: r.name }), () => go(`/section/${r.sectionId}`), { variant: 'primary' }),
+          button(fill(S.open, { section: r.name }), () => go(`/section/${r.sectionId}`)),
         )
       }),
     ),

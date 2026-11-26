@@ -12,9 +12,10 @@ import { chooseBlanks } from '../../model/quiz'
 import { isDue } from '../../model/spacing'
 import { wordsOf } from '../../model/sync'
 import { playRange, spanOf } from '../../model/timing'
-import { RangePlayer } from '../../media/player'
+import { RepLoop } from '../../media/reploop'
 import type { LadderId } from '../../storage/schema'
 import { button } from '../../ui/components'
+import { CountInView } from '../../ui/countin'
 import { CountsView } from '../../ui/counts'
 import { fill, h } from '../../ui/dom'
 import { trackSource } from '../../ui/video'
@@ -96,27 +97,26 @@ function countsQuiz(root: HTMLElement, sectionId: string, back: HTMLElement): ()
   el.append(h('div', { class: 'stage has-side' }, playerArea, countsSlot))
   const tempo = save().tempo
   const span = spanOf(s.track)
-  let range: RangePlayer | null = null
+  let loop: RepLoop | null = null
   let counts: CountsView | null = null
   let shown = false
   let gone = false
-  const playBtn = button(P.play, async () => {
-    if (!range) return
-    playBtn.textContent = (await range.toggle()) ? P.pause : P.play
-  }, { class: 'btn--huge' })
+  const countIn = new CountInView()
+  // Reps loop with a count-in before each, like practice: Play, then Pause when she's done.
+  const playBtn = button(P.play, () => loop?.toggle(), { class: 'btn--huge' })
   const showBtn = button(Q.showCounts, () => {
     shown = !shown
     showBtn.textContent = shown ? Q.hideCounts : Q.showCounts
     if (shown && tempo.bpm && tempo.offset != null) {
       counts = new CountsView(tempo.bpm, tempo.offset)
       countsSlot.append(counts.el)
-      counts.update(range?.player.time() ?? span?.start ?? 0)
+      counts.update(loop?.player.time() ?? span?.start ?? 0)
     } else {
       counts?.el.remove()
       counts = null
     }
   })
-  el.append(h('div', { class: 'controls' }, playBtn, showBtn), h('div', { class: 'answer main-actions' }, button(P.again, () => void range?.playFromTop().then((ok) => (playBtn.textContent = ok ? P.pause : P.play)), { class: 'btn--huge' }), button(P.didIt, () => finish(sectionId, 'dance'), { variant: 'primary', class: 'btn--huge' })))
+  el.append(h('div', { class: 'controls' }, countIn.el, playBtn, showBtn), h('div', { class: 'answer main-actions' }, button(P.again, () => loop?.again(), { class: 'btn--huge' }), button(P.didIt, () => finish(sectionId, 'dance'), { variant: 'primary', class: 'btn--huge' })))
   void (async () => {
     const src = await trackSource(playerArea, save())
     if (gone) return src?.player.destroy()
@@ -124,14 +124,15 @@ function countsQuiz(root: HTMLElement, sectionId: string, back: HTMLElement): ()
     if (src.standIn) el.append(h('p', { class: 'note' }, P.standIn))
     if (!span) return el.append(h('p', { class: 'note' }, P.needsTrackMarks))
     const { from, to } = playRange(span)
-    range = new RangePlayer(src.player, from, to, 1)
-    range.onTick = (t) => counts?.update(t)
-    range.onStop = () => (playBtn.textContent = P.play)
+    loop = new RepLoop(src.player, () => ({ from, to, speed: 1 }), () => save().tempo.bpm)
+    loop.onTick = (t) => counts?.update(t)
+    loop.onCount = (w) => countIn.show(w)
+    loop.onState = (st) => (playBtn.textContent = st === 'idle' || st === 'paused' ? P.play : P.pause)
   })()
   return () => {
     gone = true
-    range?.destroy()
-    range?.player.destroy()
+    loop?.destroy()
+    loop?.player.destroy()
   }
 }
 

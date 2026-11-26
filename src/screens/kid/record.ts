@@ -9,7 +9,9 @@ import type { Screen } from '../../app/router'
 import { KID_COPY } from '../../content/kid'
 import { clipsToDelete, groupOf } from '../../model/clips'
 import { playRange, spanOf } from '../../model/timing'
+import { runCountIn } from '../../media/countin-run'
 import { RangePlayer, type Player } from '../../media/player'
+import { CountInView } from '../../ui/countin'
 import { media, newMediaId } from '../../storage/media'
 import type { Reference, RefRole } from '../../storage/schema'
 import { button } from '../../ui/components'
@@ -52,6 +54,7 @@ export const recordScreen: Screen = (root, { params }) => {
   let refRange: RangePlayer | null = null
   let clipUrl: string | null = null
   let gone = false
+  let cancelCount: (() => void) | null = null
 
   const stopCamera = () => {
     for (const t of tracks) t.stop()
@@ -89,7 +92,7 @@ export const recordScreen: Screen = (root, { params }) => {
   }
 
   async function record(): Promise<void> {
-    if (!stream || !src) return
+    if (!stream || !src || cancelCount) return
     const chunks: Blob[] = []
     const mime = pickMime()
     recorder = mime ? new MediaRecorder(stream, { mimeType: mime }) : new MediaRecorder(stream)
@@ -112,10 +115,25 @@ export const recordScreen: Screen = (root, { params }) => {
       await keep(new Blob(chunks, { type }))
     }
     range.onStop = () => void finish()
-    const stopBtn = button(R.stop, () => void finish(), { variant: 'primary', class: 'btn--big' })
-    view.replaceChildren(view.querySelector('video.camera-preview') ?? h('span'), trackArea, h('p', { class: 'rec-dot', role: 'status' }, R.recording), h('div', { class: 'row' }, stopBtn))
-    recorder.start(500)
-    await range.playFromTop()
+    // A count-in first, so she can get to her spot; the recording and the music start together on the 1.
+    const countIn = new CountInView()
+    const preview = view.querySelector('video.camera-preview') ?? h('span')
+    const stopBtn = button(R.stop, () => {
+      if (cancelCount) {
+        cancelCount()
+        cancelCount = null
+        return cameraView()
+      }
+      void finish()
+    }, { variant: 'primary', class: 'btn--big' })
+    view.replaceChildren(preview, trackArea, countIn.el, h('div', { class: 'row' }, stopBtn))
+    cancelCount = runCountIn(save().tempo.bpm, 1, (w) => countIn.show(w), () => {
+      cancelCount = null
+      if (gone || !recorder) return
+      countIn.el.replaceWith(h('p', { class: 'rec-dot', role: 'status' }, R.recording))
+      recorder.start(500)
+      void range?.playFromTop()
+    })
   }
 
   async function keep(blob: Blob): Promise<void> {
@@ -196,6 +214,7 @@ export const recordScreen: Screen = (root, { params }) => {
 
   return () => {
     gone = true
+    cancelCount?.()
     if (recorder && recorder.state !== 'inactive') recorder.stop()
     stopCamera()
     range?.destroy()
