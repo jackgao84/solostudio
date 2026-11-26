@@ -203,9 +203,10 @@ export const practiceScreen: Screen = (root, { params, query }) => {
     }
     // The session's cue ("Next: Chorus, Dance, 75% speed") is said before the first rep only.
     let cue: string | null = inSession ? sessionCue() : null
-    loop = new RepLoop(player, () => {
+    loop = new RepLoop(player, (why) => {
       const own = loopBtns?.loop
-      const rep = { from: own?.from ?? from, to: own?.to ?? to, speed, cue }
+      // "Again" when she taps Again (the session's cue comes first, once).
+      const rep = { from: own?.from ?? from, to: own?.to ?? to, speed, cue: cue ?? (why === 'again' ? KID_COPY.cues.again : null) }
       cue = null
       return rep
     }, () => save().tempo.bpm)
