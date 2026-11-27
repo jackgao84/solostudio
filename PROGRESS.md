@@ -7,8 +7,17 @@
 
 ## Status
 
-- **Version 1.4.0 built and pushed** (see "Version 1.4" below): both parts, the approved check changes,
-  every new screen looked at.
+- **Version 1.4.0 done and live (2026-11-27), build ff49f9f** (see "Version 1.4" below). The deploy
+  workflow's unit checks passed (42 files, 399). The live bundle reads version 1.4.0, build ff49f9f,
+  with 81BPeeksFqo and a03UskoIMxw (and not d_-jC3519xI); `sw.js` precaches 229 files (220 clips).
+  In the desktop app's own browser (Chromium; Playwright's WebKit could not be used, see below): the
+  grown-ups' version line reads "Version 1.4.0 · build ff49f9f · 2026-11-27", the service worker
+  controls the page, the practice room lists all 9 videos by name, a save there was at version 5, and
+  Her track has the guide card. YouTube's oEmbed answers 200 for both karaoke videos.
+- Not done: the second full WebKit run, and the live checks in Playwright's WebKit (a 1.3 save on the
+  live site, the room's players). From about 07:00 the Mac's load stayed at 50–260 with the disk 96%
+  full, and Playwright's WebKit took about 51 s to show a blank page; a run started then timed out
+  across the board (stopped). Repeat both once the Mac is quiet.
 - 1.4.0 final checks: typecheck clean; unit 399/399 in 42 files; privacy scan clean; voice check (220
   clips); Playwright WebKit 194/194 (97 tests × iPad portrait and landscape) on a clean run of the
   1.4.0 build (10.6 min). A second run straight after was stopped: the Mac's load average went to
