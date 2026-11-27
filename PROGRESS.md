@@ -7,8 +7,13 @@
 
 ## Status
 
-- **Version 1.4.0 built** (see "Version 1.4" below): both parts, the approved check changes, every
-  new screen looked at; final checks and the push next.
+- **Version 1.4.0 built and pushed** (see "Version 1.4" below): both parts, the approved check changes,
+  every new screen looked at.
+- 1.4.0 final checks: typecheck clean; unit 399/399 in 42 files; privacy scan clean; voice check (220
+  clips); Playwright WebKit 194/194 (97 tests × iPad portrait and landscape) on a clean run of the
+  1.4.0 build (10.6 min). A second run straight after was stopped: the Mac's load average went to
+  100–260 (the disk is 96% full and macOS was purging caches), and dozens of checks that had just
+  passed timed out in `page.goto`; it is to be repeated once the Mac is quiet.
 
 - **Version 1.3.0 done and live (2026-11-26), build 75e988e:** practice that needs no setup (see
   "Version 1.3" below). Confirmed in WebKit against the live site at iPad portrait and landscape: "Version
@@ -140,6 +145,27 @@ make their audio on the spot (tones and clicks).
    max-height; now clipped); the room in portrait put the voice control above the hint (now beside
    the speed controls); recording with her track pushed the voice choice and Record below the fold
    (the track art is a slim strip there, and the camera a little shorter in landscape).
+
+4. [x] **Check changes approved by the owner (1.4), committed on their own (5874d2e):** save version 5
+   (4 → 5) in `migration.test` (and its "is 4" title), `migration-v3.test`, `migration-v4.test` and
+   the three migration specs, whose "everything carries over unchanged" loops now expect `refs` to be
+   the old videos plus the two karaoke ones after them; `room.test` (the role list gains voiceGuide
+   and karaoke after listen) and `room.spec` (9 videos, was 7); `parts-path.test` (stepSource takes the
+   save: listen, voiceGuide, karaoke, track, track) and `parts-path.spec` (rap-say plays 81BPeeksFqo);
+   `practice.spec`'s line sync, `offline.spec` and `update.spec` open rap-memory-75 instead of rap-say;
+   `journey.spec` step 12 (rap-say opens the room on Voice guide, I did it there and on Karaoke, then
+   the rest of step 12 on rap-memory-75). No other assertion changed. Also a typing-only fix to my own
+   new `guide.spec` (15ce2d1), and the Karaoke default swapped to a03UskoIMxw (14b91f3).
+5. [x] Narration: 3 new clips (the room's rung hint, two lines, and the rap lesson's new second line),
+   226 characters; all clips 220, 11,701 characters. Version 1.4.0 (d9a7708).
+
+Only the iPad can confirm (1.4): her track and the guide coming out of the speaker through Web Audio
+(iPadOS's media-element routing), in time and at its normal pitch at 50% and 75%, with no click or
+jump when the voice is switched, with the ring/silent switch either way; building the four-channel
+file from a real 3–4 minute track and guide (a few seconds, and roughly 70–90 MB on the iPad); a real
+full guide mix recognised and lined up, and a real voice-only file recognised as such; Light (0.35,
+about −9 dB) sitting right against her music; both karaoke videos playing inside the app, and
+a03UskoIMxw having no voice and showing the words; the room's spoken hint on a rung.
 
 Decisions (1.4):
 
@@ -534,6 +560,11 @@ npm run build        # dist/ for GitHub Pages
 ```
 
 ## The checks (what decides "done")
+
+1.4 adds unit `karaoke`, `migration-v5`, `guide` and WebKit `karaoke`, `migration-v5`, `guide` (her
+track and the guide made on the spot; the debug hook's `voice()` and `hear()` let the checks read the
+gains and measure what is heard: the 440 Hz track stays at 440 Hz at 75%, the 660 Hz voice comes and
+goes with the control, and the element never seeks when it does).
 
 1.1 adds (all new files; 1.0's checks are unchanged except the approved journey waits):
 unit `migration`, `drills`, `routes-v11`, `showtime-routine`, `week`, `listening`, `session`, `fun`;
